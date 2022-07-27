@@ -1,3 +1,17 @@
+# Solution Areas
+## Azure Core
+## App Innovation
+### [Landing Zones Deployment with Terraform](./LandingZonesDeploymentwithTerraform/README.md)
+
+## Data&AI
+## Hybrid Cloud
+## SAP on MS Cloud
+## Security
+## Biz Apps
+
+
+
+
 # Project
 
 > This repo has been populated by an initial template to help get you started. Please
