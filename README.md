@@ -6,6 +6,7 @@
 ### [Landing Zones Deployment with Terraform](./LandingZonesDeploymentwithTerraform/README.md)
 &nbsp; 
 ## Data&AI
+### [使用Terraform/Ansible在Azure上部署Hadoop](https://github.com/radezheng/azureHadoop#%E4%BD%BF%E7%94%A8terraformansible%E5%9C%A8azure%E4%B8%8A%E9%83%A8%E7%BD%B2hadoop)
 &nbsp; 
 ## Hybrid Cloud
 &nbsp; 
