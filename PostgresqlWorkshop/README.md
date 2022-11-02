@@ -37,16 +37,16 @@ Azure Database for PostgreSQL 是基于开源 Postgres 数据库引擎的关系�
 
     
 ## 基础知识
-1. Azure Database for PostgreSQL flexible server  
+1. Azure Database for PostgreSQL flexible server部署模式
    [Azure Database for PostgreSQL](https://learn.microsoft.com/zh-cn/azure/postgresql/single-server/overview) 是 Microsoft Azure中基于 PostgreSQL 开源关系数据库的一种关系数据库服务。用于 PostgreSQL 的 Azure 数据库提供以下功能：
-   > 内置的高可用性。
-   > 使用自动备份和时间点还原对数据进行长达 35 天的保护。
-   > 自动维护基础硬件、操作系统和数据库引擎，使服务保持安全和最新状态。
-   > 使用非独占即用即付定价，实现可预测性能。
-   > 在几秒钟内实现弹性缩放。
-   > 具有企业级安全性和行业领先的符合性，可保护静态和动态敏感数据。
-   > 具有监视和自动化功能，可简化大规模部署的管理和监视。
-   > 行业领先的支持体验。
+   > 内置的高可用性。  
+   > 使用自动备份和时间点还原对数据进行长达 35 天的保护。  
+   > 自动维护基础硬件、操作系统和数据库引擎，使服务保持安全和最新状态。  
+   > 使用非独占即用即付定价，实现可预测性能。   
+   > 在几秒钟内实现弹性缩放。  
+   > 具有企业级安全性和行业领先的符合性，可保护静态和动态敏感数据。  
+   > 具有监视和自动化功能，可简化大规模部署的管理和监视。  
+   > 行业领先的支持体验。  
    
    这些功能几乎都不需要进行任何管理，并且都是在不另外收费的情况下提供的。 借助这些功能，用户可将注意力集中在如何快速进行应用程序开发、加快推向市场，而不需要投入宝贵的时间和资源来管理虚拟机与基础结构。  
    
