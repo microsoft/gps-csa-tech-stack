@@ -18,11 +18,11 @@
     ![Azure Cloud Shell](./media/image1.png)  
 
     显示下图表示您已经成功开启Azure Cloud Shell  
-    
+
     ![success](./media/image2.png)  
 
 3. 实验整体架构
    ![](./media/image3.png)
 
-   **注意**：本动手实验文档默认按Azure Global环境运行，PostgreSQL支持AzureGlobal和AzureChina（世纪互联）等所有Azure公有云，
+   **注意**：本动手实验文档默认按Azure Global环境运行，探索对象主要是Azure Database for PostgreSQL的flexible server版本，该版本支持AzureGlobal和AzureChina（世纪互联）等所有Azure公有云
    
