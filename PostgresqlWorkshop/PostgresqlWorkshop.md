@@ -58,7 +58,7 @@
    - 使用Azure Cloud Shell连接跳板机DNS VM，然后通过DNS VM连接数据库。
      - 在Azure Cloud Shell中通过ssh连接跳板机
         ```bash
-        ussh username@<jumpbox-ip> # the DNS VM IP Address, and the username that you selected in deployment
+        ssh username@<jumpbox-ip> # the DNS VM IP Address, and the username that you selected in deployment
         ```
      - 登录后安装psql（如未安装）
         ```bash
@@ -81,11 +81,11 @@
         export PGPASSWORD=your_password
         export PGSSLMODE=require
         ```
-       - 读取配置文件
+        - 读取配置文件
         ```bash
         source .pg_azure
         ```
-       - psql连接数据
+        - psql连接数据
         ```bash
         psql
         ```
