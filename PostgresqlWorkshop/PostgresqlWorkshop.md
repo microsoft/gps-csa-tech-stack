@@ -74,7 +74,9 @@
        - 在跳板机上创建配置文件
          ```bash
         vi .pg_azure
-
+        ```
+        文件中配置以下内容:
+        ```bash
         export PGDATABASE=postgres
         export PGHOST=HOSTNAME.postgres.database.azure.com
         export PGUSER=adminuser
