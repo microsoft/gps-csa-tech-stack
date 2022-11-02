@@ -56,6 +56,39 @@
     之后您可以在名为PG-Workshop的资源组看到部署后的资源：  
 
    - 使用Azure Cloud Shell连接跳板机DNS VM，然后通过DNS VM连接数据库。
+     - 在Azure Cloud Shell中通过ssh连接跳板机
+        ```bash
+        ussh username@<jumpbox-ip> # the DNS VM IP Address, and the username that you selected in deployment
+        ```
+     - 登录后安装psql（如未安装）
+        ```bash
+        sudo dnf module enable -y postgresql:13
+        sudo dnf install -y postgresql
+        ```
+     - 通过DNS VM连接数据库
+        ```bash
+        psql -U adminuser -h postgresql-db.postgres.database.azure.com postgre
+        ```
+     - 通过预先配置连接参数快速连接数据库
+       - 在Azure portal左栏位“Connection Strings”处找到psql字段
+       - 在跳板机上创建配置文件
+         ```bash
+        vi .pg_azure
+
+        export PGDATABASE=postgres
+        export PGHOST=HOSTNAME.postgres.database.azure.com
+        export PGUSER=adminuser
+        export PGPASSWORD=your_password
+        export PGSSLMODE=require
+        ```
+       - 读取配置文件
+        ```bash
+        source .pg_azure
+        ```
+       - psql连接数据
+        ```bash
+        psql
+        ```
 
 2. 数据引入和环境准备
 3. 管理PostgreSQL数据库
