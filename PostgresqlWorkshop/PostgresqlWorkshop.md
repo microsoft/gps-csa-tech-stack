@@ -81,11 +81,11 @@
         export PGPASSWORD=your_password
         export PGSSLMODE=require
         ```
-        - 读取配置文件
+       - 读取配置文件
         ```bash
         source .pg_azure
         ```
-        - psql连接数据
+       - psql连接数据
         ```bash
         psql
         ```
