@@ -3,7 +3,7 @@ Azure Database for PostgreSQL迁移部署实操
 
 > [实验背景](#实验背景)
 >
-> [基础知识](#所需基础知识介绍)
+> [基础知识](#基础知识)
 >
 
 &nbsp;
@@ -14,7 +14,7 @@ Azure Database for PostgreSQL 是基于开源 Postgres 数据库引擎的关系�
 
 本实验目的意在帮助您掌握Azure Database for PostgreSQL的迁移和部署相关操作，包括：
 - 部署
-  -  前提条件
+  -  环境准备
   -  使用Bicep部署数据库
   -  数据引入和环境准备
   -  管理PostgreSQL数据库
