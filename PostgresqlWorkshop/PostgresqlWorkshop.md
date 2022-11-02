@@ -18,10 +18,11 @@
     ![Azure Cloud Shell](./media/image1.png)  
 
     显示下图表示您已经成功开启Azure Cloud Shell  
+    
     ![success](./media/image2.png)  
 
 3. 实验整体架构
    ![](./media/image3.png)
 
-   **注意**：本动手实验文档默认按Azure Global环境运行，Rover支持AzureGlobal和AzureChina（世纪互联）等所有Azure公有云，在rover命令行登陆azure之前需要设置所使用的云环境
+   **注意**：本动手实验文档默认按Azure Global环境运行，PostgreSQL支持AzureGlobal和AzureChina（世纪互联）等所有Azure公有云，
    
