@@ -72,10 +72,10 @@
      - 通过预先配置连接参数快速连接数据库
        - 在Azure portal左栏位“Connection Strings”处找到psql字段
        - 在跳板机上创建配置文件
-         ```bash
+        ```bash
         vi .pg_azure
-        ```
-        文件中配置以下内容:
+        ```  
+        文件中配置以下内容:  
         ```bash
         export PGDATABASE=postgres
         export PGHOST=HOSTNAME.postgres.database.azure.com
