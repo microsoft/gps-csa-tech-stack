@@ -16,7 +16,7 @@
 2. 打开Azure Cloud Shell  
    点击此处使用Azure Cloud Shell  
     ![Azure Cloud Shell](./media/image1.png)  
-    
-    显示下图表示您已经成功开启Azure Cloud Shell  
+
+    显示下图表示您已经成功开启Azure Cloud Shell   
     ![success](./media/image2.png)  
 3. 
