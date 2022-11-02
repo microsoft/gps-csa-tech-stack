@@ -55,7 +55,7 @@
 
     之后您可以在名为PG-Workshop的资源组看到部署后的资源：  
 
-   - 使用Azure Cloud Shell连接跳板机DNS VM，然后通过DNS VM连接数据库。
+   - 使用Azure Cloud Shell连接跳板机DNS VM，然后通过DNS VM连接数据库。  
      - 在Azure Cloud Shell中通过ssh连接跳板机
         ```bash
         ssh username@<jumpbox-ip> # the DNS VM IP Address, and the username that you selected in deployment
@@ -75,7 +75,7 @@
         ```bash
         vi .pg_azure
         ```  
-        文件中配置以下内容:  
+          文件中配置以下内容:  
         ```bash
         export PGDATABASE=postgres
         export PGHOST=HOSTNAME.postgres.database.azure.com
