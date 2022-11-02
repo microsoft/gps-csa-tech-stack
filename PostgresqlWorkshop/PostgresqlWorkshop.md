@@ -26,7 +26,8 @@
 
    **注意**：本动手实验文档默认按Azure Global环境运行，探索对象主要是Azure Database for PostgreSQL的flexible server版本，该版本支持AzureGlobal和AzureChina（世纪互联）等所有Azure公有云
    
-## 部署
+## 动手实验
+### 部署
 1. 使用Bicep部署数据库
    - 使用Bicep部署Azure Database for PostgreSQL - Flexible server。
      - 安装bicep
