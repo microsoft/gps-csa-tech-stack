@@ -16,6 +16,7 @@
 &nbsp; 
 ## Biz Apps
 ### [基于21v PP环境部署CoE Starter Kit](https://github.com/charlielv926/Biz-App-TechSolution/tree/main/PP%20COE%20Starter%20Kit%20Deployment%20in%2021V)
+### [DevOps自动化部署PP及D365 CE Solution](https://github.com/charlielv926/Biz-App-TechSolution/tree/main/PP%26D365%20CE%20Solution%20Deployment%20with%20Azure%20DevOps)
 ## Microsoft 365
 &nbsp; 
 
