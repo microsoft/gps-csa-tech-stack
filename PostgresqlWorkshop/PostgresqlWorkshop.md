@@ -29,58 +29,57 @@
 ## 动手实验
 ### 部署
 1. 使用Bicep部署数据库
-   - 使用Bicep部署Azure Database for PostgreSQL - Flexible server。
-     - 安装bicep
+   使用Bicep部署Azure Database for PostgreSQL - Flexible server。
+    - 安装bicep
          ```bash
         az bicep install
         ```
         ![](media/image4.png)
-     - 下载bicep模板
+    - 下载bicep模板
         ```bash
         wget https://storageaccounthol.z6.web.core.windows.net/scripts/bicep.zip
         ```
         ![](media/image5.png)
-     - 压缩下载文件
+    - 压缩下载文件
         ```bash
         unzip bicep
         ```
         ![](media/image6.png)
-     - 创建一个名为PG-Workshop的资源组来部署实验资源
+    - 创建一个名为PG-Workshop的资源组来部署实验资源
         ```bash
         az group create -l Eastus -n PG-Workshop
         ```
         ![](media/image7.png)
-     - 使用bicep模板部署
+    - 使用bicep模板部署
         ```bash
         az deployment group create --resource-group PG-Workshop --template-file bicep/main.bicep
         ```
-        需要为跳板机和数据库分别设置管理用户名和密码
-    
-    部署需要十几分钟时间，如果部署失败可以多执行几次，直到部署成功以后将会出现以下输出： 
-    ![](media/image8.png)
+        需要为跳板机和数据库分别设置管理用户名和密码，部署需要十几分钟时间，如果部署失败可以多执行几次，直到部署成功以后将会出现以下输出： 
+        ![](media/image8.png)
+        
+        之后您可以在名为PG-Workshop的资源组看到部署后的资源：  
+        ![](media/image9.png)
 
-    之后您可以在名为PG-Workshop的资源组看到部署后的资源：  
-    ![](media/image9.png)
-
-   - 使用Azure Cloud Shell连接跳板机DNS VM，然后通过DNS VM连接数据库。  
+2. 连接数据库
+   使用Azure Cloud Shell连接跳板机DNS VM，然后通过DNS VM连接数据库。  
   
-     - 在Azure Cloud Shell中通过ssh连接跳板机
+    - 在Azure Cloud Shell中通过ssh连接跳板机
         ```bash
         ssh username@<jumpbox-ip> # 您设置的登录DNS VM的IP地址和用户名
         ```
-     - 登录后安装psql（如未安装）
+    - 登录后安装psql（如未安装）
         ```bash
         sudo dnf module enable -y postgresql:13
         sudo dnf install -y postgresql
         ```
-        
-     - 通过DNS VM连接数据库
+
+    - 通过DNS VM连接数据库
         ```bash
         psql -U adminuser -h postgresql-db.postgres.database.azure.com postgre
         ```
-     - 通过预先配置连接参数快速连接数据库
-       - 在Azure portal左栏位“Connection Strings”处找到psql字段
-       - 在跳板机上创建配置文件
+    - 通过预先配置连接参数快速连接数据库
+      - 在Azure portal左栏位“Connection Strings”处找到psql字段
+      - 在跳板机上创建配置文件
         ```bash
         vi .pg_azure
         ```  
@@ -92,16 +91,16 @@
         export PGPASSWORD=your_password
         export PGSSLMODE=require
         ```
-       - 读取配置文件
+      - 读取配置文件
         ```bash
         source .pg_azure
         ```
-       - psql连接数据
+      - psql连接数据
         ```bash
         psql
         ```
 
-2. 数据引入和环境准备
+3. 数据引入
    - 插入数据
     ```bash
     CREATE DATABASE quiz;
@@ -146,11 +145,11 @@
     INSERT INTO public.answers (question_id, answer, is_correct) VALUES (1, 'Tl', false);
     ```
    - 
-3. 管理PostgreSQL数据库
+4. 管理PostgreSQL数据库
    - 管理存储和计算
    - 开启pgbouncer服务器参数
    - 使用服务锁
-4. 设置角色和权限
+5. 设置角色和权限
     本部分实验原理：用户组中的用户
 
 ### 可用性和业务连续性
