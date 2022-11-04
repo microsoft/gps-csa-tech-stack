@@ -29,7 +29,7 @@
 ## 动手实验
 ### 部署
 1. 使用Bicep部署数据库  
-   使用Bicep部署Azure Database for PostgreSQL - Flexible server。
+
     - 安装bicep
          ```bash
         az bicep install
@@ -55,14 +55,18 @@
         az deployment group create --resource-group PG-Workshop --template-file bicep/main.bicep
         ```
         需要为跳板机和数据库分别设置管理用户名和密码，部署需要十几分钟时间，如果部署失败可以多执行几次，直到部署成功以后将会出现以下输出： 
+
         ![](media/image8.png)
         
         之后您可以在名为PG-Workshop的资源组看到部署后的资源：  
+
         ![](media/image9.png)
 
 2. 连接数据库  
+   
    使用Azure Cloud Shell连接跳板机DNS VM，然后通过DNS VM连接数据库。  
   
+    - 
     - 在Azure Cloud Shell中通过ssh连接跳板机
         ```bash
         ssh username@<jumpbox-ip> # 您设置的登录DNS VM的IP地址和用户名
@@ -75,10 +79,6 @@
         ![](media/image10.png)
         ![](media/image11.png)
 
-    - 通过DNS VM连接数据库
-        ```bash
-        psql -U adminuser -h postgresql-db.postgres.database.azure.com postgre
-        ```
     - 通过预先配置连接参数快速连接数据库
       - 在Azure portal左栏位“Connection Strings”处找到psql字段
       - 在跳板机上创建配置文件
@@ -88,9 +88,9 @@
         文件中配置以下内容:  
         ```bash
         export PGDATABASE=postgres
-        export PGHOST=HOSTNAME.postgres.database.azure.com
-        export PGUSER=adminuser
-        export PGPASSWORD=your_password
+        export PGHOST=[YOURHOST]
+        export PGUSER=[YOURUSER]
+        export PGPASSWORD=[YOURPASSWD]
         export PGSSLMODE=require
         ```
       - 读取配置文件
@@ -101,9 +101,9 @@
         ```bash
         psql
         ```
+        ![](media/image13.png)
 
 3. 数据引入
-   - 插入数据
     ```bash
     CREATE DATABASE quiz;
     \connect quiz
@@ -146,11 +146,27 @@
     INSERT INTO public.answers (question_id, answer, is_correct) VALUES (1, 'Oxy', false);
     INSERT INTO public.answers (question_id, answer, is_correct) VALUES (1, 'Tl', false);
     ```
-   - 
+    查看刚刚创建的表和视图：
+
+    ![](media/image12.png)
+
+    ![](media/image14.png)
+
 4. 管理PostgreSQL数据库
    - 管理存储和计算
+
+    ![](media/image15.png)
+
    - 开启pgbouncer服务器参数
+    > 内置连接池是一项可选服务，可以再每个数据库服务器启用，并支持公有和私有访问。启用后，PgBouncer 将在数据库服务器上的端口 6432 上运行。PgBouncer 目前不支持可突发服务器计算层。
+    
+    ![](media/image16.png)
+
    - 使用服务锁
+    > 如果你删除了某个服务器，则也会删除属于该服务器的所有备份，且不可恢复。 为了帮助防止服务器资源在部署后遭意外删除或更改，管理员可以使用管理锁。
+
+    ![](media/image17.png)
+
 5. 设置角色和权限
     本部分实验探索用户组的权限继承，如果用户没有继承用户组的权限，就不能享受用户组已有的权限，但可以单独给该用户设置权限
     - 创建新的用户组monty_python
@@ -174,8 +190,6 @@
         > 备份是使用快照执行的联机操作。 快照操作只需几秒钟，不会干扰生产工作负载，可帮助确保服务器的高可用性。
 
         > 备份加密：在查询执行过程中创建的所有 Azure Database for PostgreSQL 数据、备份和临时文件都通过 AES 256 位加密进行加密。 存储加密始终处于启用状态，无法禁用。
-
-        > **注意**：如果你删除了某个服务器，则也会删除属于该服务器的所有备份，且不可恢复。 为了帮助防止服务器资源在部署后遭意外删除或更改，管理员可以使用管理锁。
 
 2. 复制
    
