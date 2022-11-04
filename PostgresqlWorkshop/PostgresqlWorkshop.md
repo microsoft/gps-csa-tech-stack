@@ -3,6 +3,8 @@
 >
 > [部署](#部署)
 > 
+> [角色权限](#设置角色和权限)
+> 
 > [业务连续性探索](#可用性和业务连续性)
 > 
 > [高级特性探索-可选](#高级特性可选)
@@ -173,29 +175,30 @@
 
     ![](media/image17.png)
 
-5. 设置角色和权限
+### 设置角色和权限
 
     本部分实验探索用户组的权限继承，如果用户没有继承用户组的权限，就不能享受用户组已有的权限，但可以单独给该用户设置权限
-    - 创建新的用户组monty_python
+   - 按之前章节介绍的方法连接数据库
+   - 创建新的用户组monty_python
       ```bash
         postgres=> CREATE GROUP monty_python;
         ```  
-    - 创建该用户组的两个新用户Graham和Eric，Graham不继承用户组权限，Eric继承用户组权限，每个用户最大允许两个连接
+   - 创建该用户组的两个新用户Graham和Eric，Graham不继承用户组权限，Eric继承用户组权限，每个用户最大允许两个连接
       ```bash
         postgres=> CREATE USER Graham CONNECTION LIMIT 2 IN ROLE monty_python NOINHERIT;
         postgres=> CREATE USER Eric CONNECTION LIMIT 2 IN ROLE monty_python INHERIT;
         ``` 
-    - 显示集群中的所有角色
+   - 显示集群中的所有角色
       ```bash
         postgres=> \dg
         ```         
         ![](media/image18.png)
 
-    - 连接到数据引入时创建的quiz数据库
+   - 连接到数据引入时创建的quiz数据库
       ```bash
         postgres=> \c quiz
         ```           
-    - 把quiz数据库中所有表的权限赋予用户组monty_python，切换用户，Graham应该无法读取quiz数据库中的表，而Eric可以读取
+   - 把quiz数据库中所有表的权限赋予用户组monty_python，切换用户，Graham应该无法读取quiz数据库中的表，而Eric可以读取
       ```bash
         quiz=> GRANT ALL ON ALL TABLES IN SCHEMA public TO monty_python;
         
@@ -219,7 +222,7 @@
         (4 rows)
 
         ``` 
-    - 切换为超级管理员账户给Graham设置查询权限,可以查看answer表
+   - 切换为超级管理员账户给Graham设置查询权限,可以查看answer表
       ```bash        
         quiz=> SET ROLE TO adminuser;
         SET
@@ -241,6 +244,54 @@
 ### 可用性和业务连续性
 1. 备份和恢复
     - 逻辑备份pg_dump和pg_restore
+        > 这类方法可以用来手动备份整个数据库或者某个单独的数据库。
+        > pg_dump只备份数据库集群中某个数据库的信息，不会导出角色和表空间相关的信息。
+        > pg_dumpall可以对数据库集群以及全局对象进行备份。
+        
+        - 情景1：对普通单个数据库进行备份还原
+          - 为quiz数据库备份并且删除数据库
+            ```bash
+                source .pg_azure
+                pg_dump quiz > /tmp/quiz.plain.dump
+                less /tmp/quiz.plain.dump
+                dropdb quiz
+            ```
+            再次进入quiz数据库显示不存在：
+            ![](media/image20.png)
+
+          - 使用psql还原数据库
+            需要先自己创建对应的数据库
+            ```bash
+                createdb quiz
+            ```
+            quiz数据库被成功创建，但是内部没有任何关系和数据：
+
+            ![](media/image19.png)
+
+            ```bash
+                psql -f /tmp/quiz.plain.dump quiz
+                or
+                psql quiz < /tmp/quiz.plain.dump
+            ```
+            再次进入quiz数据库，发现关系和数据已经被还原：
+            ![](media/image21.png)
+
+        - 情景2：对大型数据库使用压缩备份还原  
+        > 对于大型数据库，可以使用pg_dump自带压缩功能，只需要压缩时使用-Fc参数，还原时只能使用pg_restore不能使用psql，感兴趣同学可以自行尝试
+        ```bash
+        pg_dump -Fc quiz > /tmp/quizCompressed.plain.dump
+        pg_restore -d quiz /tmp/quizCompressed.plain.dump
+        ```
+
+        - 情景3：多线程备份还原  
+        > -Fd参数支持多线程备份还原数据，请按照情景1的步骤自行实验，最后进入quiz数据库查看数据是否被还原
+        ```bash
+        pg_dump quiz -Fd -f /tmp/directorydump
+        zless /tmp/directorydump/*dat.gz
+        dropdb quiz
+        createdb quiz
+        pg_restore -d quiz /tmp/directorydump
+        ```
 
     - 物理备份和PITR还原  
         > 默认情况下，Azure Database for PostgreSQL 支持自动备份整个服务器（包括创建的所有数据库），自动备份包括数据库的每日增量快照，日志 (WAL) 文件持续存档至 Azure Blob 存储
