@@ -1,9 +1,11 @@
 
 > [实验环境准备](#实验环境准备)
 >
-> [动手实验](#动手实验)
->
-> [考虑](#考虑)
+> [部署](#部署)
+> 
+> [业务连续性探索](#可用性和业务连续性)
+> 
+> [高级特性探索-可选](#高级特性可选)
 
 &nbsp;
 &nbsp;
@@ -82,7 +84,7 @@
       - 在Azure portal左栏位“Connection Strings”处找到psql字段
 
         ![](media/image01.png)
-        
+
       - 在跳板机上创建配置文件
         ```bash
         vi .pg_azure
@@ -175,11 +177,66 @@
 
     本部分实验探索用户组的权限继承，如果用户没有继承用户组的权限，就不能享受用户组已有的权限，但可以单独给该用户设置权限
     - 创建新的用户组monty_python
+      ```bash
+        postgres=> CREATE GROUP monty_python;
+        ```  
     - 创建该用户组的两个新用户Graham和Eric，Graham不继承用户组权限，Eric继承用户组权限，每个用户最大允许两个连接
+      ```bash
+        postgres=> CREATE USER Graham CONNECTION LIMIT 2 IN ROLE monty_python NOINHERIT;
+        postgres=> CREATE USER Eric CONNECTION LIMIT 2 IN ROLE monty_python INHERIT;
+        ``` 
     - 显示集群中的所有角色
+      ```bash
+        postgres=> \dg
+        ```         
+        ![](media/image18.png)
+
     - 连接到数据引入时创建的quiz数据库
+      ```bash
+        postgres=> \c quiz
+        ```           
     - 把quiz数据库中所有表的权限赋予用户组monty_python，切换用户，Graham应该无法读取quiz数据库中的表，而Eric可以读取
-    - 切换为超级管理员账户给Graham设置查询权限
+      ```bash
+        quiz=> GRANT ALL ON ALL TABLES IN SCHEMA public TO monty_python;
+        
+        quiz=> GRANT graham to masteruser;
+        quiz=> GRANT eric to masteruser;
+
+        quiz=> SET ROLE TO graham;
+        SET
+        quiz=> TABLE answers;
+        ERROR:  permission denied for table answers
+
+        quiz=> SET ROLE TO eric;
+        SET
+        quiz=> table answers;
+        question_id | answer | is_correct
+        -------------+--------+------------
+                1 | Au     | f
+                1 | O      | t
+                1 | Oxy    | f
+                1 | Tl     | f
+        (4 rows)
+
+        ``` 
+    - 切换为超级管理员账户给Graham设置查询权限,可以查看answer表
+      ```bash        
+        quiz=> SET ROLE TO adminuser;
+        SET
+        quiz=> GRANT SELECT ON TABLE answers TO Graham;
+        GRANT
+
+        quiz=> SET ROLE TO graham;
+        SET
+        quiz=> TABLE answers;
+        question_id | answer | is_correct
+        -------------+--------+------------
+                1 | Au     | f
+                1 | O      | t
+                1 | Oxy    | f
+                1 | Tl     | f
+        (4 rows)
+        ```
 
 ### 可用性和业务连续性
 1. 备份和恢复
@@ -210,3 +267,11 @@
     > **注意**：备用副本不同于只读副本，不支持读取查询
 4. 维护
 5. 审计
+
+### 高级特性（可选）
+1. 监控数据库
+2. 性能优化
+   - PgBadger
+   - MVCC
+   - SQL特性
+   - 查询优化
