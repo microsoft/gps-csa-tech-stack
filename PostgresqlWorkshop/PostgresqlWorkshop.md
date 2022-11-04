@@ -243,9 +243,11 @@
 
 ### 可用性和业务连续性
 1. 备份和恢复
-    - 逻辑备份pg_dump和pg_restore
+    - 手动备份还原pg_dump和pg_restore
         > 这类方法可以用来手动备份整个数据库或者某个单独的数据库。
+
         > pg_dump只备份数据库集群中某个数据库的信息，不会导出角色和表空间相关的信息。
+
         > pg_dumpall可以对数据库集群以及全局对象进行备份。
         
         - 情景1：对普通单个数据库进行备份还原
@@ -277,32 +279,56 @@
             ![](media/image21.png)
 
         - 情景2：对大型数据库使用压缩备份还原  
-        > 对于大型数据库，可以使用pg_dump自带压缩功能，只需要压缩时使用-Fc参数，还原时只能使用pg_restore不能使用psql，感兴趣同学可以自行尝试
-        ```bash
-        pg_dump -Fc quiz > /tmp/quizCompressed.plain.dump
-        pg_restore -d quiz /tmp/quizCompressed.plain.dump
-        ```
 
-        - 情景3：多线程备份还原  
-        > -Fd参数支持多线程备份还原数据，请按照情景1的步骤自行实验，最后进入quiz数据库查看数据是否被还原
-        ```bash
-        pg_dump quiz -Fd -f /tmp/directorydump
-        zless /tmp/directorydump/*dat.gz
-        dropdb quiz
-        createdb quiz
-        pg_restore -d quiz /tmp/directorydump
-        ```
+            > 对于大型数据库，可以使用pg_dump自带压缩功能，只需要压缩时使用-Fc参数，还原时只能使用pg_restore不能使用psql，感兴趣同学可以自行尝试
+            ```bash
+            pg_dump -Fc quiz > /tmp/quizCompressed.plain.dump
+            pg_restore -d quiz /tmp/quizCompressed.plain.dump
+            ```
 
-    - 物理备份和PITR还原  
-        > 默认情况下，Azure Database for PostgreSQL 支持自动备份整个服务器（包括创建的所有数据库），自动备份包括数据库的每日增量快照，日志 (WAL) 文件持续存档至 Azure Blob 存储
+        - 情景3：多线程备份还原
+            > -Fd参数支持多线程备份还原数据，请按照情景1的步骤自行实验，最后进入quiz数据库查看数据是否被还原
+            ```bash
+            pg_dump quiz -Fd -f /tmp/directorydump
+            zless /tmp/directorydump/*dat.gz
+            dropdb quiz
+            createdb quiz
+            pg_restore -d quiz /tmp/directorydump
+            ```
+
+    - 自动备份 
+        > 默认情况下，Azure Database for PostgreSQL 支持自动备份整个服务器（包括创建的所有数据库），自动备份包括数据库的每日快照备份，日志 (WAL) 文件持续存至 Azure Blob 存储
 
         > 备份保持期：备份保留期默认为 7 天。目前，灵活服务器支持自动备份最多保留 35 天。 可以使用手动备份来满足长期保留要求。
 
-        > 备份频率：灵活服务器上的备份基于快照。 第一次完整快照备份在创建服务器后立即进行。 增量快照备份每日创建一次。事务日志备份的发生频率不同，具体取决于工作负载和 WAL 文件已填充并准备好存档的时间。 一般情况下，延迟（恢复点目标，简称 RPO）最大可为 15 分钟。
+        > 备份频率：灵活服务器上的备份基于快照。第一次完整快照备份在创建服务器后立即进行。 之后每日创建一次。事务日志备份的发生频率不同，具体取决于工作负载和 WAL 文件已填充并准备好存档的时间。一般情况下，延迟最大可为15分钟。
 
-        > 备份是使用快照执行的联机操作。 快照操作只需几秒钟，不会干扰生产工作负载，可帮助确保服务器的高可用性。
+        > 备份是使用快照执行的联机操作。快照操作只需几秒钟，不会干扰生产工作负载，可帮助确保服务器的高可用性。
 
-        > 备份加密：在查询执行过程中创建的所有 Azure Database for PostgreSQL 数据、备份和临时文件都通过 AES 256 位加密进行加密。 存储加密始终处于启用状态，无法禁用。
+        > 备份加密：在查询执行过程中创建的所有Azure Database for PostgreSQL 数据、备份和临时文件都通过AES 256位加密进行加密。存储加密始终处于启用状态，无法禁用。
+
+        在这里可以更改备份保持期，修改后点击保存即可：
+        ![](media/image15.png)
+
+    - PITR还原
+        > 在灵活服务器中，执行时间点恢复（PITR）会在源服务器所在的同一区域中创建新服务器，可以选择可用性区域。 
+
+        > 该服务器是使用源服务器的定价层、计算代系、虚拟核心数、存储大小、备份保留期和备份冗余选项的配置创建的。 
+
+        > 这种恢复方式只能恢复到一个新的服务器，而且HA配置不会还原
+
+        > 恢复过程如下，先将物理数据库文件从快照备份还原到服务器的数据位置。 这会自动选择并还原所需时间点之前进行的相应备份。 然后，使用WAL文件启动恢复过程，使数据库处于一致状态。
+
+        首先点击此处的“还原”：
+
+        ![](media/image22.png)
+
+        选择还原的时间点，把数据还原到一个新的数据库，等待部署完成，
+
+        ![](media/image23.png)
+
+        
+
 
 2. 复制
    
