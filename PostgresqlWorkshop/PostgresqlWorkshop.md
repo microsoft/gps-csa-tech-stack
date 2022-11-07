@@ -1,14 +1,22 @@
 
 > [实验环境准备](#实验环境准备)
->
-> [部署](#部署)
 > 
-> [角色权限](#设置角色和权限)
+> [实验一：部署和连接数据库](#实验一：部署和连接数据库)
 > 
-> [业务连续性探索](#可用性和业务连续性)
+> [实验二：管理数据库的角色和权限](#实验二：管理数据库的角色和权限)
 > 
-> [高级特性探索-可选](#高级特性可选)
-
+> [实验三：手动备份还原pg_dump和pg_restore](#实验三：手动备份还原pg_dump和pg_restore)
+> 
+> [实验四：自动备份和时间点还原](#实验四：自动备份和时间点还原)
+> 
+> [实验五：复制](#实验五：复制)
+> 
+> [实验六：高可用和灾备](#实验六：高可用和灾备)
+> 
+> [实验七：维护和审计](#实验七：维护和审计)
+> 
+> [高级特性（可选实验）](#高级特性（可选）)
+> 
 &nbsp;
 &nbsp;
 
@@ -30,8 +38,8 @@
 
    **注意**：本动手实验文档默认按Azure Global环境运行，探索对象主要是Azure Database for PostgreSQL的flexible server版本，该版本支持AzureGlobal和AzureChina（世纪互联）等所有Azure公有云
    
-## 动手实验
-### 部署
+## 部署
+### 实验一：部署和连接数据库
 1. 使用Bicep部署数据库  
 
     - 安装bicep
@@ -175,7 +183,7 @@
 
     ![](media/image17.png)
 
-### 设置角色和权限
+### 实验二：管理数据库的角色和权限
 
     本部分实验探索用户组的权限继承，如果用户没有继承用户组的权限，就不能享受用户组已有的权限，但可以单独给该用户设置权限
    - 按之前章节介绍的方法连接数据库
@@ -241,105 +249,106 @@
         (4 rows)
         ```
 
-### 可用性和业务连续性
-1. 备份和恢复
-    - 手动备份还原pg_dump和pg_restore
-        > 这类方法可以用来手动备份整个数据库或者某个单独的数据库。
+## 可用性和业务连续性
+### 实验三：手动备份还原pg_dump和pg_restore
+> 这类方法可以用来手动备份整个数据库或者某个单独的数据库。
 
-        > pg_dump只备份数据库集群中某个数据库的信息，不会导出角色和表空间相关的信息。
+> pg_dump只备份数据库集群中某个数据库的信息，不会导出角色和表空间相关的信息。
 
-        > pg_dumpall可以对数据库集群以及全局对象进行备份。
-        
-        - 情景1：对普通单个数据库进行备份还原
-          - 为quiz数据库备份并且删除数据库
-            ```bash
-                source .pg_azure
-                pg_dump quiz > /tmp/quiz.plain.dump
-                less /tmp/quiz.plain.dump
-                dropdb quiz
-            ```
-            再次进入quiz数据库显示不存在：
-            ![](media/image20.png)
+> pg_dumpall可以对数据库集群以及全局对象进行备份。
+    
+1. 情景1：对普通单个数据库进行备份还原
+   - 为quiz数据库备份并且删除数据库
+   ```bash
+       source .pg_azure
+       pg_dump quiz > /tmp/quiz.plain.dump
+       less /tmp/quiz.plain.dump
+       dropdb quiz
+   ```
+   再次进入quiz数据库显示不存在：
+   ![](media/image20.png)
 
-          - 使用psql还原数据库
-            需要先自己创建对应的数据库
-            ```bash
-                createdb quiz
-            ```
-            quiz数据库被成功创建，但是内部没有任何关系和数据：
+   - 使用psql还原数据库
+   需要先自己创建对应的数据库
+   ```bash
+       createdb quiz
+   ```
+   quiz数据库被成功创建，但是内部没有任何关系和数据：
 
-            ![](media/image19.png)
+   ![](media/image19.png)
 
-            ```bash
-                psql -f /tmp/quiz.plain.dump quiz
-                or
-                psql quiz < /tmp/quiz.plain.dump
-            ```
-            再次进入quiz数据库，发现关系和数据已经被还原：
-            ![](media/image21.png)
+   ```bash
+       psql -f /tmp/quiz.plain.dump quiz
+       or
+       psql quiz < /tmp/quiz.plain.dump
+   ```
+   再次进入quiz数据库，发现关系和数据已经被还原：
+   ![](media/image21.png)
 
-        - 情景2：对大型数据库使用压缩备份还原  
+2. 情景2：对大型数据库使用压缩备份还原  
 
-            > 对于大型数据库，可以使用pg_dump自带压缩功能，只需要压缩时使用-Fc参数，还原时只能使用pg_restore不能使用psql，感兴趣同学可以自行尝试
-            ```bash
-            pg_dump -Fc quiz > /tmp/quizCompressed.plain.dump
-            pg_restore -d quiz /tmp/quizCompressed.plain.dump
-            ```
+    > 对于大型数据库，可以使用pg_dump自带压缩功能，只需要压缩时使用-Fc参数，还原时只能使用pg_restore不能使用psql，感兴趣同学可以自行尝试
+    ```bash
+    pg_dump -Fc quiz > /tmp/quizCompressed.plain.dump
+    pg_restore -d quiz /tmp/quizCompressed.plain.dump
+    ```
 
-        - 情景3：多线程备份还原
-            > -Fd参数支持多线程备份还原数据，请按照情景1的步骤自行实验，最后进入quiz数据库查看数据是否被还原
-            ```bash
-            pg_dump quiz -Fd -f /tmp/directorydump
-            zless /tmp/directorydump/*dat.gz
-            dropdb quiz
-            createdb quiz
-            pg_restore -d quiz /tmp/directorydump
-            ```
-        **注意**：如果未配置数据库连接参数文件，需要在备份和恢复语句中增加Host，username等参数，如
-            ```bash
-            pg_dump -Fc -v --host=<host> --username=<name> --dbname=<database name> -f <database>.dump
-            pg_restore -v --no-owner --host=<server name> --port=<port> --username=<user-name> --dbname=<target database name> <database>.dump
-            ```
-    - 自动备份 
+3. 情景3：多线程备份还原
+    > -Fd参数支持多线程备份还原数据，请按照情景1的步骤自行实验，最后进入quiz数据库查看数据是否被还原
+    ```bash
+    pg_dump quiz -Fd -f /tmp/directorydump
+    zless /tmp/directorydump/*dat.gz
+    dropdb quiz
+    createdb quiz
+    pg_restore -d quiz /tmp/directorydump
+    ```
+**注意**：如果未配置数据库连接参数文件，需要在备份和恢复语句中增加Host，username等参数，如
+    ```bash
+    pg_dump -Fc -v --host=<host> --username=<name> --dbname=<database name> -f <database>.dump
+    pg_restore -v --no-owner --host=<server name> --port=<port> --username=<user-name> --dbname=<target database name> <database>.dump
+    ```
 
-        > 默认情况下，Azure Database for PostgreSQL 支持自动备份整个服务器（包括创建的所有数据库），自动备份包括数据库的每日快照备份，日志 (WAL) 文件持续存至 Azure Blob 存储
+### 实验四：自动备份和时间点还原
+1. 自动备份 
 
-        > 备份保持期：备份保留期默认为 7 天。目前，灵活服务器支持自动备份最多保留 35 天。 可以使用手动备份来满足长期保留要求。
+    > 默认情况下，Azure Database for PostgreSQL 支持自动备份整个服务器（包括创建的所有数据库），自动备份包括数据库的每日快照备份，日志 (WAL) 文件持续存至 Azure Blob 存储
 
-        > 备份频率：灵活服务器上的备份基于快照。第一次完整快照备份在创建服务器后立即进行。 之后每日创建一次。事务日志备份的发生频率不同，具体取决于工作负载和 WAL 文件已填充并准备好存档的时间。一般情况下，延迟最大可为15分钟。
+    > 备份保持期：备份保留期默认为 7 天。目前，灵活服务器支持自动备份最多保留 35 天。 可以使用手动备份来满足长期保留要求。
 
-        > 备份是使用快照执行的联机操作。快照操作只需几秒钟，不会干扰生产工作负载，可帮助确保服务器的高可用性。
+    > 备份频率：灵活服务器上的备份基于快照。第一次完整快照备份在创建服务器后立即进行。 之后每日创建一次。事务日志备份的发生频率不同，具体取决于工作负载和 WAL 文件已填充并准备好存档的时间。一般情况下，延迟最大可为15分钟。
 
-        > 备份加密：在查询执行过程中创建的所有Azure Database for PostgreSQL 数据、备份和临时文件都通过AES 256位加密进行加密。存储加密始终处于启用状态，无法禁用。
+    > 备份是使用快照执行的联机操作。快照操作只需几秒钟，不会干扰生产工作负载，可帮助确保服务器的高可用性。
 
-        在这里可以更改备份保持期，修改后点击保存即可：
+    > 备份加密：在查询执行过程中创建的所有Azure Database for PostgreSQL 数据、备份和临时文件都通过AES 256位加密进行加密。存储加密始终处于启用状态，无法禁用。
 
-        ![](media/image15.png)
+    在这里可以更改备份保持期，修改后点击保存即可：
 
-    - PITR还原
+    ![](media/image15.png)
 
-        > 在灵活服务器中，执行时间点恢复（PITR）会在源服务器所在的同一区域中创建新服务器，可以选择可用性区域。 
+2. PITR还原
 
-        > 该服务器是使用源服务器的定价层、计算代系、虚拟核心数、存储大小、备份保留期和备份冗余选项的配置创建的。 
+    > 在灵活服务器中，执行时间点恢复（PITR）会在源服务器所在的同一区域中创建新服务器，可以选择可用性区域。 
 
-        > 这种恢复方式只能恢复到一个新的服务器，而且HA配置不会还原
+    > 该服务器是使用源服务器的定价层、计算代系、虚拟核心数、存储大小、备份保留期和备份冗余选项的配置创建的。 
 
-        > 恢复过程如下，先将物理数据库文件从快照备份还原到服务器的数据位置。 这会自动选择并还原所需时间点之前进行的相应备份。 然后，使用WAL文件启动恢复过程，使数据库处于一致状态。
+    > 这种恢复方式只能恢复到一个新的服务器，而且HA配置不会还原
 
-        首先点击此处的“还原”：
+    > 恢复过程如下，先将物理数据库文件从快照备份还原到服务器的数据位置。 这会自动选择并还原所需时间点之前进行的相应备份。 然后，使用WAL文件启动恢复过程，使数据库处于一致状态。
 
-        ![](media/image22.png)
+    首先点击此处的“还原”：
 
-        选择还原的时间点，把数据还原到一个新的数据库：
+    ![](media/image22.png)
 
-        ![](media/image23.png)
+    选择还原的时间点，把数据还原到一个新的数据库：
 
-        等待部署完成，本次还原耗时约10min：
+    ![](media/image23.png)
 
-        ![](media/image24.png)
+    等待部署完成，本次还原耗时约10min：
+
+    ![](media/image24.png)
 
 
-2. 复制
+### 实验五：复制
     > 使用 PostgreSQL 本机逻辑复制复制数据对象。 逻辑复制允许对数据复制（包括表级数据复制）进行精细控制。
 
     > 发布服务器是从中发送数据的 PostgreSQL 数据库。订阅服务器是向其发送数据的 PostgreSQL 数据库。
@@ -352,7 +361,7 @@
     - 为表创建发布的订阅
     - 在订阅服务器上查询表，将会看到它从发布服务器接收数据
 
-3. 高可用和灾备
+### 实验六：高可用和灾备
 
     > 配置高可用性后，灵活服务器会自动预配和管理备用副本。 备用副本将部署在与主服务器完全相同的 VM 配置（包括 vCore、存储空间、网络设置 (VNET、防火墙)等）中。
 
@@ -376,13 +385,14 @@
 
     ![](media/image27.png)    
 
-4. 维护
+### 实验七：维护和审计
+1. 维护
    > 用户可以自定义维护时段
 
-5. 审计
+2. 审计
    > 使用pgAudit扩展审计数据库的活动日志
 
-### 高级特性（可选）
+## 高级特性（可选）
 1. 监控数据库
 2. 性能优化
    - PgBadger
