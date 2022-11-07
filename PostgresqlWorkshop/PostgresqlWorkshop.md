@@ -13,8 +13,6 @@
 > 
 > [实验六：高可用和灾备](#实验六高可用和灾备)
 > 
-> [实验七：维护和审计](#实验七维护和审计)
-> 
 > [高级特性（可选实验）](#高级特性可选)
 > 
 &nbsp;
@@ -258,7 +256,7 @@
 > pg_dumpall可以对数据库集群以及全局对象进行备份。
     
 1. 情景1：对普通单个数据库进行备份还原
-   - 为quiz数据库备份并且删除数据库
+   - 按实验一中的方法连接DNS VM虚拟机，运行以下命令为quiz数据库备份并且删除数据库
    ```bash
        source .pg_azure
        pg_dump quiz > /tmp/quiz.plain.dump
@@ -303,10 +301,11 @@
     pg_restore -d quiz /tmp/directorydump
     ```
 **注意**：如果未配置数据库连接参数文件，需要在备份和恢复语句中增加Host，username等参数，如
-    ```bash
-    pg_dump -Fc -v --host=<host> --username=<name> --dbname=<database name> -f <database>.dump
-    pg_restore -v --no-owner --host=<server name> --port=<port> --username=<user-name> --dbname=<target database name> <database>.dump
-    ```
+
+```bash
+pg_dump -Fc -v --host=<host> --username=<name> --dbname=<database name> -f <database>.dump
+pg_restore -v --no-owner --host=<server name> --port=<port> --username=<user-name> --dbname=<target database name> <database>.dump
+```
 
 ### 实验四：自动备份和时间点还原
 1. 自动备份 
@@ -384,17 +383,32 @@
 
 ![](media/image27.png)    
 
-### 实验七：维护和审计
-1. 维护
-   > 用户可以自定义维护时段
-
-2. 审计
-   > 使用pgAudit扩展审计数据库的活动日志
 
 ## 高级特性（可选）
-1. 监控数据库
-2. 性能优化
-   - PgBadger
-   - MVCC
-   - SQL特性
-   - 查询优化
+> 本部分实验链接如下[](https://storageaccounthol.z6.web.core.windows.net/)
+1. 审计和维护
+- 维护
+   > 用户可以自定义维护时段
+   > 参考[Patching and maintenance windows章节](https://storageaccounthol.z6.web.core.windows.net/)
+   
+   此处可以自定义服务维护时间：
+   ![](media/image_maintence_01.png) 
+
+- 审计
+   > 使用pgAudit扩展审计数据库的活动日志
+   > 参考[Security Management PostgreSQL章节](https://storageaccounthol.z6.web.core.windows.net/)
+
+2. 监控数据库
+   > 参考[Monitoring and Troubleshooting章节](https://storageaccounthol.z6.web.core.windows.net/)
+
+3. 配置PgBadger
+   > 参考[Configure PgBadger章节](https://storageaccounthol.z6.web.core.windows.net/)
+
+4. 探索MVCC
+   > 参考[Multiversion Concurrency Control, MVCC章节](https://storageaccounthol.z6.web.core.windows.net/)
+
+5. SQL特性
+   > 参考[SQL Characteristic章节](https://storageaccounthol.z6.web.core.windows.net/)
+
+6. 查询优化
+   > 参考[Statistics and Query Planning章节](https://storageaccounthol.z6.web.core.windows.net/)
