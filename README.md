@@ -1,6 +1,7 @@
 # Microsoft GPS CSA Tech Stack FY23
 
 ## Azure Core
+### [Azure上的双机高可用集群搭建](./HACluster/readme.md)
 &nbsp; 
 ## App Innovation
 ### [Landing Zones Deployment with Terraform](./LandingZonesDeploymentwithTerraform/README.md)
