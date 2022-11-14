@@ -40,31 +40,128 @@
 
 ## 迁移
 
-> 本实验使用PostgreSQL官方名为dvdrental的样本数据库，使用Azure虚拟机创建PostgreSql模拟本地环境，借助Azure DMS服务完成本地
+> 本实验使用PostgreSQL官方名为dvdrental的样本数据库，在Azure虚拟机中创建PostgreSql模拟本地环境，借助Azure DMS服务完成本地
+> 
 > PostgreSql到云上Azure Database for PostgreSql flexible server的数据库迁移
 
 1. 创建一个预配的VM
    
-2. 在VM中部署数据库并且加载Sample数据库
-    [链接](https://www.postgresqltutorial.com/postgresql-getting-started/install-postgresql/)
+- 1) 在Azure portal中搜索“虚拟机”，选择创建，注意要选择创建具有预先配置的虚拟机
+ ![](media/image_migra_01.png)
 
-3. 在Azure portal创建Azure Database for PostgreSql
+- 2）选择指定镜像，把这个VM放在PG-Workshop资源组里
+ ![](media/image_migra_02.png)
+
+- 3）继续配置以下指定选项，设置登录VM的用户名密码，开启SSH和RDP端口
+ ![](media/image_migra_03.png)
+
+- 4）配置网络，将虚拟机放在hub-vnet子网中
+ ![](media/image_migra_04.png)
+
+- 5) 其他配置使用默认配置即可，点击查看+创建，创建VM
+
+- 6）部署成功后可以在PG-Workshop资源组中查看创建的资源
+  ![](media/image_migra_14.png)
+
+ **注意**：参考[快速入门：在 Azure 门户中创建 Windows 虚拟机](https://learn.microsoft.com/zh-cn/azure/virtual-machines/windows/quick-create-portal)
    
-   按照[此处教程](https://docs.azure.cn/zh-cn/postgresql/single-server/quickstart-create-server-database-portal)在[Azure portal](https://portal.azure.com)创建Azure Database for PostgreSql flexible server
+
+2. 在VM中部署数据库并且加载Sample数据库  
+ 
+- 1）使用本机电脑的远程桌面连接第一步中创建的VM，填写连接ip,vm登录用户名和密码（创建时设置）
+  ![](media/image_migra_06.png)
+
+  其中连接ip可以在创建的vm的概述-公共ip处获取
+  ![](media/image_migra_05.png)
+
+  **注意**：如果连接不上，检查虚拟机-网络的入栈端口规则，如果没有开放3389端口，需要在网络选项卡内配置以下入站规则
+  ![](media/image_migra_07.png)
+  ![](media/image_migra_08.png)
+
+- 2）在VM中参考以下[链接](https://www.postgresqltutorial.com/postgresql-getting-started/install-postgresql/)，下载11.8或者12.3版本的PostgreSQL server并安装
+
+- 3）在VM中连接本地的数据库,可以使用[psql工具或者pgAdmin工具](https://www.postgresqltutorial.com/postgresql-getting-started/connect-to-postgresql-database/)
+  
+- 4）在VM内的数据库中加载dvdrental样本数据库
+  先下载[DVD Rental Sample Database](https://www.postgresqltutorial.com/postgresql-getting-started/postgresql-sample-database/)
+
+  然后使用[pg_restore或者pgAdmin恢复样本数据库](https://www.postgresqltutorial.com/postgresql-getting-started/load-postgresql-sample-database/)
+
+  **注意**：
+  1）恢复数据库前要手动创建dvdrental数据库
+
+  2）使用psql方法恢复数据库时， PostgreSQL安装目录的bin目录需要客户化为自己的，pg_restore命令需要替换为.\pg_restore（这是因为参考链接中的命令适用于linux系统，不适用鱼windows）
+
+
+3. 在Azure portal创建Azure Database for PostgreSql  
+   
+- 1）在[Azure portal](https://portal.azure.com)搜索"postfresql"，选择Azure Database for PostgreSql服务器
+
+- 2）创建时需要选择flexsible server灵活服务器版本
+![](media/image_migra_09.png)
+
+- 3）配置以下选项，配置数据库管理员用户名密码，放置在PG-Workshop资源组里，网络放在spoken-vnet中，其余默认即可，点击创建
+    ![](media/image_migra_10.png)
+    ![](media/image_migra_11.png)
+    ![](media/image_migra_12.png)
+
+- 4）部署成功后可以在PG-Workshop资源组中查看创建的资源
+  ![](media/image_migra_13.png)
+
+
+**注意**：可参考[此处详细教程](https://docs.azure.cn/zh-cn/postgresql/single-server/quickstart-create-server-database-portal)创建Azure Database for PostgreSql flexible server
+
 
 4. 迁移环境准备
-- 在VM中的 postgresql.config 文件中启用逻辑复制，并设置以下参数：
+   
+- 1）在VM中的 postgresql.config 文件中（在本机PostgreSQL安装路径的data目录下）启用逻辑复制，并设置以下参数：  
+
     wal_level = logical
+
     max_replication_slots = [槽数]，建议设置为“5 个槽”
+
     max_wal_senders =[并发任务数] - max_wal_senders 参数设置可以运行的并发任务数，建议设置为“10 个任务”
 
-- 为 Azure Database for PostgreSQL 创建服务器级防火墙规则，以允许 Azure 数据库迁移服务访问目标数据库。提供用于 Azure 数据库迁移服务的虚拟网络子网范围。
+- 2）在VM中的 pg_hba.conf 文件中（在本机PostgreSQL安装路径的data目录下）加入云上的PostgreSQL所在DNS的ip
+  ![](media/image_migra_15.png)
+  
+- 3）打开 Windows 防火墙，使 Azure 数据库迁移服务能够访问源 PostgreSQL 服务器（默认情况下为 TCP 端口 5432）
+  [开放Windows防火墙5432端口](https://jingyan.baidu.com/article/fd8044fa7fc3245030137a49.html#:~:text=%E5%9C%A8%E9%98%B2%E7%81%AB%E5%A2%99%E9%9D%A2%E6%9D%BF%E4%B8%AD%E5%8D%95%E6%9C%BA%EF%BC%9A%E9%AB%98%E7%BA%A7%E8%AE%BE%E7%BD%AE%202%2F7%20%E5%8F%B3%E9%94%AE%E2%80%9C%E2%80%9D%E5%85%A5%E7%AB%99%E8%A7%84%E5%88%99%E2%80%9C%E2%80%9D%EF%BC%8C%E9%80%89%E6%8B%A9%EF%BC%9A%E6%96%B0%E5%BB%BA%E8%A7%84%E5%88%99,3%2F7%20%E9%80%89%E6%8B%A9%EF%BC%9A%E7%AB%AF%E5%8F%A3---%E4%B8%8B%E4%B8%80%E6%AD%A5%204%2F7%20%E9%94%AE%E5%85%A5%E8%A6%81%E5%BC%80%E6%94%BE%E7%9A%84%E6%8C%87%E5%AE%9A%E7%AB%AF%E5%8F%A3%EF%BC%8C%E4%B8%8B%E4%B8%80%E6%AD%A5)
+
+![](media/image_migra_16.png)
   
 
-5. 创建部署Azure Data Migration Service完成迁移
+5. 迁移schema
+   
+- 1）使用本地VM的pgAdmin工具连接云上的postgreSQL数据库，参考[pgAdmin连接数据库](https://www.postgresqltutorial.com/postgresql-getting-started/connect-to-postgresql-database/)
 
+  ![](media/image_migra_17.png)
 
-psql -h pgformigration.postgres.database.azure.com  -U masteruser -d dvdrental citus < dvdrentalSchema.sql
+  连接后可以直接在本地的pgadmin中操作云上的postgreSQL数据库
+
+- 2) 在VM的postgreSQL安装目录data目录下，使用powershell
+  ```bash
+    .\pg_dump -o -h localhost -U postgres -d dvdrental -s -O -x > dvdrentalSchema.sql
+  ```
+- 3）在云上的postgreSQL数据库创建一个空的数据库，也叫dvdrental，可以直接在pgAdmin中操作
+  ![](media/image_migra_18.png)
+
+- 4）通过还原架构转储文件，将架构导入已创建的目标数据库
+  ![](media/image_migra_19.png)
+
+  ![](media/image_migra_20.png)
+
+**注意**：转储schma时，需要注意文件必须是utf-8编码，且路径写法正确，才能成功导入
+
+6. 创建部署Azure Data Migration Service完成迁移
+   
+参考[此处](https://docs.azure.cn/zh-cn/dms/tutorial-postgresql-azure-postgresql-online-portal)在Azure portal中创建Azure Data Migration Service服务
+
+**注意**：
+1) 创建Azure Data Migration Service时必须要选择4-core的premium的sku的DMS,否则无法新建postgreSQL的迁移project
+2) 创建活动时，加密连接暂时不要勾选，源服务器名称填写VM的私有ip即可
+   ![](media/image_migra_21.png)
+
 
 ## 部署
 ### 实验一：部署和连接数据库
