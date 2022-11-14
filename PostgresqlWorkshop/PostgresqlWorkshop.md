@@ -485,35 +485,35 @@ pg_restore -v --no-owner --host=<server name> --port=<port> --username=<user-nam
 
 > 发布服务器是从中发送数据的 PostgreSQL 数据库。订阅服务器是向其发送数据的 PostgreSQL 数据库。
 
-1. 创建一个新的数据库服务器
+1. **创建一个新的数据库服务器**
    ```bash
     az postgres flexible-server create --vnet spoke-vnet --subnet subnet-02 --resource-group PG-Workshop \
-    --name replication-flex --admin-user replica --admin-password 'PkG3zk&SKt' \
+    --name replication-flex --admin-user replica   --admin-password 'PkG3zk&SKt' \
     --sku-name Standard_B1ms --tier Burstable --storage-size 128 \
     --tags "key=replica" --version 13 --high-availability Disabled
    ```
    输出如下图表示部署成功：
    ![](media/image_replica_02.png)
 
-2. 修改服务器参数
+2. **修改服务器参数**
    wal_level设置为logical
    max_worker_processes设置为16
 
    保存并且重启服务：
     ![](media/image_replica_01.png)
    
-3. 连接原PostgreSQL 数据库，授予管理员用户复制权限
+3. **连接原PostgreSQL 数据库，授予管理员用户复制权限**
    ```sql
     ALTER ROLE <adminname> WITH REPLICATION;
    ```
 
-4. 为表创建发布
+4. **为表创建发布**
    ```sql
     \c quiz
     CREATE PUBLICATION answers_pub FOR TABLE  answers;
    ```
 
-5. 连接到订阅服务器，创建相同schema的表
+5. **连接到订阅服务器，创建相同schema的表**
    ```bash
    export PGPASSWORD='PkG3zk&SKt'; psql -d postgres  -U replica  -h replication-flex.postgres.database.azure.com
    ```
@@ -527,12 +527,12 @@ pg_restore -v --no-owner --host=<server name> --port=<port> --username=<user-nam
     is_correct boolean NOT NULL DEFAULT FALSE
     );
    ```
-6. 为表创建发布的订阅
+6. **为表创建发布的订阅**
    ```sql
    CREATE SUBSCRIPTION sub CONNECTION 'host=192.168.1.132 user=diaa dbname=quiz password=@n6DnfN&P' PUBLICATION answers_pub;
    ```
    
-7. 在订阅服务器上查询表，将会看到它从发布服务器接收数据
+7. **在订阅服务器上查询表，将会看到它从发布服务器接收数据**
    ```sql
     table answers;
    ```
