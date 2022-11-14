@@ -46,7 +46,7 @@
 
 1. 创建一个预配的VM
    
-- 1) 在Azure portal中搜索“虚拟机”，选择创建，注意要选择创建具有预先配置的虚拟机
+- 1）在Azure portal中搜索“虚拟机”，选择创建，注意要选择创建具有预先配置的虚拟机
  ![](media/image_migra_01.png)
 
 - 2）选择指定镜像，把这个VM放在PG-Workshop资源组里
@@ -58,7 +58,7 @@
 - 4）配置网络，将虚拟机放在hub-vnet子网中
  ![](media/image_migra_04.png)
 
-- 5) 其他配置使用默认配置即可，点击查看+创建，创建VM
+- 5）其他配置使用默认配置即可，点击查看+创建，创建VM
 
 - 6）部署成功后可以在PG-Workshop资源组中查看创建的资源
   ![](media/image_migra_14.png)
@@ -83,6 +83,7 @@
 - 3）在VM中连接本地的数据库,可以使用[psql工具或者pgAdmin工具](https://www.postgresqltutorial.com/postgresql-getting-started/connect-to-postgresql-database/)
   
 - 4）在VM内的数据库中加载dvdrental样本数据库
+  
   先下载[DVD Rental Sample Database](https://www.postgresqltutorial.com/postgresql-getting-started/postgresql-sample-database/)
 
   然后使用[pg_restore或者pgAdmin恢复样本数据库](https://www.postgresqltutorial.com/postgresql-getting-started/load-postgresql-sample-database/)
