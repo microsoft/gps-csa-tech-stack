@@ -46,6 +46,8 @@
 
 1. 创建一个预配的VM
    
+ **注意**：参考[快速入门：在 Azure 门户中创建 Windows 虚拟机](https://learn.microsoft.com/zh-cn/azure/virtual-machines/windows/quick-create-portal)
+   
 - 1）在Azure portal中搜索“虚拟机”，选择创建，注意要选择创建具有预先配置的虚拟机
  ![](media/image_migra_01.png)
 
@@ -62,8 +64,6 @@
 
 - 6）部署成功后可以在PG-Workshop资源组中查看创建的资源
   ![](media/image_migra_14.png)
-
- **注意**：参考[快速入门：在 Azure 门户中创建 Windows 虚拟机](https://learn.microsoft.com/zh-cn/azure/virtual-machines/windows/quick-create-portal)
    
 
 2. 在VM中部署数据库并且加载Sample数据库  
