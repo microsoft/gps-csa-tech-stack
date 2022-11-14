@@ -1,19 +1,19 @@
 
 > [实验环境准备](#实验环境准备)
 > 
-> [迁移](#迁移)
+> [实验一：使用Azure DMS将本地postgreSQL联机迁移到Azure Database for postgreSQL flexible server](#实验一迁移)
 > 
-> [实验一：部署和连接数据库](#实验一部署和连接数据库)
+> [实验二：连接并管理云上的数据库](#实验二连接并管理云上的数据库)
 > 
-> [实验二：管理数据库的角色和权限](#实验二管理数据库的角色和权限)
+> [实验三：管理数据库的角色和权限](#实验三管理数据库的角色和权限)
 > 
-> [实验三：手动备份还原pg_dump和pg_restore](#实验三手动备份还原pg_dump和pg_restore)
+> [实验四：手动备份还原pg_dump和pg_restore](#实验四手动备份还原pg_dump和pg_restore)
 > 
-> [实验四：自动备份和时间点还原](#实验四自动备份和时间点还原)
+> [实验五：自动备份和时间点还原](#实验五自动备份和时间点还原)
 > 
-> [实验五：复制](#实验五复制)
+> [实验六：复制](#实验六复制)
 > 
-> [实验六：高可用和灾备](#实验六高可用和灾备)
+> [实验七：高可用和灾备](#实验七高可用和灾备)
 > 
 > [高级特性（可选实验）](#高级特性可选)
 > 
@@ -33,12 +33,48 @@
 
     ![success](./media/image2.png)  
 
-3. 实验整体架构
+3. 实验资源部署
+   
+> 使用Bicep部署数据库  
+
+ - 1）安装bicep
+      ```bash
+     az bicep install
+     ```
+     ![](media/image4.png)
+ - 2）下载bicep模板
+     ```bash
+     wget https://storageaccounthol.z6.web.core.windows.net/scripts/bicep.zip
+     ```
+     ![](media/image5.png)
+ - 3）压缩下载文件
+     ```bash
+     unzip bicep
+     ```
+     ![](media/image6.png)
+ - 4）创建一个名为PG-Workshop的资源组来部署实验资源
+     ```bash
+     az group create -l Eastus -n PG-Workshop
+     ```
+     ![](media/image7.png)
+ - 5）使用bicep模板部署
+     ```bash
+     az deployment group create --resource-group PG-Workshop --template-file bicep/main.bicep
+     ```
+     需要为跳板机和数据库分别设置管理用户名和密码，部署需要十几分钟时间，如果部署失败可以多执行几次，直到部署成功以后将会出现以下输出： 
+
+     ![](media/image8.png)
+     
+     之后您可以在名为PG-Workshop的资源组看到部署后的资源：  
+
+     ![](media/image9.png)
+     
+4. 实验整体架构
    ![](./media/image3.png)
 
    **注意**：本动手实验文档默认按Azure Global环境运行，探索对象主要是Azure Database for PostgreSQL的flexible server版本，该版本支持AzureGlobal和AzureChina（世纪互联）等所有Azure公有云
 
-## 迁移
+## 实验一：迁移
 
 > 本实验使用PostgreSQL官方名为dvdrental的样本数据库，在Azure虚拟机中创建PostgreSql模拟本地环境，借助Azure DMS服务完成本地
 > 
@@ -165,43 +201,9 @@
     ![](media/image_migra_21.png)
 
 
-## 部署
-### 实验一：部署和连接数据库
-1. 使用Bicep部署数据库  
-
-    - 安装bicep
-         ```bash
-        az bicep install
-        ```
-        ![](media/image4.png)
-    - 下载bicep模板
-        ```bash
-        wget https://storageaccounthol.z6.web.core.windows.net/scripts/bicep.zip
-        ```
-        ![](media/image5.png)
-    - 压缩下载文件
-        ```bash
-        unzip bicep
-        ```
-        ![](media/image6.png)
-    - 创建一个名为PG-Workshop的资源组来部署实验资源
-        ```bash
-        az group create -l Eastus -n PG-Workshop
-        ```
-        ![](media/image7.png)
-    - 使用bicep模板部署
-        ```bash
-        az deployment group create --resource-group PG-Workshop --template-file bicep/main.bicep
-        ```
-        需要为跳板机和数据库分别设置管理用户名和密码，部署需要十几分钟时间，如果部署失败可以多执行几次，直到部署成功以后将会出现以下输出： 
-
-        ![](media/image8.png)
-        
-        之后您可以在名为PG-Workshop的资源组看到部署后的资源：  
-
-        ![](media/image9.png)
-
-2. 连接数据库  
+## 连接和管理
+### 实验二：连接并管理云上的数据库
+1. 连接数据库  
    
    使用Azure Cloud Shell连接跳板机DNS VM，然后通过DNS VM连接数据库。  
   
@@ -209,6 +211,8 @@
         ```bash
         ssh username@<jumpbox-ip> # 您设置的登录DNS VM的IP地址和用户名
         ```
+        **注意**：如果连接不上跳板机，可以查看跳板机的网络设置，入站流量规则是否打开了22端口
+
     - 登录后安装psql（如未安装）
         ```bash
         sudo dnf module enable -y postgresql:13
@@ -244,7 +248,7 @@
         ```
         ![](media/image13.png)
 
-3. 数据引入
+2. 数据引入
     ```bash
     CREATE DATABASE quiz;
     \connect quiz
@@ -293,7 +297,7 @@
 
     ![](media/image14.png)
 
-4. 管理PostgreSQL数据库
+3. 管理PostgreSQL数据库
    - 管理存储和计算
 
     ![](media/image15.png)
@@ -310,7 +314,7 @@
 
     ![](media/image17.png)
 
-### 实验二：管理数据库的角色和权限
+### 实验三：管理数据库的角色和权限
 > 本部分实验探索用户组的权限继承，如果用户没有继承用户组的权限，就不能享受用户组已有的权限，但可以单独给该用户设置权限  
 
    - 按之前章节介绍的方法连接数据库
@@ -377,7 +381,7 @@
         ```
 
 ## 可用性和业务连续性
-### 实验三：手动备份还原pg_dump和pg_restore
+### 实验四：手动备份还原pg_dump和pg_restore
 > 这类方法可以用来手动备份整个数据库或者某个单独的数据库。
 
 > pg_dump只备份数据库集群中某个数据库的信息，不会导出角色和表空间相关的信息。
@@ -436,7 +440,7 @@ pg_dump -Fc -v --host=<host> --username=<name> --dbname=<database name> -f <data
 pg_restore -v --no-owner --host=<server name> --port=<port> --username=<user-name> --dbname=<target database name> <database>.dump
 ```
 
-### 实验四：自动备份和时间点还原
+### 实验五：自动备份和时间点还原
 1. 自动备份 
 
     > 默认情况下，Azure Database for PostgreSQL 支持自动备份整个服务器（包括创建的所有数据库），自动备份包括数据库的每日快照备份，日志 (WAL) 文件持续存至 Azure Blob 存储
@@ -476,7 +480,7 @@ pg_restore -v --no-owner --host=<server name> --port=<port> --username=<user-nam
     ![](media/image24.png)
 
 
-### 实验五：复制
+### 实验六：复制
 > 使用 PostgreSQL 本机逻辑复制复制数据对象。 逻辑复制允许对数据复制（包括表级数据复制）进行精细控制。
 
 > 发布服务器是从中发送数据的 PostgreSQL 数据库。订阅服务器是向其发送数据的 PostgreSQL 数据库。
@@ -533,7 +537,7 @@ pg_restore -v --no-owner --host=<server name> --port=<port> --username=<user-nam
     table answers;
    ```
 
-### 实验六：高可用和灾备
+### 实验七：高可用和灾备
 > 配置高可用性后，灵活服务器会自动预配和管理备用副本。 备用副本将部署在与主服务器完全相同的 VM 配置（包括 vCore、存储空间、网络设置 (VNET、防火墙)等）中。
 
 > 使用 PostgreSQL 流式复制以同步模式将预写日志 (WAL) 流式传输到副本。应用程序读取操作直接从主服务器进行，而只有在主服务器和备用副本上保存了日志数据后，才会向应用程序确认提交和写入操作。由于这种额外的往返，预计会增加应用程序写入和提交操作的延迟。 
