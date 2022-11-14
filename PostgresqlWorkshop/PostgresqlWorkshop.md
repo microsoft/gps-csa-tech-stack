@@ -1,6 +1,8 @@
 
 > [实验环境准备](#实验环境准备)
 > 
+> [迁移](#迁移)
+> 
 > [实验一：部署和连接数据库](#实验一部署和连接数据库)
 > 
 > [实验二：管理数据库的角色和权限](#实验二管理数据库的角色和权限)
@@ -35,7 +37,35 @@
    ![](./media/image3.png)
 
    **注意**：本动手实验文档默认按Azure Global环境运行，探索对象主要是Azure Database for PostgreSQL的flexible server版本，该版本支持AzureGlobal和AzureChina（世纪互联）等所有Azure公有云
+
+## 迁移
+
+> 本实验使用PostgreSQL官方名为dvdrental的样本数据库，使用Azure虚拟机创建PostgreSql模拟本地环境，借助Azure DMS服务完成本地
+> PostgreSql到云上Azure Database for PostgreSql flexible server的数据库迁移
+
+1. 创建一个预配的VM
    
+2. 在VM中部署数据库并且加载Sample数据库
+    [链接](https://www.postgresqltutorial.com/postgresql-getting-started/install-postgresql/)
+
+3. 在Azure portal创建Azure Database for PostgreSql
+   
+   按照[此处教程](https://docs.azure.cn/zh-cn/postgresql/single-server/quickstart-create-server-database-portal)在[Azure portal](https://portal.azure.com)创建Azure Database for PostgreSql flexible server
+
+4. 迁移环境准备
+- 在VM中的 postgresql.config 文件中启用逻辑复制，并设置以下参数：
+    wal_level = logical
+    max_replication_slots = [槽数]，建议设置为“5 个槽”
+    max_wal_senders =[并发任务数] - max_wal_senders 参数设置可以运行的并发任务数，建议设置为“10 个任务”
+
+- 为 Azure Database for PostgreSQL 创建服务器级防火墙规则，以允许 Azure 数据库迁移服务访问目标数据库。提供用于 Azure 数据库迁移服务的虚拟网络子网范围。
+  
+
+5. 创建部署Azure Data Migration Service完成迁移
+
+
+psql -h pgformigration.postgres.database.azure.com  -U masteruser -d dvdrental citus < dvdrentalSchema.sql
+
 ## 部署
 ### 实验一：部署和连接数据库
 1. 使用Bicep部署数据库  
