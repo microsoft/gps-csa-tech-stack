@@ -46,7 +46,7 @@
 
 1. 创建一个预配的VM
    
- **注意**：参考[快速入门：在 Azure 门户中创建 Windows 虚拟机](https://learn.microsoft.com/zh-cn/azure/virtual-machines/windows/quick-create-portal)
+    参考[快速入门：在 Azure 门户中创建 Windows 虚拟机](https://learn.microsoft.com/zh-cn/azure/virtual-machines/windows/quick-create-portal)
    
 - 1）在Azure portal中搜索“虚拟机”，选择创建，注意要选择创建具有预先配置的虚拟机
  ![](media/image_migra_01.png)
@@ -66,7 +66,7 @@
   ![](media/image_migra_14.png)
    
 
-2. 在VM中部署数据库并且加载Sample数据库  
+1. 在VM中部署数据库并且加载Sample数据库  
  
 - 1）使用本机电脑的远程桌面连接第一步中创建的VM，填写连接ip,vm登录用户名和密码（创建时设置）
   ![](media/image_migra_06.png)
@@ -89,9 +89,10 @@
   然后使用[pg_restore或者pgAdmin恢复样本数据库](https://www.postgresqltutorial.com/postgresql-getting-started/load-postgresql-sample-database/)
 
   **注意**：
+
   1）恢复数据库前要手动创建dvdrental数据库
 
-  2）使用psql方法恢复数据库时， PostgreSQL安装目录的bin目录需要客户化为自己的，pg_restore命令需要替换为.\pg_restore（这是因为参考链接中的命令适用于linux系统，不适用鱼windows）
+  2）使用psql方法恢复数据库时， PostgreSQL安装目录的bin目录需要客户化为自己的，pg_restore命令需要替换为.\pg_restore（这是因为参考链接中的命令适用于linux系统，不适用于windows）
 
 
 3. 在Azure portal创建Azure Database for PostgreSql  
