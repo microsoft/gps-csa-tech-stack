@@ -66,7 +66,7 @@
   ![](media/image_migra_14.png)
    
 
-1. 在VM中部署数据库并且加载Sample数据库  
+2. 在VM中部署数据库并且加载Sample数据库  
  
 - 1）使用本机电脑的远程桌面连接第一步中创建的VM，填写连接ip,vm登录用户名和密码（创建时设置）
   ![](media/image_migra_06.png)
@@ -97,6 +97,8 @@
 
 3. 在Azure portal创建Azure Database for PostgreSql  
    
+   参考[此处详细教程](https://docs.azure.cn/zh-cn/postgresql/single-server/quickstart-create-server-database-portal)创建Azure Database for PostgreSql flexible server
+
 - 1）在[Azure portal](https://portal.azure.com)搜索"postfresql"，选择Azure Database for PostgreSql服务器
 
 - 2）创建时需要选择flexsible server灵活服务器版本
@@ -109,10 +111,6 @@
 
 - 4）部署成功后可以在PG-Workshop资源组中查看创建的资源
   ![](media/image_migra_13.png)
-
-
-**注意**：可参考[此处详细教程](https://docs.azure.cn/zh-cn/postgresql/single-server/quickstart-create-server-database-portal)创建Azure Database for PostgreSql flexible server
-
 
 4. 迁移环境准备
    
@@ -128,6 +126,7 @@
   ![](media/image_migra_15.png)
   
 - 3）打开 Windows 防火墙，使 Azure 数据库迁移服务能够访问源 PostgreSQL 服务器（默认情况下为 TCP 端口 5432）
+
   [开放Windows防火墙5432端口](https://jingyan.baidu.com/article/fd8044fa7fc3245030137a49.html#:~:text=%E5%9C%A8%E9%98%B2%E7%81%AB%E5%A2%99%E9%9D%A2%E6%9D%BF%E4%B8%AD%E5%8D%95%E6%9C%BA%EF%BC%9A%E9%AB%98%E7%BA%A7%E8%AE%BE%E7%BD%AE%202%2F7%20%E5%8F%B3%E9%94%AE%E2%80%9C%E2%80%9D%E5%85%A5%E7%AB%99%E8%A7%84%E5%88%99%E2%80%9C%E2%80%9D%EF%BC%8C%E9%80%89%E6%8B%A9%EF%BC%9A%E6%96%B0%E5%BB%BA%E8%A7%84%E5%88%99,3%2F7%20%E9%80%89%E6%8B%A9%EF%BC%9A%E7%AB%AF%E5%8F%A3---%E4%B8%8B%E4%B8%80%E6%AD%A5%204%2F7%20%E9%94%AE%E5%85%A5%E8%A6%81%E5%BC%80%E6%94%BE%E7%9A%84%E6%8C%87%E5%AE%9A%E7%AB%AF%E5%8F%A3%EF%BC%8C%E4%B8%8B%E4%B8%80%E6%AD%A5)
 
 ![](media/image_migra_16.png)
@@ -141,7 +140,7 @@
 
   连接后可以直接在本地的pgadmin中操作云上的postgreSQL数据库
 
-- 2) 在VM的postgreSQL安装目录data目录下，使用powershell
+- 2）在VM的postgreSQL安装目录data目录下，使用powershell
   ```bash
     .\pg_dump -o -h localhost -U postgres -d dvdrental -s -O -x > dvdrentalSchema.sql
   ```
@@ -157,12 +156,13 @@
 
 6. 创建部署Azure Data Migration Service完成迁移
    
-参考[此处](https://docs.azure.cn/zh-cn/dms/tutorial-postgresql-azure-postgresql-online-portal)在Azure portal中创建Azure Data Migration Service服务
+    参考[此处](https://docs.azure.cn/zh-cn/dms/tutorial-postgresql-azure-postgresql-online-portal)在Azure portal中创建Azure Data Migration Service服务
 
-**注意**：
-1) 创建Azure Data Migration Service时必须要选择4-core的premium的sku的DMS,否则无法新建postgreSQL的迁移project
-2) 创建活动时，加密连接暂时不要勾选，源服务器名称填写VM的私有ip即可
-   ![](media/image_migra_21.png)
+    **注意**：
+    1) 创建Azure Data Migration Service时必须要选择4-core的premium的sku的DMS,否则无法新建postgreSQL的迁移project
+
+    2) 创建活动时，加密连接暂时不要勾选，源服务器名称填写VM的私有ip即可
+    ![](media/image_migra_21.png)
 
 
 ## 部署
