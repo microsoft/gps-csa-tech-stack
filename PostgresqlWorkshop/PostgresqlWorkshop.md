@@ -22,10 +22,10 @@
 
 
 ## 实验环境准备
-1. 登录Azure portal  
+1. **登录Azure portal**  
     使用用户名和密码登录[Azure Portal](https://portal.azure.com)  
     
-2. 打开Azure Cloud Shell  
+2. **打开Azure Cloud Shell** 
    点击此处使用Azure Cloud Shell  
     ![Azure Cloud Shell](./media/image1.png)  
 
@@ -33,9 +33,9 @@
 
     ![success](./media/image2.png)  
 
-3. 实验资源部署
+3. **实验资源部署**
    
-> 使用Bicep部署数据库  
+    使用Bicep部署数据库  
 
  - 1）安装bicep
       ```bash
@@ -69,7 +69,7 @@
 
      ![](media/image9.png)
      
-4. 实验整体架构
+4. **实验整体架构**
    ![](./media/image_3.png)
 
    **注意**：本动手实验文档默认按Azure Global环境运行，探索对象主要是Azure Database for PostgreSQL的flexible server版本，该版本支持AzureGlobal和AzureChina（世纪互联）等所有Azure公有云
@@ -91,19 +91,19 @@
    
 - 1）在Azure portal中搜索“虚拟机”，选择创建，注意要选择创建具有预先配置的虚拟机
 
- ![](media/image_migra_01.png)
+    ![](media/image_migra_01.png)
 
 - 2）选择指定镜像，把这个VM放在PG-Workshop资源组里
  
- ![](media/image_migra_02.png)
+    ![](media/image_migra_02.png)
 
 - 3）继续配置以下指定选项，设置登录VM的用户名密码，开启SSH和RDP端口
  
- ![](media/image_migra_03.png)
+    ![](media/image_migra_03.png)
 
 - 4）配置网络，将虚拟机放在hub-vnet子网中
  
- ![](media/image_migra_04.png)
+    ![](media/image_migra_04.png)
 
 - 5）其他配置使用默认配置即可，点击查看+创建，创建VM
 
@@ -116,16 +116,16 @@
  
 - 1）使用本机电脑的远程桌面连接第一步中创建的VM，填写连接ip,vm登录用户名和密码（创建时设置）
   
-  ![](media/image_migra_06.png)
+    ![](media/image_migra_06.png)
 
   其中连接ip可以在创建的vm的概述-公共ip处获取
   
-  ![](media/image_migra_05.png)
+    ![](media/image_migra_05.png)
 
   **注意**：如果连接不上，检查虚拟机-网络的入站端口规则，如果没有开放3389端口，需要在网络选项卡内配置以下入站规则
   
-  ![](media/image_migra_07.png)
-  ![](media/image_migra_08.png)
+    ![](media/image_migra_07.png)
+    ![](media/image_migra_08.png)
 
 - 2）在VM中参考以下[链接](https://www.postgresqltutorial.com/postgresql-getting-started/install-postgresql/)，下载11.8或者12.3版本的PostgreSQL server并安装
 
@@ -157,23 +157,24 @@
     ![](media/image_migra_09.png)
 
 - 3）配置以下选项，配置数据库管理员用户名密码，放置在PG-Workshop资源组里，网络放在spoken-vnet中，其余默认即可，点击创建
-- 
+
     ![](media/image_migra_10.png)
     ![](media/image_migra_11.png)
     ![](media/image_migra_12.png)
 
 - 4）部署成功后可以在PG-Workshop资源组中查看创建的资源
+  
   ![](media/image_migra_13.png)
 
 4. **迁移环境准备**
    
 - 1）在VM中的 postgresql.config 文件中（在本机PostgreSQL安装路径的data目录下）启用逻辑复制，并设置以下参数：  
 
-    wal_level = logical
+        wal_level = logical
 
-    max_replication_slots = [槽数]，建议设置为“5 个槽”
+        max_replication_slots = [槽数]，建议设置为“5 个槽”
 
-    max_wal_senders =[并发任务数] - max_wal_senders 参数设置可以运行的并发任务数，建议设置为“10 个任务”
+        max_wal_senders =[并发任务数] - max_wal_senders 参数设置可以运行的并发任务数，建议设置为“10 个任务”
 
 - 2）在VM中的 pg_hba.conf 文件中（在本机PostgreSQL安装路径的data目录下）加入云上的PostgreSQL所在DNS的ip
   
@@ -228,7 +229,7 @@
 
 ## 连接和管理
 ### 实验二：连接并管理云上的数据库
-1. 连接数据库  
+1. **连接数据库**  
    
    使用Azure Cloud Shell连接跳板机DNS VM，然后通过DNS VM连接数据库。  
   
@@ -273,7 +274,7 @@
         ```
         ![](media/image13.png)
 
-2. 数据引入
+2. **数据引入**
     ```bash
     CREATE DATABASE quiz;
     \connect quiz
@@ -322,7 +323,7 @@
 
     ![](media/image14.png)
 
-3. 管理PostgreSQL数据库
+3. **管理PostgreSQL数据库**
    - 管理存储和计算
 
     ![](media/image15.png)
@@ -342,68 +343,68 @@
 ### 实验三：管理数据库的角色和权限
 > 本部分实验探索用户组的权限继承，如果用户没有继承用户组的权限，就不能享受用户组已有的权限，但可以单独给该用户设置权限  
 
-   - 按之前章节介绍的方法连接数据库
-   - 创建新的用户组monty_python
-      ```bash
-        postgres=> CREATE GROUP monty_python;
-        ```  
-   - 创建该用户组的两个新用户Graham和Eric，Graham不继承用户组权限，Eric继承用户组权限，每个用户最大允许两个连接
-      ```bash
-        postgres=> CREATE USER Graham CONNECTION LIMIT 2 IN ROLE monty_python NOINHERIT;
-        postgres=> CREATE USER Eric CONNECTION LIMIT 2 IN ROLE monty_python INHERIT;
-        ``` 
-   - 显示集群中的所有角色
-      ```bash
-        postgres=> \dg
-        ```         
-        ![](media/image18.png)
+1. **按实验二介绍的方法通过跳板机连接云上的数据库**
+2. **创建新的用户组monty_python**
+   ```bash
+     postgres=> CREATE GROUP monty_python;
+     ```  
+3. **创建该用户组的两个新用户Graham和Eric，Graham不继承用户组权限，Eric继承用户组权限，每个用户最大允许两个连接**
+   ```bash
+     postgres=> CREATE USER Graham CONNECTION LIMIT 2 IN ROLE monty_python NOINHERIT;
+     postgres=> CREATE USER Eric CONNECTION LIMIT 2 IN ROLE monty_python INHERIT;
+     ``` 
+4. **显示集群中的所有角色**
+   ```bash
+     postgres=> \dg
+     ```         
+     ![](media/image18.png)
 
-   - 连接到数据引入时创建的quiz数据库
-      ```bash
-        postgres=> \c quiz
-        ```           
-   - 把quiz数据库中所有表的权限赋予用户组monty_python，切换用户，Graham应该无法读取quiz数据库中的表，而Eric可以读取
-      ```bash
-        quiz=> GRANT ALL ON ALL TABLES IN SCHEMA public TO monty_python;
-        
-        quiz=> GRANT graham to masteruser;
-        quiz=> GRANT eric to masteruser;
+5. **连接到数据引入时创建的quiz数据库**
+   ```bash
+     postgres=> \c quiz
+     ```           
+6. **把quiz数据库中所有表的权限赋予用户组monty_python，切换用户，Graham应该无法读取quiz数据库中的表，而Eric可以读取**
+   ```bash
+     quiz=> GRANT ALL ON ALL TABLES IN SCHEMA public TO monty_python;
+     
+     quiz=> GRANT graham to masteruser;
+     quiz=> GRANT eric to masteruser;
 
-        quiz=> SET ROLE TO graham;
-        SET
-        quiz=> TABLE answers;
-        ERROR:  permission denied for table answers
+     quiz=> SET ROLE TO graham;
+     SET
+     quiz=> TABLE answers;
+     ERROR:  permission denied for table answers
 
-        quiz=> SET ROLE TO eric;
-        SET
-        quiz=> table answers;
-        question_id | answer | is_correct
-        -------------+--------+------------
-                1 | Au     | f
-                1 | O      | t
-                1 | Oxy    | f
-                1 | Tl     | f
-        (4 rows)
+     quiz=> SET ROLE TO eric;
+     SET
+     quiz=> table answers;
+     question_id | answer | is_correct
+     -------------+--------+------------
+             1 | Au     | f
+             1 | O      | t
+             1 | Oxy    | f
+             1 | Tl     | f
+     (4 rows)
 
-        ``` 
-   - 切换为超级管理员账户给Graham设置查询权限,可以查看answer表
-      ```bash        
-        quiz=> SET ROLE TO adminuser;
-        SET
-        quiz=> GRANT SELECT ON TABLE answers TO Graham;
-        GRANT
+     ``` 
+7. **切换为超级管理员账户给Graham设置查询权限,可以查看answers表**
+   ```bash        
+     quiz=> SET ROLE TO adminuser;
+     SET
+     quiz=> GRANT SELECT ON TABLE answers TO Graham;
+     GRANT
 
-        quiz=> SET ROLE TO graham;
-        SET
-        quiz=> TABLE answers;
-        question_id | answer | is_correct
-        -------------+--------+------------
-                1 | Au     | f
-                1 | O      | t
-                1 | Oxy    | f
-                1 | Tl     | f
-        (4 rows)
-        ```
+     quiz=> SET ROLE TO graham;
+     SET
+     quiz=> TABLE answers;
+     question_id | answer | is_correct
+     -------------+--------+------------
+             1 | Au     | f
+             1 | O      | t
+             1 | Oxy    | f
+             1 | Tl     | f
+     (4 rows)
+     ```
 
 ## 可用性和业务连续性
 ### 实验四：手动备份还原pg_dump和pg_restore
@@ -413,8 +414,8 @@
 
 > pg_dumpall可以对数据库集群以及全局对象进行备份。
     
-1. 情景1：对普通单个数据库进行备份还原
-   - 按实验一中的方法连接DNS VM虚拟机，运行以下命令为quiz数据库备份并且删除数据库
+1. **情景1：对普通单个数据库进行备份还原**
+   - 1）按实验二中的方法连接DNS VM虚拟机，运行以下命令为quiz数据库备份并且删除数据库
    ```bash
        source .pg_azure
        pg_dump quiz > /tmp/quiz.plain.dump
@@ -424,7 +425,7 @@
    再次进入quiz数据库显示不存在：
    ![](media/image20.png)
 
-   - 使用psql还原数据库
+   - 2）使用psql还原数据库
    需要先自己创建对应的数据库
    ```bash
        createdb quiz
@@ -441,7 +442,7 @@
    再次进入quiz数据库，发现关系和数据已经被还原：
    ![](media/image21.png)
 
-2. 情景2：对大型数据库使用压缩备份还原  
+2. **情景2：对大型数据库使用压缩备份还原**  
 
     > 对于大型数据库，可以使用pg_dump自带压缩功能，只需要压缩时使用-Fc参数，还原时只能使用pg_restore不能使用psql，感兴趣同学可以自行尝试
     ```bash
@@ -449,7 +450,7 @@
     pg_restore -d quiz /tmp/quizCompressed.plain.dump
     ```
 
-3. 情景3：多线程备份还原
+3. **情景3：多线程备份还原**
     > -Fd参数支持多线程备份还原数据，请按照情景1的步骤自行实验，最后进入quiz数据库查看数据是否被还原
     ```bash
     pg_dump quiz -Fd -f /tmp/directorydump
@@ -466,7 +467,7 @@ pg_restore -v --no-owner --host=<server name> --port=<port> --username=<user-nam
 ```
 
 ### 实验五：自动备份和时间点还原
-1. 自动备份 
+1. **自动备份** 
 
     > 默认情况下，Azure Database for PostgreSQL 支持自动备份整个服务器（包括创建的所有数据库），自动备份包括数据库的每日快照备份，日志 (WAL) 文件持续存至 Azure Blob 存储
 
@@ -482,7 +483,7 @@ pg_restore -v --no-owner --host=<server name> --port=<port> --username=<user-nam
 
     ![](media/image15.png)
 
-2. PITR还原
+2. **PITR还原**
 
     > 在灵活服务器中，执行时间点恢复（PITR）会在源服务器所在的同一区域中创建新服务器，可以选择可用性区域。 
 
@@ -591,22 +592,22 @@ pg_restore -v --no-owner --host=<server name> --port=<port> --username=<user-nam
 
 > **注意**：备用副本不同于只读副本，不支持读取查询
 
-可以在此处选择启用高可用：
+1. **可以在此处选择启用高可用**：
 
 ![](media/image25.png)
 
-执行强制的故障切换：
+2. **执行强制的故障切换**：
 
 ![](media/image26.png)
 
-故障自动切换后，主服务器和从服务器交换，用时约2min：
+3. **故障自动切换后，主服务器和从服务器交换，用时约2min**：
 
 ![](media/image27.png)    
 
 
 ## 高级特性（可选）
 > 本部分实验链接如下[](https://storageaccounthol.z6.web.core.windows.net/)
-1. 审计和维护
+1. **审计和维护**
 - 维护
    > 用户可以自定义维护时段
    > 参考[Patching and maintenance windows章节](https://storageaccounthol.z6.web.core.windows.net/)
@@ -618,17 +619,17 @@ pg_restore -v --no-owner --host=<server name> --port=<port> --username=<user-nam
    > 使用pgAudit扩展审计数据库的活动日志
    > 参考[Security Management PostgreSQL章节](https://storageaccounthol.z6.web.core.windows.net/)
 
-2. 监控数据库
+2. **监控数据库**
    > 参考[Monitoring and Troubleshooting章节](https://storageaccounthol.z6.web.core.windows.net/)
 
-3. 配置PgBadger
+3. **配置PgBadger**
    > 参考[Configure PgBadger章节](https://storageaccounthol.z6.web.core.windows.net/)
 
-4. 探索MVCC
+4. **探索MVCC**
    > 参考[Multiversion Concurrency Control, MVCC章节](https://storageaccounthol.z6.web.core.windows.net/)
 
-5. SQL特性
+5. **SQL特性**
    > 参考[SQL Characteristic章节](https://storageaccounthol.z6.web.core.windows.net/)
 
-6. 查询优化
+6. **查询优化**
    > 参考[Statistics and Query Planning章节](https://storageaccounthol.z6.web.core.windows.net/)
