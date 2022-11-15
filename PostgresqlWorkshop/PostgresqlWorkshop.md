@@ -189,9 +189,9 @@
 
 5. **迁移schema**
 
-  参考[迁移架构](https://docs.azure.cn/zh-cn/dms/tutorial-postgresql-azure-postgresql-online-portal#migrate-the-sample-schema)
+    参考[迁移架构](https://docs.azure.cn/zh-cn/dms/tutorial-postgresql-azure-postgresql-online-portal#migrate-the-sample-schema)
 
-  **要点**：
+    **要点**：
 
 - 1）使用本地VM的pgAdmin工具连接云上的postgreSQL数据库，参考[pgAdmin连接数据库](https://www.postgresqltutorial.com/postgresql-getting-started/connect-to-postgresql-database/)
 
