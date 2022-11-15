@@ -189,7 +189,7 @@
 
 5. **迁移schema**
 
-  > 参考[迁移架构](https://docs.azure.cn/zh-cn/dms/tutorial-postgresql-azure-postgresql-online-portal#migrate-the-sample-schema)
+  参考[迁移架构](https://docs.azure.cn/zh-cn/dms/tutorial-postgresql-azure-postgresql-online-portal#migrate-the-sample-schema)
 
   **要点**：
 
@@ -215,7 +215,7 @@
 
     **注意**：转储schma时，需要注意文件必须是utf-8编码，且路径写法正确，才能成功导入
 
-6. 创建部署Azure Data Migration Service完成迁移
+6. **创建部署Azure Data Migration Service完成迁移**
    
     参考[此处](https://docs.azure.cn/zh-cn/dms/tutorial-postgresql-azure-postgresql-online-portal#register-the-resource-provider)在Azure portal中创建Azure Data Migration Service服务
 
