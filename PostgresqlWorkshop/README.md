@@ -57,4 +57,7 @@ Azure Database for PostgreSQL 是基于开源 Postgres 数据库引擎的关系�
    ![](./media/readme_image2.png)
 
 
+&nbsp;
+&nbsp;
+
 ## 接下来请进入[动手实验](./PostgresqlWorkshop.md)
