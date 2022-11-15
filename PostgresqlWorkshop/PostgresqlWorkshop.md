@@ -183,11 +183,16 @@
 
   [开放Windows防火墙5432端口](https://jingyan.baidu.com/article/fd8044fa7fc3245030137a49.html#:~:text=%E5%9C%A8%E9%98%B2%E7%81%AB%E5%A2%99%E9%9D%A2%E6%9D%BF%E4%B8%AD%E5%8D%95%E6%9C%BA%EF%BC%9A%E9%AB%98%E7%BA%A7%E8%AE%BE%E7%BD%AE%202%2F7%20%E5%8F%B3%E9%94%AE%E2%80%9C%E2%80%9D%E5%85%A5%E7%AB%99%E8%A7%84%E5%88%99%E2%80%9C%E2%80%9D%EF%BC%8C%E9%80%89%E6%8B%A9%EF%BC%9A%E6%96%B0%E5%BB%BA%E8%A7%84%E5%88%99,3%2F7%20%E9%80%89%E6%8B%A9%EF%BC%9A%E7%AB%AF%E5%8F%A3---%E4%B8%8B%E4%B8%80%E6%AD%A5%204%2F7%20%E9%94%AE%E5%85%A5%E8%A6%81%E5%BC%80%E6%94%BE%E7%9A%84%E6%8C%87%E5%AE%9A%E7%AB%AF%E5%8F%A3%EF%BC%8C%E4%B8%8B%E4%B8%80%E6%AD%A5)
 
-![](media/image_migra_16.png)
-  
+    ![](media/image_migra_16.png)
+
+  **注意**：其他场景下可能需要check其他环境是否通畅，可参考[迁移先决条件部分](https://docs.azure.cn/zh-cn/dms/tutorial-postgresql-azure-postgresql-online-portal#prerequisites)
 
 5. **迁移schema**
-   
+
+  > 参考[迁移架构](https://docs.azure.cn/zh-cn/dms/tutorial-postgresql-azure-postgresql-online-portal#migrate-the-sample-schema)
+
+  **要点**：
+
 - 1）使用本地VM的pgAdmin工具连接云上的postgreSQL数据库，参考[pgAdmin连接数据库](https://www.postgresqltutorial.com/postgresql-getting-started/connect-to-postgresql-database/)
 
   ![](media/image_migra_17.png)
@@ -208,11 +213,11 @@
 
   ![](media/image_migra_20.png)
 
-**注意**：转储schma时，需要注意文件必须是utf-8编码，且路径写法正确，才能成功导入
+    **注意**：转储schma时，需要注意文件必须是utf-8编码，且路径写法正确，才能成功导入
 
 6. 创建部署Azure Data Migration Service完成迁移
    
-    参考[此处](https://docs.azure.cn/zh-cn/dms/tutorial-postgresql-azure-postgresql-online-portal)在Azure portal中创建Azure Data Migration Service服务
+    参考[此处](https://docs.azure.cn/zh-cn/dms/tutorial-postgresql-azure-postgresql-online-portal#register-the-resource-provider)在Azure portal中创建Azure Data Migration Service服务
 
     **注意**：
     1) 创建Azure Data Migration Service时必须要选择4-core的premium的sku的DMS,否则无法新建postgreSQL的迁移project
@@ -554,7 +559,7 @@ pg_restore -v --no-owner --host=<server name> --port=<port> --username=<user-nam
    ```
 6. **为表创建发布的订阅**
    ```sql
-   CREATE SUBSCRIPTION sub CONNECTION 'host=192.168.1.128 user=diaa dbname=quiz password=@n6DnfN&P' PUBLICATION answers_pub;
+   CREATE SUBSCRIPTION sub CONNECTION 'host=psqlflexshynnstn4vgw4.postgres.database.azure.com user=masteruser dbname=quiz password=1qaz@wsx' PUBLICATION answers_pub;
    ```
    
 7. **在订阅服务器上查询表，将会看到它从发布服务器接收数据**
