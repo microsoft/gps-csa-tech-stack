@@ -55,3 +55,6 @@ Azure Database for PostgreSQL 是基于开源 Postgres 数据库引擎的关系�
    [Azure Database for PostgreSQL flexible server](https://learn.microsoft.com/zh-cn/azure/postgresql/flexible-server/overview)是一种完全托管的数据库服务，旨在针对数据库管理功能和配置设置提供更精细的控制和更大的灵活性。相比single server版本，提供了更好的成本优化控制，具有停止/启动服务器和可突增计算层的功能，非常适合无需持续全计算容量的工作负载。 该服务当前支持 PostgreSQL 11、12、13 和 14 的社区版本。此服务目前在各种[Azure区域](https://azure.microsoft.com/zh-cn/explore/global-infrastructure/products-by-region/?products=cosmos-db,postgresql)中提供，下图是中国区域该服务可用性情况：  
 
    ![](./media/readme_image2.png)
+
+
+## 接下来请进入[动手实验](./PostgresqlWorkshop.md)
