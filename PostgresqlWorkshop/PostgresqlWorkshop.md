@@ -70,7 +70,7 @@
      ![](media/image9.png)
      
 4. 实验整体架构
-   ![](./media/image3.png)
+   ![](./media/image_3.png)
 
    **注意**：本动手实验文档默认按Azure Global环境运行，探索对象主要是Azure Database for PostgreSQL的flexible server版本，该版本支持AzureGlobal和AzureChina（世纪互联）等所有Azure公有云
 
@@ -79,6 +79,11 @@
 > 本实验使用PostgreSQL官方名为dvdrental的样本数据库，在Azure虚拟机中创建PostgreSql模拟本地环境，借助Azure DMS服务完成本地
 > 
 > PostgreSql到云上Azure Database for PostgreSql flexible server的数据库迁移
+
+> 实验整体架构在基础实验环境基础上增加了一个模拟本地的虚拟机以及云上的迁移目标数据库
+> 
+> ![](media/image_schema_01.png)
+
 
 1. 创建一个预配的VM
    
@@ -488,7 +493,12 @@ pg_restore -v --no-owner --host=<server name> --port=<port> --username=<user-nam
 1. **创建一个新的数据库服务器**
    ```bash
     az postgres flexible-server create --vnet spoke-vnet --subnet subnet-02 --resource-group PG-Workshop \
-    --name replication-flex --admin-user replica   --admin-password 'PkG3zk&SKt' \
+    --private-dns-zone private.postgres.database.azure.com --name replication-flex-1 --admin-user replica   --admin-password 'PkG3zk&SKt' \
+    --sku-name Standard_B1ms --tier Burstable --storage-size 128 \
+    --tags "key=replica" --version 13 --high-availability Disabled
+
+    az postgres flexible-server create --vnet spoke-vnet --subnet subnet-02 --resource-group PG-Workshop \
+    --name replication-flex-1 --admin-user replica   --admin-password 'PkG3zk&SKt' \
     --sku-name Standard_B1ms --tier Burstable --storage-size 128 \
     --tags "key=replica" --version 13 --high-availability Disabled
    ```
@@ -529,7 +539,7 @@ pg_restore -v --no-owner --host=<server name> --port=<port> --username=<user-nam
    ```
 6. **为表创建发布的订阅**
    ```sql
-   CREATE SUBSCRIPTION sub CONNECTION 'host=192.168.1.132 user=diaa dbname=quiz password=@n6DnfN&P' PUBLICATION answers_pub;
+   CREATE SUBSCRIPTION sub CONNECTION 'host=192.168.1.128 user=diaa dbname=quiz password=@n6DnfN&P' PUBLICATION answers_pub;
    ```
    
 7. **在订阅服务器上查询表，将会看到它从发布服务器接收数据**
