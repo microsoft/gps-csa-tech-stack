@@ -74,8 +74,6 @@ Log Analytics的归档存储允许针对单个表进行配置日志归档存储�
    ![Sentinel-Search-07](./images/Sentinel-Workspace-Search-07.png)
 9. 在 `Saved Searches`查看搜索作业的状态和最终的结果![Sentinel-Search-08](./images/Sentinel-Workspace-Search-08.png)
 
-### 搜索作业使用场景
-
 ## 恢复归档日志
 
 与搜索归档日志相似，恢复归档日志允许用户恢复一张指定的表在一定时间内的归档日志到分析日志中，相对于搜索日志的单一搜索结果，用户可以恢复大量的数据。该功能在调查数月前发生的包含多个实体和用户的安全事件非常有帮助，可以获取事件发生时的相关日志。
@@ -97,8 +95,6 @@ Log Analytics的归档存储允许针对单个表进行配置日志归档存储�
 5. 在Sentinel中查询恢复进展及恢复后的数据
    ![Sentinel-Restore-03](./images/Sentinel-Workspace-Restore-03.png)
 
-### 归档日志恢复使用场景
-
 # 导出日志到存储账户中
 
 ## 适用场景
@@ -109,9 +105,11 @@ Log Analytics的归档存储允许针对单个表进行配置日志归档存储�
 * 由于Sentinel Hunting功能不支持通过ADX Proxy直接查询ADX外部表，因此在进行调查时需要通过ADX进行
 
 ## 前提条件
+
 * 已有ADX集群
 * 已有存储账户
 * 已有Sentinel
+
 ## 受支持的表导出
 
 Log Analytics workspace支持在数据进入Azure Monitor后将数据持续导出到存储账户中，但是目前并无法支持所有的表且每个workspace只允许同时存在10条启用的导出规则。
@@ -163,77 +161,99 @@ Log Analytics workspace支持在数据进入Azure Monitor后将数据持续导�
     )
     with (FileExtension=json)
 ```
+
 8. 表创建完成后，可以通过如下语句验证其内容
+
 ```
 external_table('AdministrativeLog')
 | take 10
 ```
+
 可以看到如下结果
 ![Sentinel-ADX-07](./images/Sentinel-ADX-07.png)
 
 ## 查询数据
-数据导出到存储账户后可以通过外部表的方式查询相关的数据，但是无法直接在`Microsoft Sentinel`中查询，需要通过ADX进行查询，如果需要`Sentinel`中的相关数据，则需要在ADX中连接对应的`Log Analytics`工作区
+
+数据导出到存储账户后可以通过外部表的方式查询相关的数据，但是无法直接在 `Microsoft Sentinel`中查询，需要通过ADX进行查询，如果需要 `Sentinel`中的相关数据，则需要在ADX中连接对应的 `Log Analytics`工作区
+
 1. 在Azure Portal上，进入 `Azure Data Explorer Clusters`服务并选择对应的ADX集群并复制其 `URI`
    ![Sentinel-ADX-01](./images/Sentinel-ADX-01.png)
 2. 打开新的浏览器窗口并访问ADX集群
 3. 在ADX管理界面左侧导航栏点击 `Query`
-4. 在新界面中选择`Add cluster`
-![Sentinel-ADX-08](./images/Sentinel-ADX-08.png)
+4. 在新界面中选择 `Add cluster`
+   ![Sentinel-ADX-08](./images/Sentinel-ADX-08.png)
 5. 在添加向导中按照如下格式填入Sentinel所对应对应的Log Analytics工作区
+
 ```
 https://ade.loganalytics.io/subscriptions/<subscription-id>/resourcegroups/<resource-group-name>/providers/microsoft.operationalinsights/workspaces/<workspace-name>
-``` 
+```
+
 6. 添加完成后即可在ADX中查询Log Analytics工作区的数据,可以通过如下语句进行验证
+
 ```
 cluster('https://ade.loganalytics.io/subscriptions/<subscription-id>/resourcegroups/<resource-group-name>/providers/microsoft.operationalinsights/workspaces/<workspace-name>').database('database-name>').SigninLogs
 | take 10
 ```
+
 ![Sentinel](./images/Sentinel-ADX-09.png)
 
 # 导出日志到Azure Data Explorer
-企业为了满足监管合规需求，需要长期保留一些安全日志、审计相关日志或者业务日志，但是基本上不会查询相关日志，为了降低存储成本同时避免日志被篡改，需要将该类日志存储WORM(Write Once, Read Many)类型的存储中，同其需要与它方案或者工具进行集成，因此可以使用`Event Hub`, `Azure Data Explorer`及`Azure Blob Storage`实现
+
+企业为了满足监管合规需求，需要长期保留一些安全日志、审计相关日志或者业务日志，但是基本上不会查询相关日志，为了降低存储成本同时避免日志被篡改，需要将该类日志存储WORM(Write Once, Read Many)类型的存储中，同其需要与它方案或者工具进行集成，因此可以使用 `Event Hub`, `Azure Data Explorer`及 `Azure Blob Storage`实现
 
 ## 适用场景
+
 * 已经在使用Event Hub进行第三方工具集成
 * 已经有专用的ADX集群
 
 ## 前提条件
+
 * 已有ADX集群
 * 已有存储账户
 * 已有Sentinel
 * 已有Event Hub
 
 ## 受支持的表导出
+
 1. 在Azure Portal上，进入 `Log Analytics workspaces`服务并选择一个Sentinel所使用的工作区
 2. 在左侧导航栏选择 `Data Export`并点击 `New export rule`创建新的导出规则
    ![Sentinel-Data-Export](./images/Sentinel-Dataexport-01.png)
 3. 在规则创建向导中填写 `Rule name`并勾选 `Enable upon creation`
    ![sentinel-data-export-02](./images/Sentinel-Dataexport-02.png)
-4. 按需勾选需要导出日志到表,下图以`ADXCommand`表为例
+4. 按需勾选需要导出日志到表,下图以 `ADXCommand`表为例
    ![sentinel-Eventhub-01](./images/Sentinel-Dataexport-03.png)
-5. 在`Destination`部分，选择对应的Event Hub,然后进入下一步点击`Create`
+5. 在 `Destination`部分，选择对应的Event Hub,然后进入下一步点击 `Create`
    ![sentinel-Eventhub-02](./images/Sentinel-Workspace-EventHub-02.png)
-6. 打开Azure Data Explorer UI并选择`Query`后在对应数据库内按照如下语句创建表
+6. 打开Azure Data Explorer UI并选择 `Query`后在对应数据库内按照如下语句创建表
+
 ```
 .create table ADXCommandLog (TenantId: string, TimeGenerated: datetime, OperationName: string, Category: string, CorrelationId: string, RootActivityId: string, StartedOn: datetime, LastUpdatedOn: datetime, DatabaseName: string, State: string, FailureReason: string, TotalCPU: string, CommandType: string, ApplicationName: string, ResourceUtilization: dynamic, Duration: string, User: string, Principal: string, WorkloadGroup: string, Text: string, SourceSystem: string, Type: string)
 ```
+
 ![sentinel-Cluster-01](./images/Sentinel-Cluster-01.png)
 7. 在ADX集群中创建名为 ***ADXCommandLogRawRecords***的临时表
+
 ```
 .create table ADXCommandLogRawRecords (Records:dynamic)
 ```
+
 ![Sentinel-Cluster-02](./images/Sentinel-Cluster-02.png)
 8. 将临时表的保存策略设置为0
+
 ```
 .alter-merge table ADXCommandLogRawRecords policy retention softdelete = 0d
 ```
+
 ![Sentinel-Cluster-03](./images/Sentinel-Cluster-03.png)
 9. 创建数据映射策略，将数据映射为json
+
 ```
 .create table ADXCommandLogRawRecords ingestion json mapping 'ADXCommandLogRawRecordsMapping' '[{"column":"Records","Properties":{"path":"$.records"}}]'
 ```
+
 ![sentinel-Cluster-04](./images/Sentinel-Cluster-04.png)
 10. 为数据创建更新策略，通过创建一个function实现
+
 ```
 .create function ADXCommandLogRecordsExpand() {
     ADXCommandLogRawRecords
@@ -263,26 +283,32 @@ cluster('https://ade.loganalytics.io/subscriptions/<subscription-id>/resourcegro
         Type = tostring(events['Type'])
 }
 ```
+
 ![sentinel-Cluster-05](./images/Sentinel-Cluster-05.png)
 11. 通过下列语句将更新策略添加到目标表上
+
 ```
 .alter table ADXCommandLog policy update @'[{"Source": "ADXCommandLogRawRecords", "Query": "ADXCommandLogRecordsExpand()", "IsEnabled": "True", "IsTransactional": true}]'
 ```
+
 ![sentinel-cluster-06](./images/Sentinel-Cluster-06.png)
-12. 在Azure Portal上搜索并选择对应的`Azure Data Explorer Clusters`
-13. 在`Azure Data Explorer Clusters`左侧导航栏选择`Databases`并选择存储日志的数据库
+12. 在Azure Portal上搜索并选择对应的 `Azure Data Explorer Clusters`
+13. 在 `Azure Data Explorer Clusters`左侧导航栏选择 `Databases`并选择存储日志的数据库
 ![Sentinel-Eventhub-03](./images/Sentinel-Workspace-EventHub-03.png)
-14. 在数据库页面左侧导航栏选择`Data connections`,然后点击`Add data connection`并选择`Event Hub`
+14. 在数据库页面左侧导航栏选择 `Data connections`,然后点击 `Add data connection`并选择 `Event Hub`
 ![sentinel-eventhub-04](./images/Sentinel-Workspace-EventHub-04.png)
 9. 在添加Event Hub连接的时候填入前面步骤所创建的相关资源
 ![Sentinel-eventhub-06](./images/Sentinel-Workspace-EventHub-06.png)
 10. 过一段时间后，即可在ADX集群的ADXCommandLog表中查询到相关数据，打开Azure Data Explorer Web UI执行如下语句，确认日志已经收集到ADX
+
 ```
 ADXCommandLog
 | limit 10
 ```
+
 ![sentinel-data-export-06](./images/Sentinel-Dataexport-06.png)
 11. 在将数据导出到存储账户前，需要使用下列查询语句创建外部表
+
 ```
 .create external table  EXADXCommandLog (TenantId: string, TimeGenerated: datetime, OperationName: string, Category: string, CorrelationId: string, RootActivityId: string, StartedOn: datetime, LastUpdatedOn: datetime, DatabaseName: string, State: string, FailureReason: string, TotalCPU: string, CommandType: string, ApplicationName: string, ResourceUtilization: dynamic, Duration: string, User: string, Principal: string, WorkloadGroup: string, Text: string, SourceSystem: string, Type: string)
     kind = blob
@@ -292,7 +318,9 @@ ADXCommandLog
     )
     with (FileExtension=json)
 ```
+
 12. 创建秩序导出任务
+
 ```
 .create-or-alter continuous-export ADXCommandExport
 over (ADXCommandLog)
@@ -303,76 +331,90 @@ with
  sizeLimit=104857600)
 <| ADXCommandLog
 ```
+
 13. 查看导出任务状态并确定数据导出的起始点
+
 ```
 .show continuous-export ADXCommandExport | project StartCursor
 ```
+
 14. 一次性导出在导出任务启动前的数据
+
 ```
 .export async to table EXADXCommandLog
 <| ADXCommandLog | where cursor_before_or_at("638041604650779565")
 ```
 
 ## 未受支持的表导出
-目前`Azure Data Explorer`只支持[部分表](https://learn.microsoft.com/en-us/azure/azure-monitor/logs/logs-data-export?tabs=portal#supported-tables)的导出，对于未受支持的表导出，需要通Log Analytics相关的API进行导出，最简单的方式则是使用Logic Apps进行数据导出,以下以`AzureActivity`表为例
 
-1. 打开Azure Data Explorer UI并选择`Query`后在对应数据库内按照如下语句创建表
+目前 `Azure Data Explorer`只支持[部分表](https://learn.microsoft.com/en-us/azure/azure-monitor/logs/logs-data-export?tabs=portal#supported-tables)的导出，对于未受支持的表导出，需要通Log Analytics相关的API进行导出，最简单的方式则是使用Logic Apps进行数据导出,以下以 `AzureActivity`表为例
+
+1. 打开Azure Data Explorer UI并选择 `Query`后在对应数据库内按照如下语句创建表
+
 ```
 .create table AzureActivityLog  (TenantId:guid, SourceSystem:string, CallerIpAddress:string, CategoryValue:string, CorrelationId:guid, Authorization:string, Authorization_d:string, Claims:string, Claims_d:string, Level:string, OperationNameValue:string, Properties:string, Properties_d:string, Caller:string, EventDataId:guid, EventSubmissionTimestamp:datetime, HTTPRequest:string, OperationId:string, ResourceGroup:string, ResourceProviderValue:string, ActivityStatusValue:string, ActivitySubstatusValue:string, Hierarchy:string, TimeGenerated:datetime, SubscriptionId:guid, OperationName:string, ActivityStatus:string, ActivitySubstatus:string, Category:string, ResourceId:string, ResourceProvider:string, Resource:string, ['Type']:string, ['_ResourceId']:string)
 ```
+
 ![sentinel-Cluster-01](./images/Sentinel-ADX-10.png)
 
 2. 创建数据映射策略，将数据映射为json
+
 ```
 .create table AzureActivityLog ingestion json mapping 'AzureActivityLogMapping' '[{"column":"TenantId", "Properties":{"Path":"$[\'TenantId\']"}},{"column":"SourceSystem", "Properties":{"Path":"$[\'SourceSystem\']"}},{"column":"CallerIpAddress", "Properties":{"Path":"$[\'CallerIpAddress\']"}},{"column":"CategoryValue", "Properties":{"Path":"$[\'CategoryValue\']"}},{"column":"CorrelationId", "Properties":{"Path":"$[\'CorrelationId\']"}},{"column":"Authorization", "Properties":{"Path":"$[\'Authorization\']"}},{"column":"Authorization_d", "Properties":{"Path":"$[\'Authorization_d\']"}},{"column":"Claims", "Properties":{"Path":"$[\'Claims\']"}},{"column":"Claims_d", "Properties":{"Path":"$[\'Claims_d\']"}},{"column":"Level", "Properties":{"Path":"$[\'Level\']"}},{"column":"OperationNameValue", "Properties":{"Path":"$[\'OperationNameValue\']"}},{"column":"Properties", "Properties":{"Path":"$[\'Properties\']"}},{"column":"Properties_d", "Properties":{"Path":"$[\'Properties_d\']"}},{"column":"Caller", "Properties":{"Path":"$[\'Caller\']"}},{"column":"EventDataId", "Properties":{"Path":"$[\'EventDataId\']"}},{"column":"EventSubmissionTimestamp", "Properties":{"Path":"$[\'EventSubmissionTimestamp\']"}},{"column":"HTTPRequest", "Properties":{"Path":"$[\'HTTPRequest\']"}},{"column":"OperationId", "Properties":{"Path":"$[\'OperationId\']"}},{"column":"ResourceGroup", "Properties":{"Path":"$[\'ResourceGroup\']"}},{"column":"ResourceProviderValue", "Properties":{"Path":"$[\'ResourceProviderValue\']"}},{"column":"ActivityStatusValue", "Properties":{"Path":"$[\'ActivityStatusValue\']"}},{"column":"ActivitySubstatusValue", "Properties":{"Path":"$[\'ActivitySubstatusValue\']"}},{"column":"Hierarchy", "Properties":{"Path":"$[\'Hierarchy\']"}},{"column":"TimeGenerated", "Properties":{"Path":"$[\'TimeGenerated\']"}},{"column":"SubscriptionId", "Properties":{"Path":"$[\'SubscriptionId\']"}},{"column":"OperationName", "Properties":{"Path":"$[\'OperationName\']"}},{"column":"ActivityStatus", "Properties":{"Path":"$[\'ActivityStatus\']"}},{"column":"ActivitySubstatus", "Properties":{"Path":"$[\'ActivitySubstatus\']"}},{"column":"Category", "Properties":{"Path":"$[\'Category\']"}},{"column":"ResourceId", "Properties":{"Path":"$[\'ResourceId\']"}},{"column":"ResourceProvider", "Properties":{"Path":"$[\'ResourceProvider\']"}},{"column":"Resource", "Properties":{"Path":"$[\'Resource\']"}},{"column":"Type", "Properties":{"Path":"$[\'Type\']"}},{"column":"_ResourceId", "Properties":{"Path":"$[\'_ResourceId\']"}}]'
 ```
+
 ![sentinel-Cluster-04](./images/Sentinel-ADX-11.png)
 
-3. 在Azure Portal上搜索并选择对应的`Azure Data Explorer Clusters`
-8. 在`Azure Data Explorer Clusters`左侧导航栏选择`Databases`并选择存储日志的数据库
-![Sentinel-Eventhub-03](./images/Sentinel-Workspace-EventHub-03.png)
-9. 在数据库页面左侧导航栏选择`Data connections`,然后点击`Add data connection`并选择`Event Hub`
-![sentinel-eventhub-04](./images/Sentinel-Workspace-EventHub-04.png)
-10. 在添加Event Hub连接的时候填入前面步骤所创建的相关资源
-![Sentinel-eventhub-13](./images/Sentinel-ADX-12.png)
-11. 在Azure Portal上搜索并选择`Logic Apps`服务，点击`Add`并选择`Subscription`,`Resource group`和`Region`以存储新建的Logic Apps,讲Logic Apps命名为 **azureactivitycolloctor**, 选择`Consumption Plan`后点击`Review + create`
-![Sentinel-LogicApps-01](./images/Sentinel-Logic-14.png)
-12. 资源创建完成后点击`Go to resource`以打开`Logic Apps Designer`并选择`Recurrence`作为触发器
-![Sentinel-Logic-01](./images/Sentinel-Logic-02.png)
-13. 在触发器配置页面，选择`Frequency`为`minutes`, `Interval`为10设置每10分钟运行一次
-![Sentinel-Logica-01](./images/Sentinel-Logic-03.png)
-14. 点击`New step`并搜索和选择`Azure Monitor Logs`作为下一步，然后选择`Run query and list results`
-![Sentinel-Logic-04](./images/Sentinel-Logic-04.png)
-![Sentinel-Logic-05](./images/Sentinel-Logic-05.png)
-15. 点击`Sign in`或者`Connect with service principal`创建连接
-![Sentinel-Logic-06](./images/Sentinel-Logic-06.png)
-16. 创建完链接后选择Log Analytics工作区所在的`Subscription`,`Resource group`并选择`Resource Type`为 **Log Analytics Workspace**，然后选择存储Azure Activity Log的工作区
-![Sentinel-Logic-07](./images/Sentinel-Logic-07.png)
-17. 将下列查询语句添加到`Query`窗口中
+3. 在Azure Portal上搜索并选择对应的 `Azure Data Explorer Clusters`
+4. 在 `Azure Data Explorer Clusters`左侧导航栏选择 `Databases`并选择存储日志的数据库
+   ![Sentinel-Eventhub-03](./images/Sentinel-Workspace-EventHub-03.png)
+5. 在数据库页面左侧导航栏选择 `Data connections`,然后点击 `Add data connection`并选择 `Event Hub`
+   ![sentinel-eventhub-04](./images/Sentinel-Workspace-EventHub-04.png)
+6. 在添加Event Hub连接的时候填入前面步骤所创建的相关资源
+   ![Sentinel-eventhub-13](./images/Sentinel-ADX-12.png)
+7. 在Azure Portal上搜索并选择 `Logic Apps`服务，点击 `Add`并选择 `Subscription`,`Resource group`和 `Region`以存储新建的Logic Apps,讲Logic Apps命名为 **azureactivitycolloctor**, 选择 `Consumption Plan`后点击 `Review + create`
+   ![Sentinel-LogicApps-01](./images/Sentinel-Logic-14.png)
+8. 资源创建完成后点击 `Go to resource`以打开 `Logic Apps Designer`并选择 `Recurrence`作为触发器
+   ![Sentinel-Logic-01](./images/Sentinel-Logic-02.png)
+9. 在触发器配置页面，选择 `Frequency`为 `minutes`, `Interval`为10设置每10分钟运行一次
+   ![Sentinel-Logica-01](./images/Sentinel-Logic-03.png)
+10. 点击 `New step`并搜索和选择 `Azure Monitor Logs`作为下一步，然后选择 `Run query and list results`
+    ![Sentinel-Logic-04](./images/Sentinel-Logic-04.png)
+    ![Sentinel-Logic-05](./images/Sentinel-Logic-05.png)
+11. 点击 `Sign in`或者 `Connect with service principal`创建连接
+    ![Sentinel-Logic-06](./images/Sentinel-Logic-06.png)
+12. 创建完链接后选择Log Analytics工作区所在的 `Subscription`,`Resource group`并选择 `Resource Type`为 **Log Analytics Workspace**，然后选择存储Azure Activity Log的工作区
+    ![Sentinel-Logic-07](./images/Sentinel-Logic-07.png)
+13. 将下列查询语句添加到 `Query`窗口中
+
 ```
 let endTime = now();
 let startTime = endTime-10m;
 AzureActivity
 | where ingestion_time() between(startTime .. endTime)
 ```
-18. 将`Time Range`指定为`Last 4 hours`以根据`TimeGenerated`字段返回过去四小时内的数据并筛选注入时间在过去10分钟内的数据
-![Sentinel-Logic-08](./images/Sentinel-Logic-08.png)
-19. 点击`New step`并搜索和选择`Event Hubs`作为下一步，
-然后选择`Sent event`
-![Sentinel-Logica-09](./images/Sentinel-Logic-09.png)
-20. 填入对应event hub的链接字符串并点击`Create`
-![Sentinel-logic-10](./images/Sentinel-Logic-10.png)
-21. 然后选择`Content`为`Value-item`后点击`Save`
-![Sentinel-logic-10](./images/Sentinel-Logic-11.png)
-22. 过一段时间查询`Logic Apps`执行历史，确认其执行正常
-![Sentinel-logic-10](./images/Sentinel-Logic-12.png)
+
+18. 将 `Time Range`指定为 `Last 4 hours`以根据 `TimeGenerated`字段返回过去四小时内的数据并筛选注入时间在过去10分钟内的数据
+    ![Sentinel-Logic-08](./images/Sentinel-Logic-08.png)
+19. 点击 `New step`并搜索和选择 `Event Hubs`作为下一步，
+    然后选择 `Sent event`
+    ![Sentinel-Logica-09](./images/Sentinel-Logic-09.png)
+20. 填入对应event hub的链接字符串并点击 `Create`
+    ![Sentinel-logic-10](./images/Sentinel-Logic-10.png)
+21. 然后选择 `Content`为 `Value-item`后点击 `Save`
+    ![Sentinel-logic-10](./images/Sentinel-Logic-11.png)
+22. 过一段时间查询 `Logic Apps`执行历史，确认其执行正常
+    ![Sentinel-logic-10](./images/Sentinel-Logic-12.png)
 23. 在ADX UI上执行如下查询确认数据已经导出至ADX
+
 ```
 AzureActivityLog
 | take 10
 ```
+
 ![Sentinel-logic-10](./images/Sentinel-Logic-13.png)
 24. 创建外部表以便将ADX中的数据持续导出到存储账户中
+
 ```
 .create external  table EXAzureActivityLog  (TenantId:guid, SourceSystem:string, CallerIpAddress:string, CategoryValue:string, CorrelationId:guid, Authorization:string, Authorization_d:string, Claims:string, Claims_d:string, Level:string, OperationNameValue:string, Properties:string, Properties_d:string, Caller:string, EventDataId:guid, EventSubmissionTimestamp:datetime, HTTPRequest:string, OperationId:string, ResourceGroup:string, ResourceProviderValue:string, ActivityStatusValue:string, ActivitySubstatusValue:string, Hierarchy:string, TimeGenerated:datetime, SubscriptionId:guid, OperationName:string, ActivityStatus:string, ActivitySubstatus:string, Category:string, ResourceId:string, ResourceProvider:string, Resource:string, ['Type']:string, ['_ResourceId']:string)
     kind = blob
@@ -382,7 +424,9 @@ AzureActivityLog
     )
     with (FileExtension=json)
 ```
+
 25. 创建秩序导出任务
+
 ```
 .create-or-alter continuous-export AzureActivyCommandExport
 over (AzureActivityLog)
@@ -393,11 +437,15 @@ with
  sizeLimit=104857600)
 <| AzureActivityLog
 ```
+
 13. 查看导出任务状态并确定数据导出的起始点
+
 ```
 .show continuous-export AzureActivyCommandExport | project StartCursor
 ```
+
 14. 一次性导出在导出任务启动前的数据
+
 ```
 .export async to table EXAzureActivityLog
 <| AzureActivityLog | where cursor_before_or_at("638041614840940465")
