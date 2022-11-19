@@ -4,7 +4,7 @@
 ### [Azure上的双机高可用集群搭建](./HACluster/readme.md)
 &nbsp; 
 ## App Innovation
-### [Landing Zones Deployment with Terraform](./LandingZonesDeploymentwithTerraform/README.md)
+### [使用Auzre托管Prometheus和Grafana监控AKS](./使用Auzre托管Prometheus和Grafana监控AKS)
 &nbsp; 
 ## Data&AI
 ### [使用Terraform/Ansible在Azure上部署Hadoop](https://github.com/radezheng/azureHadoop#%E4%BD%BF%E7%94%A8terraformansible%E5%9C%A8azure%E4%B8%8A%E9%83%A8%E7%BD%B2hadoop)
