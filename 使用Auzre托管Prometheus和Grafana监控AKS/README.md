@@ -68,8 +68,7 @@
     ```bash
     kubectl get nodes
     ```
-![图示, 文本
-中度可信度描述已自动生成](.//media/image6.png)
+![图示, 文本中度可信度描述已自动生成](.//media/image6.png)
 
 8.  部署测试应用（也可以随意部署其他容器样例）
     ```bash
@@ -94,11 +93,11 @@ kubectl get service azure-vote-front --watch
 
 ##  **在AKS上集成Prometheus和Grafana托管服务**
 
-1.  首先通过Azure门户创建Azur Grafana托管服务
+1.  首先通过Azure门户创建**Azur Grafana托管服务**
 
 ![图形用户界面, 文本, 应用程序, 电子邮件描述已自动生成](.//media/image10.png)
 
-2.  根据向导输入相关的参数，然后"审阅+创建"
+2.  根据向导输入相关的参数，然后点击 **"审阅+创建"**
 
 ![图形用户界面, 文本, 应用程序描述已自动生成](.//media/image11.png)
 
@@ -117,7 +116,7 @@ kubectl get service azure-vote-front --watch
 
 ![图形用户界面, 文本, 应用程序, 电子邮件描述已自动生成](.//media/image15.png)
 
-7.  根据向导继续输入参数并集成之前创建的**"Grafana工作区"，之后点击 **"配置"**
+7.  根据向导继续输入参数并集成之前创建的 **"Grafana工作区"**，之后点击 **"配置"**
 
 ![](.//media/image16.png)
 
@@ -143,7 +142,7 @@ kubectl get service azure-vote-front --watch
 
 ![](.//media/image21.png)
 
-13.  Pod相关指标列了出来。Grafana可视化监控功能非常强大，可以近一步设置Grafana Dashboards，来客户化显示所需的指标。
+13.  Pod相关指标列了出来。Grafana可视化监控功能非常强大，可以近一步设置**Grafana Dashboards**，来客户化显示所需的指标。
 
 ![](.//media/image22.png)
 
@@ -156,6 +155,6 @@ Prometheus与Grafana集成监控方案在云原生领域非常流行，功能非
 
 1.  [Monitoring Azure Kubernetes Service (AKS) with Azure Monitor](https://learn.microsoft.com/en-us/azure/aks/monitor-aks)
 
-2.  [Azure ManagedGrafana](1.%09https:/azure.microsoft.com/en-us/services/managed-grafana#overview)
+2.  [Azure ManagedGrafana](https://azure.microsoft.com/en-us/services/managed-grafana/#documentation)
 
 3.  [Azure Monitor managed service for Prometheus(preview)](https://learn.microsoft.com/en-us/azure/azure-monitor/essentials/prometheus-metrics-overview)
