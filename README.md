@@ -1,11 +1,13 @@
 # Microsoft GPS CSA Tech Stack FY23
 
 ## Azure Core
+### [Azure上的双机高可用集群搭建](./HACluster/readme.md)
 &nbsp; 
 ## App Innovation
 ### [Landing Zones Deployment with Terraform](./LandingZonesDeploymentwithTerraform/README.md)
 &nbsp; 
 ## Data&AI
+### [使用Terraform/Ansible在Azure上部署Hadoop](https://github.com/radezheng/azureHadoop#%E4%BD%BF%E7%94%A8terraformansible%E5%9C%A8azure%E4%B8%8A%E9%83%A8%E7%BD%B2hadoop)
 &nbsp; 
 ## Hybrid Cloud
 &nbsp; 
@@ -14,7 +16,10 @@
 ## Security
 &nbsp; 
 ## Biz Apps
-&nbsp; 
+### [基于21v PP环境部署CoE Starter Kit](https://github.com/charlielv926/Biz-App-TechSolution/tree/main/PP%20COE%20Starter%20Kit%20Deployment%20in%2021V)
+### [DevOps自动化部署PP及D365 CE Solution](https://github.com/charlielv926/Biz-App-TechSolution/tree/main/PP%26D365%20CE%20Solution%20Deployment%20with%20Azure%20DevOps)
+### [借助Teams+PVA+OCS+Bot Framework Composer 搭建企业级IT Helpdesk](https://github.com/charlielv926/Biz-App-TechSolution/tree/main/PP%26D365%20CE%20Solution%20Deployment%20with%20Azure%20DevOps)
+### [Power Platform搭建企业内部新闻社区](https://github.com/charlielv926/Biz-App-TechSolution/tree/main/Build%20News%20Community%20with%20Power%20Platform)
 ## Microsoft 365
 &nbsp; 
 
