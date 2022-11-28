@@ -3,6 +3,10 @@
 ## Azure Core
 ### [Azure上的双机高可用集群搭建](./HACluster/readme.md)
 &nbsp; 
+
+### [Azure上通过Functions实现httpdns的简易思路](./Azure上通过Functions实现httpdns的简易思路/readme.md)
+&nbsp; 
+
 ## App Innovation
 ### [使用Azure托管Prometheus和Grafana监控AKS](./使用Auzre托管Prometheus和Grafana监控AKS)
 &nbsp; 
