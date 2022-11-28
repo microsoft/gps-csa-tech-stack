@@ -4,7 +4,7 @@
 ### [Azure上的双机高可用集群搭建](./HACluster/readme.md)
 &nbsp; 
 
-### [Azure上通过Functions实现httpdns的简易思路](./Azure Httpdns/Azure上通过Functions实现httpdns的简易思路.md)
+### [Azure上通过Functions实现httpdns的简易思路](./Azure Httpdns/readme.md)
 &nbsp; 
 
 ## App Innovation
