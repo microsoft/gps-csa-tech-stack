@@ -378,7 +378,7 @@ module vmformigration 'modules/vmforpgmigration.json'={
     virtualMachineName:'vmforPGmigration'
     virtualMachineRG:resourceGroup().name
     virtualMachineSize:'Standard_D4s_v3'
-    virtualNetworkId: hubVirtualNetworkName
+    virtualNetworkId: '/subscriptions/${subscription().subscriptionId}/resourceGroups/${resourceGroup().name}/providers/Microsoft.Network/virtualNetworks/${hubVirtualNetworkName}'
   }
 }
 
