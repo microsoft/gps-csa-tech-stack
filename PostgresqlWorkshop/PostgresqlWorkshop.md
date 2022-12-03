@@ -120,11 +120,8 @@
 
         max_wal_senders =[并发任务数] - max_wal_senders 参数设置可以运行的并发任务数，建议设置为“10 个任务”
 
-- 2）在VM中的 pg_hba.conf 文件中（在本机PostgreSQL安装路径的data目录下）加入云上的PostgreSQL所在DNS的ip
-  
-  ![](media/image_migra_15.png)
-  
-- 3）打开 Windows 防火墙，使 Azure 数据库迁移服务能够访问源 PostgreSQL 服务器（默认情况下为 TCP 端口 5432）
+
+- 2）打开 Windows 防火墙，使 Azure 数据库迁移服务能够访问源 PostgreSQL 服务器（默认情况下为 TCP 端口 5432）
 
   [开放Windows防火墙5432端口](https://jingyan.baidu.com/article/fd8044fa7fc3245030137a49.html#:~:text=%E5%9C%A8%E9%98%B2%E7%81%AB%E5%A2%99%E9%9D%A2%E6%9D%BF%E4%B8%AD%E5%8D%95%E6%9C%BA%EF%BC%9A%E9%AB%98%E7%BA%A7%E8%AE%BE%E7%BD%AE%202%2F7%20%E5%8F%B3%E9%94%AE%E2%80%9C%E2%80%9D%E5%85%A5%E7%AB%99%E8%A7%84%E5%88%99%E2%80%9C%E2%80%9D%EF%BC%8C%E9%80%89%E6%8B%A9%EF%BC%9A%E6%96%B0%E5%BB%BA%E8%A7%84%E5%88%99,3%2F7%20%E9%80%89%E6%8B%A9%EF%BC%9A%E7%AB%AF%E5%8F%A3---%E4%B8%8B%E4%B8%80%E6%AD%A5%204%2F7%20%E9%94%AE%E5%85%A5%E8%A6%81%E5%BC%80%E6%94%BE%E7%9A%84%E6%8C%87%E5%AE%9A%E7%AB%AF%E5%8F%A3%EF%BC%8C%E4%B8%8B%E4%B8%80%E6%AD%A5)
 
@@ -132,7 +129,7 @@
 
   **注意**：其他场景下可能需要check其他环境是否通畅，可参考[迁移先决条件部分](https://docs.azure.cn/zh-cn/dms/tutorial-postgresql-azure-postgresql-online-portal#prerequisites)
 
-5. **迁移schema**
+3. **迁移schema**
 
     参考[迁移架构](https://docs.azure.cn/zh-cn/dms/tutorial-postgresql-azure-postgresql-online-portal#migrate-the-sample-schema)
 
@@ -146,7 +143,7 @@
 
 - 2）在VM的postgreSQL安装目录data目录下，使用powershell
   ```bash
-    .\pg_dump -o -h localhost -U postgres -d dvdrental -s -O -x > dvdrentalSchema.sql
+    .\pg_dump -o -h localhost -U postgres -d dvdrental -s -O -x > /Users/[your adminuser]/Desktop/dvdrentalSchema1.sql
   ```
 - 3）在云上的postgreSQL数据库创建一个空的数据库，也叫dvdrental，可以直接在pgAdmin中操作
   
@@ -154,20 +151,37 @@
 
 - 4）通过还原架构转储文件，将架构导入已创建的目标数据库
   
+  ![](media/image_migra_19_1.png)
+
   ![](media/image_migra_19.png)
 
   ![](media/image_migra_20.png)
 
-    **注意**：转储schma时，需要注意文件必须是utf-8编码，且路径写法正确，才能成功导入
 
-6. **创建部署Azure Data Migration Service完成迁移**
+    **注意**：转储schma时，需要注意文件必须是**utf-8**编码，且**路径写法**正确，才能成功导入
+
+4. **创建部署Azure Data Migration Service完成迁移**
    
     参考[此处](https://docs.azure.cn/zh-cn/dms/tutorial-postgresql-azure-postgresql-online-portal#register-the-resource-provider)在Azure portal中创建Azure Data Migration Service服务
 
     **注意**：
-    1) 创建Azure Data Migration Service时必须要选择4-core的premium的sku的DMS,否则无法新建postgreSQL的迁移project
+    1）创建Azure Data Migration Service时必须要选择4-core的premium的sku的DMS,否则无法新建postgreSQL的迁移project
 
-    2) 创建活动时，加密连接暂时不要勾选，源服务器名称填写VM的私有ip即可
+    2）网络处选择hub-vnet
+
+    3）如果出现以下错误提示:
+
+      ![](media/image_migra_22.png)
+    
+      需要在vmforPGmigra中的 pg_hba.conf 文件中（在本机PostgreSQL安装路径的data目录下）加入创建的Azure数据迁移服务所在的vnet ip，然后再次测试连接
+      
+      '''
+      host	all		all		192.168.0.7/24		trust
+      '''
+      ![](media/image_migra_15.png)
+
+
+    4）创建活动时，加密连接暂时不要勾选，源服务器名称填写VM的私有ip即可
     ![](media/image_migra_21.png)
 
 
