@@ -3,11 +3,18 @@
 ## Azure Core
 ### [Azure上的双机高可用集群搭建](./HACluster/readme.md)
 &nbsp; 
+
+### [Azure上通过Functions实现httpdns的简易思路](./AzureHttpdns/Azure上通过Functions实现httpdns的简易思路.md)
+&nbsp; 
+
 ## App Innovation
-### [Landing Zones Deployment with Terraform](./LandingZonesDeploymentwithTerraform/README.md)
+### [使用Azure托管Prometheus和Grafana监控AKS](./使用Auzre托管Prometheus和Grafana监控AKS)
 &nbsp; 
 ## Data&AI
 ### [使用Terraform/Ansible在Azure上部署Hadoop](https://github.com/radezheng/azureHadoop#%E4%BD%BF%E7%94%A8terraformansible%E5%9C%A8azure%E4%B8%8A%E9%83%A8%E7%BD%B2hadoop)
+### [Azure Database for PostgreSQL迁移部署和特性探索实验](https://github.com/lxueqian/gps-csa-tech-stack/tree/main/PostgresqlWorkshop)
+### [使用Azure Machine Learning的MLOps实现机器学习项目的训练和部署](https://github.com/zwang53/mlops-in-a-day)
+
 &nbsp; 
 ## Hybrid Cloud
 &nbsp; 
@@ -20,6 +27,8 @@
 ### [DevOps自动化部署PP及D365 CE Solution](https://github.com/charlielv926/Biz-App-TechSolution/tree/main/PP%26D365%20CE%20Solution%20Deployment%20with%20Azure%20DevOps)
 ### [借助Teams+PVA+OCS+Bot Framework Composer 搭建企业级IT Helpdesk](https://github.com/charlielv926/Biz-App-TechSolution/tree/main/PP%26D365%20CE%20Solution%20Deployment%20with%20Azure%20DevOps)
 ### [Power Platform搭建企业内部新闻社区](https://github.com/charlielv926/Biz-App-TechSolution/tree/main/Build%20News%20Community%20with%20Power%20Platform)
+### [使用dataflow将外部数据加载到dataverse中](https://github.com/ZuoXuangn/PP-dataflow)
+
 ## Microsoft 365
 &nbsp; 
 
