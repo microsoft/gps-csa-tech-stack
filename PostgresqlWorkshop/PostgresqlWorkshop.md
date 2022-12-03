@@ -164,7 +164,8 @@
    
     参考[此处](https://docs.azure.cn/zh-cn/dms/tutorial-postgresql-azure-postgresql-online-portal#register-the-resource-provider)在Azure portal中创建Azure Data Migration Service服务
 
-    **注意**：
+    **注意**： 
+    
     1）创建Azure Data Migration Service时必须要选择4-core的premium的sku的DMS,否则无法新建postgreSQL的迁移project
 
     2）网络处选择hub-vnet
@@ -173,11 +174,11 @@
 
       ![](media/image_migra_22.png)
     
-      需要在vmforPGmigra中的 pg_hba.conf 文件中（在本机PostgreSQL安装路径的data目录下）加入创建的Azure数据迁移服务所在的vnet ip，然后再次测试连接
-      
-      '''
-      host	all		all		192.168.0.7/24		trust
-      '''
+        需要在vmforPGmigra中的 pg_hba.conf 文件中（在本机PostgreSQL安装路径的data目录下）加入创建的Azure数据迁移服务所在的vnet ip，然后再次测试连接
+
+        '''bash
+        host	all		all		192.168.0.7/24		trust
+        '''
       ![](media/image_migra_15.png)
 
 
