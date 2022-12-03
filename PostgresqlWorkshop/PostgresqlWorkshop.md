@@ -42,26 +42,25 @@
      az bicep install
      ```
      ![](media/image4.png)
- - 2）下载bicep模板
+ - 2）下载bicep
      ```bash
-     wget https://storageaccounthol.z6.web.core.windows.net/scripts/bicep.zip
+     git clone https://github.com/lxueqian/PostgreSqlWorkshop.git
      ```
-     ![](media/image5.png)
- - 3）压缩下载文件
+ - 3）进入查看clone后的文件夹,在'/PostgreSqlWorkshop/bicep'路径下可以看到部署资源的模板组
      ```bash
-     unzip bicep
+     cd PostgreSqlWorkshop/bicep
      ```
      ![](media/image6.png)
- - 4）创建一个名为PG-Workshop的资源组来部署实验资源
+ - 4）创建一个名为PG-Workshop的资源组来部署实验资源（资源组名称可以自定）
      ```bash
      az group create -l Eastus -n PG-Workshop
      ```
      ![](media/image7.png)
  - 5）使用bicep模板部署
      ```bash
-     az deployment group create --resource-group PG-Workshop --template-file bicep/main.bicep
+     az deployment group create --resource-group PG-Workshop --template-file main.bicep
      ```
-     需要为跳板机和数据库分别设置管理用户名和密码，部署需要十几分钟时间，如果部署失败可以多执行几次，直到部署成功以后将会出现以下输出： 
+     需要为跳板机、数据库和用于模拟本地环境的虚拟机分别设置管理用户名和密码，部署需要十几分钟时间，如果部署失败可以多执行几次: 
 
      ![](media/image8.png)
      
@@ -80,52 +79,23 @@
 > 
 > PostgreSql到云上Azure Database for PostgreSql flexible server的数据库迁移
 
-> 实验整体架构在基础实验环境基础上增加了一个模拟本地的虚拟机以及云上的迁移目标数据库
-> 
-> ![](media/image_schema_01.png)
 
-
-1. **创建一个预配的VM**
-   
-    参考[快速入门：在 Azure 门户中创建 Windows 虚拟机](https://learn.microsoft.com/zh-cn/azure/virtual-machines/windows/quick-create-portal)
-   
-- 1）在Azure portal中搜索“虚拟机”，选择创建，注意要选择创建具有预先配置的虚拟机
-
-    ![](media/image_migra_01.png)
-
-- 2）选择指定镜像，把这个VM放在PG-Workshop资源组里
+1. **在VM中部署数据库并且加载Sample数据库**  
  
-    ![](media/image_migra_02.png)
+- 1）打开vmforpgmigra虚拟机的3389端口
 
-- 3）继续配置以下指定选项，设置登录VM的用户名密码，开启SSH和RDP端口
- 
-    ![](media/image_migra_03.png)
-
-- 4）配置网络，将虚拟机放在hub-vnet子网中
- 
-    ![](media/image_migra_04.png)
-
-- 5）其他配置使用默认配置即可，点击查看+创建，创建VM
-
-- 6）部署成功后可以在PG-Workshop资源组中查看创建的资源
+    检查虚拟机-网络的入站端口规则，如果没有开放3389端口，需要在网络选项卡内配置以下入站规则：
   
-  ![](media/image_migra_14.png)
-   
+    ![](media/image_migra_07.png)
+    ![](media/image_migra_08.png)
 
-2. **在VM中部署数据库并且加载Sample数据库**  
- 
-- 1）使用本机电脑的远程桌面连接第一步中创建的VM，填写连接ip,vm登录用户名和密码（创建时设置）
+- 2）使用本机电脑的远程桌面连接第一步中创建的VM，填写连接ip,vm登录用户名和密码（创建时设置）
   
     ![](media/image_migra_06.png)
 
   其中连接ip可以在创建的vm的概述-公共ip处获取
   
     ![](media/image_migra_05.png)
-
-  **注意**：如果连接不上，检查虚拟机-网络的入站端口规则，如果没有开放3389端口，需要在网络选项卡内配置以下入站规则
-  
-    ![](media/image_migra_07.png)
-    ![](media/image_migra_08.png)
 
 - 2）在VM中参考以下[链接](https://www.postgresqltutorial.com/postgresql-getting-started/install-postgresql/)，下载11.8或者12.3版本的PostgreSQL server并安装
 
@@ -231,11 +201,11 @@
 ### 实验二：连接并管理云上的数据库
 1. **连接数据库**  
    
-   使用Azure Cloud Shell连接跳板机DNS VM，然后通过DNS VM连接数据库。  
+   使用Azure Cloud Shell连接跳板机jumpbox，然后通过jumpbox连接数据库。  
   
     - 在Azure Cloud Shell中通过ssh连接跳板机
         ```bash
-        ssh username@<jumpbox-ip> # 您设置的登录DNS VM的IP地址和用户名
+        ssh username@<jumpbox-ip> # 您设置的登录jumpbox的IP地址和用户名
         ```
         **注意**：如果连接不上跳板机，可以查看跳板机的网络设置，入站流量规则是否打开了22端口
 
@@ -415,7 +385,7 @@
 > pg_dumpall可以对数据库集群以及全局对象进行备份。
     
 1. **情景1：对普通单个数据库进行备份还原**
-   - 1）按实验二中的方法连接DNS VM虚拟机，运行以下命令为quiz数据库备份并且删除数据库
+   - 1）按实验二中的方法连接jumpbox虚拟机，运行以下命令为quiz数据库备份并且删除数据库
    ```bash
        source .pg_azure
        pg_dump quiz > /tmp/quiz.plain.dump
