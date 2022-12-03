@@ -61,7 +61,6 @@
      az deployment group create --resource-group PG-Workshop --template-file main.bicep
      ```
      需要为跳板机、数据库和用于模拟本地环境的虚拟机分别设置管理用户名和密码，部署需要十几分钟时间，如果部署失败可以多执行几次: 
-
      ![](media/image8.png)
      
      之后您可以在名为PG-Workshop的资源组看到部署后的资源：  
@@ -75,10 +74,7 @@
 
 ## 实验一：迁移
 
-> 本实验使用PostgreSQL官方名为dvdrental的样本数据库，在Azure虚拟机中创建PostgreSql模拟本地环境，借助Azure DMS服务完成本地
-> 
-> PostgreSql到云上Azure Database for PostgreSql flexible server的数据库迁移
-
+> 本实验使用已创建资源组PG-Workshop中的vmforPGmigra虚拟机模拟本地windows server，在其中创建PostgreSql并且加载dvdrental的样本数据库，最后借助Azure DMS服务完成dvdrental数据至云上PostgreSql数据库的联机迁移。
 
 1. **在VM中部署数据库并且加载Sample数据库**  
  
@@ -114,29 +110,7 @@
   2）使用pg_restore方法恢复数据库时， PostgreSQL安装目录的bin目录需要客户化为自己的，pg_restore命令需要替换为.\pg_restore（这是因为参考链接中的命令适用于linux系统，不适用于windows）
 
 
-3. **在Azure portal创建Azure Database for PostgreSql**  
-   
-   参考[此处详细教程](https://docs.azure.cn/zh-cn/postgresql/single-server/quickstart-create-server-database-portal)创建Azure Database for PostgreSql flexible server
-
-    **要点**：
-
-- 1）在[Azure portal](https://portal.azure.com)搜索"postfresql"，选择Azure Database for PostgreSql服务器
-
-- 2）创建时需要选择flexsible server灵活服务器版本
-    
-    ![](media/image_migra_09.png)
-
-- 3）配置以下选项，配置数据库管理员用户名密码，放置在PG-Workshop资源组里，网络放在spoken-vnet中，其余默认即可，点击创建
-
-    ![](media/image_migra_10.png)
-    ![](media/image_migra_11.png)
-    ![](media/image_migra_12.png)
-
-- 4）部署成功后可以在PG-Workshop资源组中查看创建的资源
-  
-  ![](media/image_migra_13.png)
-
-4. **迁移环境准备**
+2. **迁移环境准备**
    
 - 1）在VM中的 postgresql.config 文件中（在本机PostgreSQL安装路径的data目录下）启用逻辑复制，并设置以下参数：  
 
