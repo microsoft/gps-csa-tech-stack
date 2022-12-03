@@ -120,6 +120,7 @@
 
         max_wal_senders =[并发任务数] - max_wal_senders 参数设置可以运行的并发任务数，建议设置为“10 个任务”
 
+    **注意**：  修改参数以后根据[此处](https://blog.csdn.net/weixin_42464956/article/details/121401394)的教程重启虚拟机中的postgresql服务
 
 - 2）打开 Windows 防火墙，使 Azure 数据库迁移服务能够访问源 PostgreSQL 服务器（默认情况下为 TCP 端口 5432）
 
