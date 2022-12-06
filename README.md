@@ -11,7 +11,7 @@
 ### [使用Azure托管Prometheus和Grafana监控AKS](./使用Auzre托管Prometheus和Grafana监控AKS)
 &nbsp; 
 ## Data&AI
-### [使用Terraform/Ansible在Azure上部署Hadoop](./HadoopWithTerraform/)
+### [使用Terraform/Ansible在Azure上部署Hadoop](./HadoopWithTerraform/README.md)
 ### [Azure Database for PostgreSQL迁移部署和特性探索实验](./PostgresqlWorkshop/)
 ### [使用Azure Machine Learning的MLOps实现机器学习项目的训练和部署](https://github.com/zwang53/mlops-in-a-day)
 
