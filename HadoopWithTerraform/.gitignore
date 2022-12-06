@@ -1,0 +1,12 @@
+ansible/*
+.terraform/
+*.pem
+*.pub
+~
+*.hcl
+*.tfstate
+*.backup
+*.tfplan
+*.plan
+*.info
+*.tfvars
