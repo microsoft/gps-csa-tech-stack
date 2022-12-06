@@ -12,7 +12,7 @@
 &nbsp; 
 ## Data&AI
 ### [使用Terraform/Ansible在Azure上部署Hadoop](https://github.com/radezheng/azureHadoop#%E4%BD%BF%E7%94%A8terraformansible%E5%9C%A8azure%E4%B8%8A%E9%83%A8%E7%BD%B2hadoop)
-### [Azure Database for PostgreSQL迁移部署和特性探索实验](https://github.com/lxueqian/gps-csa-tech-stack/tree/main/PostgresqlWorkshop)
+### [Azure Database for PostgreSQL迁移部署和特性探索实验](./PostgresqlWorkshop/)
 ### [使用Azure Machine Learning的MLOps实现机器学习项目的训练和部署](https://github.com/zwang53/mlops-in-a-day)
 
 &nbsp; 
