@@ -23,10 +23,10 @@
 ## Security
 &nbsp; 
 ## Biz Apps
-### [基于21v PP环境部署CoE Starter Kit](https://github.com/charlielv926/Biz-App-TechSolution/tree/main/PP%20COE%20Starter%20Kit%20Deployment%20in%2021V)
-### [DevOps自动化部署PP及D365 CE Solution](https://github.com/charlielv926/Biz-App-TechSolution/tree/main/PP%26D365%20CE%20Solution%20Deployment%20with%20Azure%20DevOps)
-### [借助Teams+PVA+OCS+Bot Framework Composer 搭建企业级IT Helpdesk](https://github.com/charlielv926/Biz-App-TechSolution/tree/main/PP%26D365%20CE%20Solution%20Deployment%20with%20Azure%20DevOps)
-### [Power Platform搭建企业内部新闻社区](https://github.com/charlielv926/Biz-App-TechSolution/tree/main/Build%20News%20Community%20with%20Power%20Platform)
+### [基于21v PP环境部署CoE Starter Kit](https://github.com/microsoft/gps-csa-tech-stack/tree/main/BizApp-Lab/PP%20COE%20Starter%20Kit%20Deployment%20in%2021V)
+### [DevOps自动化部署PP及D365 CE Solution](https://github.com/microsoft/gps-csa-tech-stack/tree/main/BizApp-Lab/PP%26D365%20CE%20Solution%20Deployment%20with%20Azure%20DevOps)
+### [借助Teams+PVA+OCS+Bot Framework Composer 搭建企业级IT Helpdesk](https://github.com/microsoft/gps-csa-tech-stack/tree/main/BizApp-Lab/Build%20IT%20HelpDesk%20with%20BizApp%20Platform)
+### [Power Platform搭建企业内部新闻社区](https://github.com/microsoft/gps-csa-tech-stack/tree/main/BizApp-Lab/Build%20News%20Community%20with%20Power%20Platform)
 ### [使用dataflow将外部数据加载到dataverse中](https://github.com/ZuoXuangn/PP-dataflow)
 
 ## Microsoft 365
