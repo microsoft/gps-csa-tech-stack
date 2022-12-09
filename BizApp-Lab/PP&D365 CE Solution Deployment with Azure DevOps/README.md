@@ -27,3 +27,7 @@
 ![SolutionPipeline](./Images/Solution%20Pipeline.png)
 
 **🥰本次实验的详细操作手册为放置在[LabManual目录](https://github.com/charlielv926/Biz-App-TechSolution/tree/main/PP%26D365%20CE%20Solution%20Deployment%20with%20Azure%20DevOps/LabManual)中PDF文件,可以下载至本地进行查阅。**
+
+## 联系人信息
+
+任何问题，请联系：Charlielv0926@163.com
