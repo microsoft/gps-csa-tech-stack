@@ -508,15 +508,18 @@ pg_restore -v --no-owner --host=<server name> --port=<port> --username=<user-nam
 2. **修改源数据库服务器参数**
    
    wal_level设置为logical 
+
    max_worker_processes设置为16
 
    保存并且重启服务：
+    ![](media/image_LR.png)
+
     ![](media/image_replica_01.png)
    
 3. **通过跳板机连接源PostgreSQL 数据库，授予管理员用户复制权限**
    ```bash
-    ssh diaa@yourvmip
-   	psql -U <username> -h <hostname> postgres
+    ssh diaa@yourvmip  
+    psql -U <username> -h <hostname> postgres
    ```
    ```sql
     ALTER ROLE <adminname> WITH REPLICATION;
