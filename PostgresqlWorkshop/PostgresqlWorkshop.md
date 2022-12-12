@@ -515,8 +515,8 @@ pg_restore -v --no-owner --host=<server name> --port=<port> --username=<user-nam
    
 3. **通过跳板机连接源PostgreSQL 数据库，授予管理员用户复制权限**
    ```bash
-    ssh diaa@yourvmip
-   	psql -U <username> -h <hostname> postgres
+    ssh diaa@yourvmip  
+    psql -U <username> -h <hostname> postgres
    ```
    ```sql
     ALTER ROLE <adminname> WITH REPLICATION;
