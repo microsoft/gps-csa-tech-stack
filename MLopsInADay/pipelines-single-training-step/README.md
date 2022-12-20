@@ -21,8 +21,8 @@
 开始实验，您可以打开`Jupyter` 或者`Jupyter Lab` 然后选择`New --> Terminal` 并克隆本repo:
 
 ```console
-git clone https://github.com/zwang53/azure-machine-learning-mlops-workshop.git
-cd azure-machine-learning-mlops-workshop/
+git clone https://github.com/zwang53/mlops-in-a-day.git
+cd mlops-in-a-day/
 ```
 
 然后在Jupyter中导航到克隆的文件目录，打开 [`single_step_pipeline.ipynb`](single_step_pipeline.ipynb) . 请在Jupyter中选择并设置kernal为 `Python 3.8 - AzureML` 
