@@ -18,7 +18,7 @@ ChatGPT API 可以通过 HTTP 调用访问，可以使用多种语言（包括 P
 要部署ChatGPT API，需要准备以下几项：
 
 - Azure订阅
-- VS Code（1.74.2或以上版本）版本并安装Azure Tools，Azure App Service和Teams Toolkit插件
+- VS Code（1.74.2或以上版本）版本并安装Azure Tools和Azure App Service插件
 - [Python](https://www.python.org/downloads/) 3.10或更高版本(本demo使用Python 3.10.9)
 - 要使用 ChatGPT API，需要先注册[OpenAI 开发者账号](https://beta.openai.com/signup)并获取 [API 密钥](https://beta.openai.com/account/api-keys)。
 
@@ -28,17 +28,20 @@ ChatGPT API 可以通过 HTTP 调用访问，可以使用多种语言（包括 P
 
 ### 设计架构的工作原理如下：
 
-1. 用户在 Web 页面中输入文本并单击按钮。
+1. 本项目前端使用index.html,style.css,script.js实现用户交互界面。后端使用两个python程序（server.py 和 gpt.py）实现OpenAI API调用。
+   ![ChatGPT Web界面](./media/0.png)
+
+2. 用户在 Web 页面中输入文本并单击按钮。
    ![ChatGPT Web界面](./media/1.png)
 
-2. Web 页面使用 JavaScript 将文本发送到 Flask 应用程序的 /chat 路由。
+3. Web 页面使用 JavaScript 将文本发送到 Flask 应用程序的 /chat 路由。
 
-3. Flask 应用程序接收文本并使用 ChatGPT 生成回复文本。
+4. Flask 应用程序接收文本并使用 ChatGPT 生成回复文本。
 
-4. Flask 应用程序将回复文本发送回 Web 页面。
+5. Flask 应用程序将回复文本发送回 Web 页面。
 
-5. Web 页面使用 JavaScript 将回复文本显示在页面上。
-    ![ChatGPT Web界面](./media/2.png)
+6. Web 页面使用 JavaScript 将回复文本显示在页面上。
+  ![ChatGPT Web界面](./media/2.png)
 
 在这种架构中，index.html 文件是 Web 页面的模板。在该文件中，我们使用 HTML 和 CSS 来创建页面布局和外观。我们还使用 JavaScript 来处理用户交互并与 Flask 应用程序进行通信。
 
