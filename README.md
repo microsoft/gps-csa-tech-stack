@@ -9,6 +9,7 @@
 
 ## App Innovation
 ### [使用Azure托管Prometheus和Grafana监控AKS](./使用Auzre托管Prometheus和Grafana监控AKS)
+### [使用 ChatGPT API 构建智能聊天机器人并将并部署到 Azure App Service 和Microsoft Teams App](./Create-A-ChatGPT-Bot-APP-and-Deploy-To-Azure-APP-Service-or-Teams-APP/)
 &nbsp; 
 
 ## Data&AI
