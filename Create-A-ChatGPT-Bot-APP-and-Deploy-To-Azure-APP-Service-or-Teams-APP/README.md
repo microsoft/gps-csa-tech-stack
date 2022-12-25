@@ -18,7 +18,7 @@ ChatGPT API 可以通过 HTTP 调用访问，可以使用多种语言（包括 P
 要部署ChatGPT API，需要准备以下几项：
 
 - Azure订阅
-- VS Code（1.74.2或以上版本）版本并安装Azure Tools和Azure App Service插件
+- VS Code（1.74.2或以上版本）版本并安装Azure Account,Azure Tools和Azure App Service插件
 - [Python](https://www.python.org/downloads/) 3.10或更高版本(本demo使用Python 3.10.9)
 - 要使用 ChatGPT API，需要先注册[OpenAI 开发者账号](https://beta.openai.com/signup)并获取 [API 密钥](https://beta.openai.com/account/api-keys)。
 
@@ -28,7 +28,7 @@ ChatGPT API 可以通过 HTTP 调用访问，可以使用多种语言（包括 P
 
 ### 设计架构的工作原理如下：
 
-1. 本项目前端使用index.html,style.css,script.js实现用户交互界面。后端使用两个python程序（server.py 和 gpt.py）实现OpenAI API调用。
+1. 本项目前端使用index.html,style.css,script.js实现用户交互界面。后端使用两个python程序（server.py 和 gpt.py）实现与前端页面交互及OpenAI API调用。
    ![ChatGPT Web界面](./media/0.png)
 
 2. 用户在 Web 页面中输入文本并单击按钮。
@@ -178,14 +178,15 @@ flask run
 &nbsp; 
 
 ## 部署 Python Web 应用到 Azure App Service
-现在，你已经测试了ChatGPT API 构建一个智能聊天机器人的应用。接下来，你可能希望将你的 Python web 应用部署到 Azure App Service 上。
+现在，你已经在本地测试了ChatGPT API 智能聊天机器人应用。接下来，你可能希望将该应用部署到 Azure App Service 上。
 
 1. 在VS code中打开该项目。
-2. 在VS code中打开设置（Ctrl + Shift + P），并输入“Azure App Service: Create New Web App”。
-3. 在提示中选择“Azure App Service: Create New Web App”，然后按照提示操作。你需要选择一个订阅、资源组Web应用的名称。Runtime Stack选择Python 3.10。
-4. 在VS code中打开设置（Ctrl + Shift + P），并输入“Azure App Service: Deploy to Web App”。
-5. 在提示中选择“Azure App Service: Deploy to Web App”，然后按照提示操作。你需要选择之前创建的Web应用和你要部署的文件夹。
-6. 这样，你的应用就会被部署到 Azure App Service 上，并可以通过 Internet 访问。
+2. 确认您的VS Code已经安装了Azure Account,Azure Tools和Azure App Service扩展。并在VS Code中[登录Azure账号](https://marketplace.visualstudio.com/items?itemName=ms-vscode.azure-account)。
+3. 在VS code中打开设置（Ctrl + Shift + P），并输入“Azure App Service: Create New Web App”。
+4. 在提示中选择“Azure App Service: Create New Web App”，然后按照提示操作。你需要选择一个订阅、资源组Web应用的名称。Runtime Stack选择Python 3.10。
+5. 在VS code中打开设置（Ctrl + Shift + P），并输入“Azure App Service: Deploy to Web App”。
+6. 在提示中选择“Azure App Service: Deploy to Web App”，然后按照提示操作。你需要选择之前创建的Web应用和你要部署的文件夹。
+7. 这样，你的应用就会被部署到 Azure App Service 上，并可以通过 Internet 访问。
 ![ChatGPT Web界面](./media/9.png)
 
 &nbsp; 
