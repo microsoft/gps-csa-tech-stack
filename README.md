@@ -29,6 +29,7 @@
 ## Security
 &nbsp; 
 ## Biz Apps
+### [D365 CE/PP User Onboarding Automation Tool](https://github.com/microsoft/gps-csa-tech-stack/tree/main/BizApp-Lab/D365%20Users%20Onboarding%20Automation#d365-cepp-user-onboarding-automation-tool)
 ### [基于21v PP环境部署CoE Starter Kit](https://github.com/microsoft/gps-csa-tech-stack/tree/main/BizApp-Lab/PP%20COE%20Starter%20Kit%20Deployment%20in%2021V)
 ### [DevOps自动化部署PP及D365 CE Solution](https://github.com/microsoft/gps-csa-tech-stack/tree/main/BizApp-Lab/PP%26D365%20CE%20Solution%20Deployment%20with%20Azure%20DevOps)
 ### [借助Teams+PVA+OCS+Bot Framework Composer 搭建企业级IT Helpdesk](https://github.com/microsoft/gps-csa-tech-stack/tree/main/BizApp-Lab/Build%20IT%20HelpDesk%20with%20BizApp%20Platform)
