@@ -498,12 +498,7 @@ pg_restore -v --no-owner --host=<server name> --port=<port> --username=<user-nam
 1. **创建一个新的数据库服务器**
    ```bash
     az postgres flexible-server create --vnet spoke-vnet --subnet subnet-02 --resource-group PG-Workshop \
-    --private-dns-zone private.postgres.database.azure.com --name replication-flex-1 --admin-user replica   --admin-password 'PkG3zk&SKt' \
-    --sku-name Standard_B1ms --tier Burstable --storage-size 128 \
-    --tags "key=replica" --version 13 --high-availability Disabled
-
-    az postgres flexible-server create --vnet spoke-vnet --subnet subnet-02 --resource-group PG-Workshop \
-    --name replication-flex-1 --admin-user replica   --admin-password 'PkG3zk&SKt' \
+    --name replication-flex --admin-user replica   --admin-password 'PkG3zk&SKt' \
     --sku-name Standard_B1ms --tier Burstable --storage-size 128 \
     --tags "key=replica" --version 13 --high-availability Disabled
    ```
@@ -511,16 +506,20 @@ pg_restore -v --no-owner --host=<server name> --port=<port> --username=<user-nam
    ![](media/image_replica_02.png)
 
 2. **修改源数据库服务器参数**
-   wal_level设置为logical
+   
+   wal_level设置为logical 
+
    max_worker_processes设置为16
 
    保存并且重启服务：
+    ![](media/image_LR.png)
+
     ![](media/image_replica_01.png)
    
 3. **通过跳板机连接源PostgreSQL 数据库，授予管理员用户复制权限**
    ```bash
-    ssh diaa@yourvmip
-   	psql -U <username> -h <hostname> postgres
+    ssh diaa@yourvmip  
+    psql -U <username> -h <hostname> postgres
    ```
    ```sql
     ALTER ROLE <adminname> WITH REPLICATION;

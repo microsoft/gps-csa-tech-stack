@@ -2,18 +2,24 @@
 
 ## Azure Core
 ### [Azure上的双机高可用集群搭建](./HACluster/readme.md)
-&nbsp; 
+
 
 ### [Azure上通过Functions实现httpdns的简易思路](./AzureHttpdns/Azure上通过Functions实现httpdns的简易思路.md)
-&nbsp; 
+
 
 ## App Innovation
 ### [使用Azure托管Prometheus和Grafana监控AKS](./使用Auzre托管Prometheus和Grafana监控AKS)
+### [使用 ChatGPT API 构建智能聊天机器人并将并部署到 Azure App Service 和Microsoft Teams App](./Create-A-ChatGPT-Bot-APP-and-Deploy-To-Azure-APP-Service-or-Teams-APP/)
 &nbsp; 
+
 ## Data&AI
 ### [使用Terraform/Ansible在Azure上部署Hadoop](https://github.com/microsoft/gps-csa-tech-stack/tree/main/HadoopWithTerraform#%E4%BD%BF%E7%94%A8terraformansible%E5%9C%A8azure%E4%B8%8A%E9%83%A8%E7%BD%B2hadoop)
+
 ### [Azure Database for PostgreSQL迁移部署和特性探索实验](./PostgresqlWorkshop/)
-### [使用Azure Machine Learning的MLOps实现机器学习项目的训练和部署](https://github.com/zwang53/mlops-in-a-day)
+
+
+### [使用Azure Machine Learning的MLOps实现机器学习项目的训练和部署](./MLopsInADay/)
+
 
 &nbsp; 
 ## Hybrid Cloud
