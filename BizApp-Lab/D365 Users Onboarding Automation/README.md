@@ -25,6 +25,7 @@
 ## 部署解决方案
 
 **1.下载托管Solution并进行导入**
+
 在[Asset目录](./Asset)中，下载托管解决方案并导入到你准备的环境中。导入过程新建所需的connection,并完成导入操作
 
 ![importsolution1](./Images/pic-1.png)
@@ -34,6 +35,7 @@
 ![importsolution2](./Images/pic-2.png)
 
 **2.代码资产的介绍**
+
 为了实现完整的用户Onboarding的流程，我们创建了众多的组件进行对应数据录入，流程流转的支持。详细的架构如下：
 
 ![solutionarc](./Images/pic-3.png)
@@ -53,6 +55,7 @@
   | 导入进度概览 | Canvas App | 嵌入在模型驱动应用中，用于展示当前用户导入进度的UI控件|
 
 **3.解决方案的调整**
+
 3.1新建一个非托管解决方案，并将环境变量“ApplicationUser_info”加入到新的解决方案中。将您环境创建的application user相关ID和Secret按照如下格式保存在变量中：
 
 ```
@@ -73,6 +76,7 @@
 ![modifyapp](./Images/pic-5.png)
 
 **4.开始使用应用**
+
 可以批量将D365/PP用户导入到系统中，维护用户的基本信息以及需要同步的机制
 ![importuser](./Images/pic-6.png)
 
@@ -83,6 +87,7 @@
 ![importuser](./Images/pic-8.png)
 
 **4.后续的个性化优化**
+
 你可以基于当前solution进行改造，将更多的后续流程补充在现有资产中。比如基于用户调岗，离职的License，权限的自动化移除等。
 
 ## 联系人信息
