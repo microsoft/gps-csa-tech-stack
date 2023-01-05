@@ -16,7 +16,7 @@
 
 *联合 Power Platform / MS 其他组件监控 dataflow 运行状态
 
-## 实验一： [在 Powerapps中创建dataflow](https://github.com/ZuoXuangn/PP-dataflow/blob/7ba89f4ac5ff139695de9b1b61a38970d3754762/%E5%AE%9E%E9%AA%8C%E4%B8%80%EF%BC%9A%E5%9C%A8%20Powerapps%E4%B8%AD%E5%88%9B%E5%BB%BAdataflow.md)
+## 实验一： [在 Powerapps中创建dataflow](https://github.com/microsoft/gps-csa-tech-stack/blob/main/BizApp-Lab/%E4%BD%BF%E7%94%A8dataflow%E5%B0%86%E5%A4%96%E9%83%A8%E6%95%B0%E6%8D%AE%E5%8A%A0%E8%BD%BD%E5%88%B0dataverse%E4%B8%AD/%E5%AE%9E%E9%AA%8C%E4%B8%80%EF%BC%9A%E5%9C%A8%20Powerapps%E4%B8%AD%E5%88%9B%E5%BB%BAdataflow.md#%E5%AE%9E%E9%AA%8C%E4%B8%80-%E5%9C%A8-powerapps%E4%B8%AD%E5%88%9B%E5%BB%BAdataflow)
 
 
 
