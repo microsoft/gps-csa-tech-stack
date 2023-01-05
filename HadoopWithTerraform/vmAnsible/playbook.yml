@@ -1,0 +1,54 @@
+- hosts: testgroup
+  tasks:
+    - name: Install openJDK 11 
+      yum: 
+        name: java-11-openjdk
+        state: present
+    - name: download hadoop
+      get_url:
+        url: https://downloads.apache.org/hadoop/common/hadoop-3.3.0/hadoop-3.3.0.tar.gz
+        dest: ~/hadoop-3.3.0.tar.gz
+    - name: extract hadoop
+      unarchive:
+        src: ~/hadoop-3.3.0.tar.gz
+        dest: /opt
+        remote_src: yes
+    - name: rename create hadoop directory
+      file:
+        path: /opt/hadoop-3.3.0
+        state: link
+        src: /opt/hadoop-3.3.0
+        dest: /opt/hadoop
+    - name: copy hadoop library files
+      copy:
+        src: /opt/hadoop/share/hadoop/tools/lib/*azure*
+        dest: /opt/hadoop/share/hadoop/common/
+        remote_src: yes
+    - name: get jdk path
+      shell: readlink -f /usr/bin/java | sed "s:bin/java::"
+      register: jdk_path
+    - name: edit hadoop-env.sh
+      lineinfile:
+        path: /opt/hadoop/etc/hadoop/hadoop-env.sh
+        regexp: '^export JAVA_HOME='
+        line: 'export JAVA_HOME={{ jdk_path.stdout }}'
+    - name: replace core-site.xml with storage_account_key
+      replace:
+        path: /opt/hadoop/etc/hadoop/core-site.xml
+        regexp: 'storage_account_key'
+        replace: 'storage_account_key'
+    - name: replace core-site.xml with storage_account_name
+      replace:
+        path: /opt/hadoop/etc/hadoop/core-site.xml
+        regexp: 'storage_account_name'
+        replace: 'storage_account_name'
+    - name: replace core-site.xml with container_name
+      replace:
+        path: /opt/hadoop/etc/hadoop/core-site.xml
+        regexp: 'container_name'
+        replace: 'container_name'
+    - name: add hadoop to path 
+      lineinfile:
+        path: /etc/profile
+        line: 'export PATH=$PATH:/opt/hadoop/bin:/opt/hadoop/sbin'
+    

@@ -1,0 +1,43 @@
+- hosts: testgroup
+  become: true
+  tasks:       
+    - name: Install ansible
+      apt: 
+        update_cache: yes
+        name: ansible
+        state: present
+    - name: Install Azure CLI
+      apt: 
+        update_cache: yes
+        name: azure-cli
+        state: present
+    - name: Install Pythonpip3
+      apt: 
+        name: python3-pip
+        state: present
+    - name: Install Terraoform p1
+      apt: 
+        update_cache: yes
+        name: gnupg
+        state: present
+    - name: Install Terraoform p1.2
+      apt: 
+        update_cache: yes
+        name: software-properties-common
+        state: present
+    - name: Install Terraoform p2
+      ansible.builtin.get_url: 
+        url: https://apt.releases.hashicorp.com/gpg
+        dest: /tmp/gpg
+    - name: Install Terraoform p3
+      apt_key: 
+        file: /tmp/gpg
+    - name: Install Terraoform p4
+      apt_repository: 
+        repo: deb [arch=amd64] https://apt.releases.hashicorp.com {{ ansible_distribution_release }} main
+        state: present
+    - name: Install Terraoform p5
+      apt: 
+        update_cache: yes
+        name: terraform
+        state: present

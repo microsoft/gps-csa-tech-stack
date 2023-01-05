@@ -1,0 +1,7 @@
+- hosts: testgroup
+  tasks:       
+    - name: Install ansible
+      apt: 
+        update_cache: yes
+        name: ansible
+        state: present

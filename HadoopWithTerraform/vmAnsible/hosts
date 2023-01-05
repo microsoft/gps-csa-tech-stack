@@ -1,0 +1,11 @@
+[testgroup]
+20.187.74.50
+
+[testgroup:vars]
+ansible_user=azureuser
+ansible_ssh_private_key_file=~/cert1.pem
+ansible_ssh_port=6666
+ansible_ssh_extra_args='-o StrictHostKeyChecking=no'
+ansible_become=true
+ansible_become_method=sudo
+ansible_become_user=root

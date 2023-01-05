@@ -1,0 +1,6 @@
+- hosts: testgroup
+  tasks:       
+    - name: Install jdk
+      yum: 
+        name: java-11-openjdk
+        state: present
