@@ -29,6 +29,9 @@
    点击此处使用Azure Cloud Shell  
     ![Azure Cloud Shell](./media/image1.png)  
 
+    打开高级设置填写设置
+    ![Azure Cloud Shell](./media/storage_set.png)
+
     显示下图表示您已经成功开启Azure Cloud Shell  
 
     ![success](./media/image2.png)  
@@ -51,7 +54,7 @@
      cd PostgreSqlWorkshop/bicep
      ```
      ![](media/image6.png)
- - 4）创建一个名为PG-Workshop的资源组来部署实验资源（资源组名称可以自定）
+ - 4）（如果已有资源组此步骤可省略）创建一个名为PG-Workshop的资源组来部署实验资源（资源组名称可以自定）
      ```bash
      az group create -l Eastus -n PG-Workshop
      ```
@@ -60,6 +63,8 @@
      ```bash
      az deployment group create --resource-group PG-Workshop --template-file main.bicep
      ```
+     **注意**：--resource-group 后的资源组名称可以填写自己已有的资源组名称
+
      需要为跳板机、数据库和用于模拟本地环境的虚拟机分别设置管理用户名和密码，部署需要十几分钟时间，如果部署失败可以多执行几次: 
      ![](media/image8.png)
      
@@ -67,7 +72,7 @@
 
      ![](media/image9.png)
      
-4. **实验整体架构**
+1. **实验整体架构**
    ![](./media/image_3.png)
 
    **注意**：本动手实验文档默认按Azure Global环境运行，探索对象主要是Azure Database for PostgreSQL的flexible server版本，该版本支持AzureGlobal和AzureChina（世纪互联）等所有Azure公有云
