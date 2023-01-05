@@ -34,7 +34,7 @@
 ### [DevOps自动化部署PP及D365 CE Solution](https://github.com/microsoft/gps-csa-tech-stack/tree/main/BizApp-Lab/PP%26D365%20CE%20Solution%20Deployment%20with%20Azure%20DevOps)
 ### [借助Teams+PVA+OCS+Bot Framework Composer 搭建企业级IT Helpdesk](https://github.com/microsoft/gps-csa-tech-stack/tree/main/BizApp-Lab/Build%20IT%20HelpDesk%20with%20BizApp%20Platform)
 ### [Power Platform搭建企业内部新闻社区](https://github.com/microsoft/gps-csa-tech-stack/tree/main/BizApp-Lab/Build%20News%20Community%20with%20Power%20Platform)
-### [使用dataflow将外部数据加载到dataverse中](https://github.com/ZuoXuangn/PP-dataflow)
+### [使用dataflow将外部数据加载到dataverse中](https://github.com/microsoft/gps-csa-tech-stack/tree/main/BizApp-Lab/%E4%BD%BF%E7%94%A8dataflow%E5%B0%86%E5%A4%96%E9%83%A8%E6%95%B0%E6%8D%AE%E5%8A%A0%E8%BD%BD%E5%88%B0dataverse%E4%B8%AD)
 
 ## Microsoft 365
 &nbsp; 
