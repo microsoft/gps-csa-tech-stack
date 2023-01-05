@@ -166,9 +166,7 @@
   ![](media/image_migra_20.png)
 
 
-    **注意**：
-
-1. **创建部署Azure Data Migration Service完成迁移**
+4. **创建部署Azure Data Migration Service完成迁移**
    
     参考[此处](https://docs.azure.cn/zh-cn/dms/tutorial-postgresql-azure-postgresql-online-portal#register-the-resource-provider)在Azure portal中创建Azure Data Migration Service服务，请注意参考下述提示
 
