@@ -8,7 +8,7 @@
 * 基于微软机器学习实现基本的机器学习项目
 * 理解MLOps的基本概念和使用方法
 * 学习如何使用微软机器学习服务来实现MLOps
-* 重点针对AML Pipeline做丰富的联系
+* 重点针对AML Pipeline做丰富的练习
 
 
 ## 动手实践指导
@@ -22,6 +22,5 @@
 * MLOps on Azure DevOps
   * :weight_lifting_woman: 实验三：通过Azure DevOps 部署pipeline - [`devops-deploy-simple-pipeline`](devops-deploy-simple-pipeline/)
   * :weight_lifting_woman: 实验四：使用Azure DevOps 实现实验的部署和测试 - [`devops-deploy-pipeline-with-tests`](devops-deploy-pipeline-with-tests/)
-* Model Deployment using Python
-  * :weight_lifting_woman: 实验五：部署模型到AKS - [`python-model-deployment`](python-model-deployment/)
+
 
