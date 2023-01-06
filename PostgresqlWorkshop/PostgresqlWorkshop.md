@@ -29,6 +29,9 @@
    点击此处使用Azure Cloud Shell  
     ![Azure Cloud Shell](./media/image1.png)  
 
+    打开高级设置填写设置
+    ![Azure Cloud Shell](./media/storage_set.png)
+
     显示下图表示您已经成功开启Azure Cloud Shell  
 
     ![success](./media/image2.png)  
@@ -51,7 +54,7 @@
      cd PostgreSqlWorkshop/bicep
      ```
      ![](media/image6.png)
- - 4）创建一个名为PG-Workshop的资源组来部署实验资源（资源组名称可以自定）
+ - 4）（如果已有资源组此步骤可省略）创建一个名为PG-Workshop的资源组来部署实验资源（资源组名称可以自定）
      ```bash
      az group create -l Eastus -n PG-Workshop
      ```
@@ -60,14 +63,18 @@
      ```bash
      az deployment group create --resource-group PG-Workshop --template-file main.bicep
      ```
+     **注意**：--resource-group 后的资源组名称可以填写自己已有的资源组名称
+
      需要为跳板机、数据库和用于模拟本地环境的虚拟机分别设置管理用户名和密码，部署需要十几分钟时间，如果部署失败可以多执行几次: 
      ![](media/image8.png)
      
      之后您可以在名为PG-Workshop的资源组看到部署后的资源：  
 
      ![](media/image9.png)
+
      
 4. **实验整体架构**
+   
    ![](./media/image_3.png)
 
    **注意**：本动手实验文档默认按Azure Global环境运行，探索对象主要是Azure Database for PostgreSQL的flexible server版本，该版本支持AzureGlobal和AzureChina（世纪互联）等所有Azure公有云
@@ -103,7 +110,7 @@
 
   然后使用[pg_restore或者pgAdmin恢复样本数据库](https://www.postgresqltutorial.com/postgresql-getting-started/load-postgresql-sample-database/)
 
-  **注意**：
+  **注意参考提示**：
 
   1）恢复数据库前要手动创建dvdrental数据库
 
@@ -120,7 +127,7 @@
 
         max_wal_senders =[并发任务数] - max_wal_senders 参数设置可以运行的并发任务数，建议设置为“10 个任务”
 
-    **注意**：  修改参数以后根据[此处](https://blog.csdn.net/weixin_42464956/article/details/121401394)的教程重启虚拟机中的postgresql服务
+    **注意参考提示**：  修改参数以后根据[此处](https://blog.csdn.net/weixin_42464956/article/details/121401394)的教程重启虚拟机中的postgresql服务
 
 - 2）打开 Windows 防火墙，使 Azure 数据库迁移服务能够访问源 PostgreSQL 服务器（默认情况下为 TCP 端口 5432）
 
@@ -132,7 +139,7 @@
 
 3. **迁移schema**
 
-    参考[迁移架构](https://docs.azure.cn/zh-cn/dms/tutorial-postgresql-azure-postgresql-online-portal#migrate-the-sample-schema)
+    参考[迁移架构](https://docs.azure.cn/zh-cn/dms/tutorial-postgresql-azure-postgresql-online-portal#migrate-the-sample-schema)，请注意参考以下要点迁移schema
 
     **要点**：
 
@@ -150,7 +157,7 @@
   
   ![](media/image_migra_18.png)
 
-- 4）通过还原架构转储文件，将架构导入已创建的目标数据库
+- 4）通过还原架构转储文件，将架构导入已创建的目标数据库。转储schma时，需要注意文件必须是**utf-8**编码，且**路径写法**正确，才  能成功导入
   
   ![](media/image_migra_19_1.png)
 
@@ -159,13 +166,11 @@
   ![](media/image_migra_20.png)
 
 
-    **注意**：转储schma时，需要注意文件必须是**utf-8**编码，且**路径写法**正确，才能成功导入
-
 4. **创建部署Azure Data Migration Service完成迁移**
    
-    参考[此处](https://docs.azure.cn/zh-cn/dms/tutorial-postgresql-azure-postgresql-online-portal#register-the-resource-provider)在Azure portal中创建Azure Data Migration Service服务
+    参考[此处](https://docs.azure.cn/zh-cn/dms/tutorial-postgresql-azure-postgresql-online-portal#register-the-resource-provider)在Azure portal中创建Azure Data Migration Service服务，请注意参考下述提示
 
-    **注意**： 
+    **提示**： 
     
     1）创建Azure Data Migration Service时必须要选择4-core的premium的sku的DMS,否则无法新建postgreSQL的迁移project
 
@@ -175,7 +180,7 @@
 
       ![](media/image_migra_22.png)
     
-        需要在vmforPGmigra中的 pg_hba.conf 文件中（在本机PostgreSQL安装路径的data目录下）加入创建的Azure数据迁移服务所在的vnet ip，然后再次测试连接
+      需要在vmforPGmigra中的 pg_hba.conf 文件中（在本机PostgreSQL安装路径的data目录下）加入创建的Azure数据迁移服务所在的vnet ip，然后再次测试连接
 
         '''bash
         host	all		all		192.168.0.7/24		trust
