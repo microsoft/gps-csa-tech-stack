@@ -56,14 +56,14 @@
      ![](media/image6.png)
  - 4）（如果已有资源组此步骤可省略）创建一个名为PG-Workshop的资源组来部署实验资源（资源组名称可以自定）
      ```bash
-     az group create -l Eastus -n PG-Workshop
+     az group create -l Eastus -n [YOURRESOURCEGROUP]
      ```
      ![](media/image7.png)
  - 5）使用bicep模板部署
      ```bash
-     az deployment group create --resource-group PG-Workshop --template-file main.bicep
+     az deployment group create --resource-group [YOURRESOURCEGROUP] --template-file main.bicep
      ```
-     **注意**：--resource-group 后的资源组名称可以填写自己已有的资源组名称
+     **注意**：--resource-group 后的资源组名称填写自己已有的资源组名称
 
      需要为跳板机、数据库和用于模拟本地环境的虚拟机分别设置管理用户名和密码，部署需要十几分钟时间，如果部署失败可以多执行几次: 
      ![](media/image8.png)
@@ -387,6 +387,13 @@
        less /tmp/quiz.plain.dump
        dropdb quiz
    ```
+   **注意**：如果出现以下错误dropdb: error: database removal failed: ERROR:  database "quiz" is being accessed by other users DETAIL:  There is 1 other session using the database.可以通过以下方法中断和数据库的所有连接
+   '''sql
+    SELECT pg_terminate_backend(pid) 
+    FROM pg_stat_activity 
+    WHERE datname = 'quiz';
+   '''
+
    再次进入quiz数据库显示不存在：
    ![](media/image20.png)
 
@@ -540,7 +547,8 @@ pg_restore -v --no-owner --host=<server name> --port=<port> --username=<user-nam
 5. **连接到订阅服务器，创建相同schema的表**
    ```bash
    ssh diaa@yourvmip
-   export PGPASSWORD='PkG3zk&SKt'; psql -d postgres  -U replica  -h replication-flex.postgres.database.azure.com
+   export PGPASSWORD='PkG3zk&SKt'
+   psql -d postgres  -U replica  -h replication-flex.postgres.database.azure.com
    ```
    ```sql
     CREATE DATABASE quiz;
