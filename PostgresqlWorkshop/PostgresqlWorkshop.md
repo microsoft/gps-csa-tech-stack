@@ -388,11 +388,11 @@
        dropdb quiz
    ```
    **注意**：如果出现以下错误dropdb: error: database removal failed: ERROR:  database "quiz" is being accessed by other users DETAIL:  There is 1 other session using the database.可以通过以下方法中断和数据库的所有连接
-   '''sql
+   ```sql
     SELECT pg_terminate_backend(pid) 
     FROM pg_stat_activity 
     WHERE datname = 'quiz';
-   '''
+   ```
 
    再次进入quiz数据库显示不存在：
    ![](media/image20.png)
