@@ -1,6 +1,9 @@
 # Azure Machine Learning in a Day - MLOps
 
-本次实验旨在通过一天的动手实践，帮助大家理解MLOps，并基于微软机器学习服务开展机器学习项目。
+本次实验旨在通过一天的动手实践，帮助大家理解MLOps，并基于微软机器学习服务开展机器学习项目。关于MLOps的理论部分，本次实验不做过多介绍，请参考[`MLOps Overview`](./MLOps-overview.pptx)
+
+
+![mlops-overview](./media/mlops_overview.png)
 
 ## 实验目标
 
