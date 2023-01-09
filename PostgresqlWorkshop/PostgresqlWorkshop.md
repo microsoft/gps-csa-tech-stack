@@ -47,6 +47,8 @@
      ![](media/image4.png)
  - 2）下载bicep
      ```bash
+     git clone https://gitee.com/lxueqian/PostgreSqlWorkshop.git
+     or
      git clone https://github.com/lxueqian/PostgreSqlWorkshop.git
      ```
  - 3）进入查看clone后的文件夹,在'/PostgreSqlWorkshop/bicep'路径下可以看到部署资源的模板组
