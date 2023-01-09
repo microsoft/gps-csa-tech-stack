@@ -8,7 +8,7 @@
 
 * Dataflow 有高级转换的能力，但是并不需要用户有 IT 或开发人员背景。
 
-* Dataflow 详细介绍参考
+* Dataflow 详细介绍参考 [Power Platform Dataflow Intro](https://github.com/microsoft/gps-csa-tech-stack/blob/main/BizApp-Lab/%E4%BD%BF%E7%94%A8dataflow%E5%B0%86%E5%A4%96%E9%83%A8%E6%95%B0%E6%8D%AE%E5%8A%A0%E8%BD%BD%E5%88%B0dataverse%E4%B8%AD/Power%20Platform%20Dataflow%20Intro.pptx)
 
 ## 实验目标
 
