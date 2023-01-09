@@ -18,7 +18,7 @@
 ### [Azure Database for PostgreSQL迁移部署和特性探索实验](./PostgresqlWorkshop/)
 
 
-### [使用Azure Machine Learning的MLOps实现机器学习项目的训练和部署](./MLopsInADay/)
+### [使用Azure Machine Learning的MLOps实现完整的机器学习项目](./MLopsInADay/)
 
 
 &nbsp; 
