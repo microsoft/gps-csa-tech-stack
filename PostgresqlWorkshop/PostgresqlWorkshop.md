@@ -151,7 +151,7 @@
 
   连接后可以直接在本地的pgadmin中操作云上的postgreSQL数据库
 
-- 2）在VM的postgreSQL安装目录data目录下，使用powershell
+- 2）在VM的postgreSQL安装目录bin目录下，使用powershell
   ```bash
     .\pg_dump -o -h localhost -U postgres -d dvdrental -s -O -x > /Users/[your adminuser]/Desktop/dvdrentalSchema1.sql
   ```
