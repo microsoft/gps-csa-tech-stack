@@ -546,7 +546,11 @@ pg_restore -v --no-owner --host=<server name> --port=<port> --username=<user-nam
     CREATE PUBLICATION answers_pub FOR TABLE  answers;
    ```
 
-5. **连接到订阅服务器，创建相同schema的表**
+5. **修改订阅服务器的DNS，连接到订阅服务器，创建相同schema的表**  
+   
+    修改replication-flex服务器的Private DNS 为private.postgresql.database.azure.com
+    ![](media/dns.png)
+
    ```bash
    ssh diaa@yourvmip
    export PGPASSWORD='PkG3zk&SKt'
