@@ -3,6 +3,9 @@
 
 在这个实验中我们将利用业内常用的Pacemaker和Corosync来搭建主从集群, 而Fencing方案目前有SBD Device (iSCSI target), SBD Device(Azure Shared Disk), Azure fence agent, 在这个实验中我们将选用最简单最新的Azure fence agent来帮助我们快速搭建集群.
 
+# 架构信息
+![sample Arch](./img/mysql.png)
+
 ```
 注释:
 在实验基础配置信息如下:
