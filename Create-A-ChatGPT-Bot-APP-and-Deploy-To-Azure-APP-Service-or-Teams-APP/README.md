@@ -1,11 +1,11 @@
-# 使用 OpenAI API 构建智能聊天机器人并将并部署到 Azure App Service 和Microsoft Teams App
+# 使用 Azure OpenAI Service API 构建智能聊天机器人并将并部署到 Azure App Service 和Microsoft Teams App
 
 
 &nbsp; 
  
 
 ## 方案简介
-[ChatGPT](https://openai.com/blog/chatgpt/) 是一个使用 GPT-3（Generative Pre-trained Transformer 3）自然语言处理模型构建的机器人聊天系统。它可以接受用户输入并使用 GPT-3 模型生成回复。它使用了大量的文本数据来预先训练语言模型，以便在不同的任务中使用。GPT-3 模型具有很强的自然语言生成能力，可以生成人类可以理解的语言文本。
+[Azure Openai Service](https://learn.microsoft.com/en-us/azure/cognitive-services/openai/) 的ChatGPT是一个使用 GPT-3.5（Generative Pre-trained Transformer 3）自然语言处理模型构建的机器人聊天系统。它可以接受用户输入并使用 GPT-3.5 模型生成回复。它使用了大量的文本数据来预先训练语言模型，以便在不同的任务中使用。GPT-3.5 模型具有很强的自然语言生成能力，可以生成人类可以理解的语言文本。
 
 一种典型的使用场景是在聊天机器人中使用ChatGPT来生成对话。聊天机器人可以用于客服，咨询，提供信息甚至帮程序员写代码等。例如，**本项目中文档和代码基本是使用ChatGPT API生成的，但经过了人工校验。**
 
@@ -15,12 +15,12 @@ OpenAI API 可以通过 HTTP 调用访问，可以使用多种语言（包括 Py
 
 ## 准备工作
 
-要部署OpenAI API，需要准备以下几项：
+要部署这个demo，需要准备以下几项：
 
 - Azure订阅
 - VS Code（1.74.2或以上版本）版本并安装Azure Account,Azure Tools和Azure App Service插件
 - [Python](https://www.python.org/downloads/) 3.10或更高版本(本demo使用Python 3.10.9)
-- 要使用 OpenAI API，需要先注册[OpenAI 开发者账号](https://beta.openai.com/signup)并获取 [API 密钥](https://beta.openai.com/account/api-keys)。
+- 要使用 Azure OpenAI API Servcie API
 
 &nbsp; 
 
@@ -86,29 +86,58 @@ gpt.py：
 
 ```Python gpt.py
 import openai
+openai.api_type = "azure"
+#替换您的Openai API Key endpoint
+openai.api_base = "<Your Openai API Key endpoint>"
+openai.api_version = "2022-12-01"
+#替换您的Openai API Key 
+openai.api_key = "<Your Openai API Key>"
+
+
+# defining a function to create the prompt from the system message and the messages
+def create_prompt(system_message, messages):
+    prompt = system_message
+    message_template = "\n<|im_start|>{}\n{}\n<|im_end|>"
+    for message in messages:
+        prompt += message_template.format(message['sender'], message['text'])
+    prompt += "\n<|im_start|>assistant\n"
+    return prompt
+# defining the system message
+system_message_template = "<|im_start|>system\n{}\n<|im_end|>"
+system_message = system_message_template.format("You are an AI assistant that helps people find information.")
+# creating a list of messages to track the conversation
 
 def process_gpt(request):
   message = request.form['message']
-  openai.api_key = "<YOUR_API_KEY>"
-  response = openai.Completion.create(
-    engine="text-davinci-003",
-    prompt=message,
-    max_tokens=1024,
-    temperature=0.5,
-  )
+  messages = [{"sender": "user", "text": message}]
 
-  # Format the response text
-  response_text = response.choices[0].text.strip()  # Remove leading and trailing whitespace
+  response = openai.Completion.create(
+    #替换您的Openai API模型部署名字，在Azure Portal中openai“模型部署”中可以找到
+    engine="<Your Openai Model deployment name>",
+    prompt= create_prompt(system_message, messages),
+    temperature=0.7,
+    max_tokens=4000,
+    top_p=0.95,
+    frequency_penalty=0,
+    presence_penalty=0,
+    stop=["<|im_end|>"])
+
+    # Format the response text
+    
+  response_text = response['choices'][0]['text']
+    # Remove leading and trailing whitespace
   response_text = response_text.replace("\n", "<br>")  # Replace newlines with line breaks
-  # Return the formatted response text
+    # Return the formatted response text
   return response_text
+
+
 ```
 
-1. gpt.py中使用 **openai.api_key = "<YOUR_API_KEY>"** 来输入API Key，用你实际申请的API Key 替换程序中<YOUR_API_KEY>。
+1. gpt.py中使用 **openai.api_key = "<Your Openai API Key>"** 来输入API Key，用你实际创建的的azure openai chatgpt API Key 替换程序中<Your Openai API Key>。并且以相似的方式替换该程序中 **<Your Openai API Key endpoint>** 和 **<Your Openai Model deployment name>**。
 
 2. openai.Completion.create() 方法来调用 OpenAI API。这个方法接受多个参数，包括：
 
- - engine：要使用的 GPT-3 模型。
+ - engine：要使用的 GPT-3.5 模型。
  - prompt：聊天对话的上下文。这里，我们通过用户的输入问题来实现通用的对话，没有对bot给出特殊提示。大家可以根据实际的应用在自己的项目中设置prompt。例如： prompt="User: Hi, how are you today?\nBot:"
  - max_tokens：生成的回复的最大字符数。
  - temperature：生成的回复的随机性。值越大，回复越随机。
@@ -178,7 +207,7 @@ flask run
 &nbsp; 
 
 ## 部署 Python Web 应用到 Azure App Service
-现在，你已经在本地测试了OpenAI API 智能聊天机器人应用。接下来，你可能希望将该应用部署到 Azure App Service 上。
+现在，你已经在本地测试了Azure OpenAI Service Chatgpt API 智能聊天机器人应用。接下来，你可能希望将该应用部署到 Azure App Service 上。
 
 1. 在VS code中打开该项目。
 2. 确认您的VS Code已经安装了Azure Account,Azure Tools和Azure App Service扩展。并在VS Code中[登录Azure账号](https://marketplace.visualstudio.com/items?itemName=ms-vscode.azure-account)。
@@ -201,7 +230,7 @@ flask run
 
 具体方案选择和实现方法，可以参考[Microsoft Teams开发者文档](https://learn.microsoft.com/en-us/microsoftteams/platform/)。
 
-本文之前已经将OpenAI Bot部署到Azure App Service上，因此，我们将使用第4种方式将现有的ChatGPT Bot应用以URL方式部署到Microsoft Teams tab App。步骤如下，
+本文之前已经将Azure OpenAI Service Chatgpt Bot部署到Azure App Service上，因此，我们将使用第4种方式将现有的ChatGPT Bot应用以URL方式部署到Microsoft Teams tab App。步骤如下，
 1. 首先，你需要在Microsoft Teams中打开要部署该OpenAI交互页面的团队teams。
 ![选择teams](./media/10.png)
 2. 然后，在团队的导航栏中，单击 **“+”**,即 **“Add a tab”**。
@@ -216,4 +245,4 @@ flask run
 &nbsp; 
 ## 结论
 
-本文介绍了如何将OpenAI API部署到Azure App Service及team apps上，它提供的功能比较强大，大家可以根据自己的业务需求场景创建更多的OpenAI应用。
+本文介绍了如何将Azure OpenAI Service Chatgpt API部署到Azure App Service及team apps上，它提供的功能比较强大，大家可以根据自己的业务需求场景创建更多的OpenAI应用。
