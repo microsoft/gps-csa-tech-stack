@@ -5,6 +5,6 @@
 - Azure Arc for SQL Server和数据服务介绍
 - 动手实验
 - - [Lab1：Azure Arc Enabled SQL Server 2022](https://github.com/microsoft/gps-csa-tech-stack/blob/main/SQL2022-Devhack/Lab1/Azure%20Arc%20Enabled%20SQL%20Server.md)
-- - [Lab2：SQL 与SQL MI 链接](./Lab2/README.md)
+- - [Azure SQL Managed Instance Link feature](https://github.com/microsoft/gps-csa-tech-stack/blob/main/SQL2022-Devhack/Lab2/Azure%20SQL%20Managed%20Instance%20Link%20feature.md)
 - - [Lab3：Azure Arc for SQL MI](./Lab3/README.md)
 - - [Lab4：Synapse Link for SQL 2022](./Lab4/README.md)
