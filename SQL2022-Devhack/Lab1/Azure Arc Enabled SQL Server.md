@@ -43,7 +43,7 @@ Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass
 
 ## 4. 在 Windows VM 上安装 SQL Server
 
-参考 [安装SQL 2022](https://learn.microsoft.com/zh-cn/sql/database-engine/install-windows/install-sql-server-from-the-installation-wizard-setup?view=sql-server-ver16#install-sql-server-2022),licenseTerms 选择 PAYG-Enterprise版本，Instance feature 只选择 "Data Engine Services"即可。
+[下载SQL Server 2022](https://go.microsoft.com/fwlink/p/?linkid=2215158&clcid=0x804&culture=zh-cn&country=cn),并参考 [安装SQL 2022](https://learn.microsoft.com/zh-cn/sql/database-engine/install-windows/install-sql-server-from-the-installation-wizard-setup?view=sql-server-ver16#install-sql-server-2022)进行安装,licenseTerms 选择 PAYG-Enterprise版本，Instance feature 只选择 "Data Engine Services"即可。
 
 ![image](https://user-images.githubusercontent.com/34478391/226510918-5a39d7e8-663b-4c2b-a833-44bc34e984d9.png)
 
