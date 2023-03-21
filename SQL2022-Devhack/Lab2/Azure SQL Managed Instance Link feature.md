@@ -87,7 +87,7 @@ select * from dbo.tbl_user
 ```
 可以看到：
 
-![image](https://user-images.githubusercontent.com/34478391/226543151-a8ffaf7d-af48-4b6d-b4bd-24bf04a7a6a3.png)
+![image](https://user-images.githubusercontent.com/34478391/226666930-b3e7b0e9-4e1d-4061-bfa6-7afe10c06de7.png)
 
 
 ## 4. 使用SSMS进行故障转移
