@@ -21,7 +21,7 @@ Azure Arc 并不支持在Azure VM 上运行的SQL Server，但是可以参考 [E
 
 ## 3. 创建 SQL Server-Azure Arc 并运行脚本
 
-参考[Connect your SQL Server to Azure Arc](https://learn.microsoft.com/zh-cn/sql/sql-server/azure-arc/connect?view=sql-server-ver16&tabs=linux), license type 选择 "PAYG"
+参考[Connect your SQL Server to Azure Arc](https://learn.microsoft.com/zh-cn/sql/sql-server/azure-arc/connect?view=sql-server-ver16&tabs=linux), region 选择和 Windows VM 一致，license type 选择 "PAYG"
 
 ![image](https://user-images.githubusercontent.com/34478391/226508795-fbccc931-f8cc-4da9-b08b-7da0900b8f99.png)
 
