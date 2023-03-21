@@ -4,12 +4,12 @@
 这次实验搭建了SQL Server本地的测试环境，配置好Synapse Link并模拟数据的初始同步及变化同步，可以在Synapse里查看结果以及监控过程。
 
 ## 实验环境准备
-1．	参考文档的先决条件，https://learn.microsoft.com/zh-cn/azure/synapse-analytics/synapse-link/connect-synapse-link-sql-server-2022#prerequisites ， 创建以下资源：
+1．	参考文档的[先决条件](https://learn.microsoft.com/zh-cn/azure/synapse-analytics/synapse-link/connect-synapse-link-sql-server-2022#prerequisites) ， 创建以下资源：
  - Synapse 工作区。为了节省实验资源，[请使用这个工作区](https://web.azuresynapse.net/en/home?workspace=%2Fsubscriptions%2Feb5e3289-61e0-4522-be1c-25f0b0153a54%2FresourceGroups%2Fcommon%2Fproviders%2FMicrosoft.Synapse%2Fworkspaces%2Fsyapselinkhack) ，就不要自己创建了。 如果是自己的订阅，创建时为了方便，建议创建 Azure Synapse 工作区时选择“**禁用托管虚拟网络**”和“**允许来自所有 IP 地址的连接**”。 
- - Azure Data Lake Storage Gen2 帐户。 https://learn.microsoft.com/zh-cn/azure/storage/blobs/create-data-lake-storage-account
+ - Azure Data Lake Storage Gen2 帐户。可以在创建Synapse workspace的过程里新建，也可以提前 [创建过程](https://learn.microsoft.com/zh-cn/azure/storage/blobs/create-data-lake-storage-account)
 
-2．	可以继续使用Lab1 里创建的SQL Server 2022, 也可以本地安装SQL Server 2022，本机建议使用Docker的安装方式，也可以下载本地安装 https://www.microsoft.com/en-us/sql-server/sql-server-downloads ，以下是Docker方式步骤:
- - 在本机安装Docker Desktop，如Windows: https://docs.docker.com/desktop/install/windows-install/
+2．	可以继续使用Lab1 里创建的SQL Server 2022, 也可以本地安装SQL Server 2022，本机建议使用Docker的安装方式，也可以[下载本地安装]( https://www.microsoft.com/en-us/sql-server/sql-server-downloads) ，以下是Docker方式步骤:
+ - 在本机安装Docker Desktop，如[Windows](https://docs.docker.com/desktop/install/windows-install/)
  - 确保启动成功，命令运行正常：docker ps
 ``` shell
 docker pull mcr.microsoft.com/mssql/server:2022-latest
@@ -19,7 +19,7 @@ docker run -e "ACCEPT_EULA=Y" -e "MSSQL_SA_PASSWORD=xxx" -p 1433:1433 --name sql
 
 ```
 ![docker](./img/sql.docker.png)
- - 下载并安装 Azure Data Studio https://learn.microsoft.com/zh-cn/sql/azure-data-studio/download-azure-data-studio?view=sql-server-ver16&tabs=redhat-install%2Credhat-uninstall , 或者熟悉的可以用SSMS, 或sqlcmd都可以。本实验以Azure Data Studio为例。
+ - 下载并安装 [Azure Data Studio](https://learn.microsoft.com/zh-cn/sql/azure-data-studio/download-azure-data-studio?view=sql-server-ver16&tabs=redhat-install%2Credhat-uninstall) , 或者熟悉的可以用SSMS, 或sqlcmd都可以。本实验以Azure Data Studio为例。
 
 3．	在Azure Data Studio里连接SQL Server 2022，创建数据库和表，如下图所示：
 ![sql](./img/ads.sql.docker.png)
@@ -57,16 +57,16 @@ end
 
 ---End---
 ```
-实际客户的环境需要注意已知限制和问题: https://learn.microsoft.com/zh-cn/azure/synapse-analytics/synapse-link/synapse-link-for-sql-known-issues
+实际客户的环境需要注意[已知限制和问题](https://learn.microsoft.com/zh-cn/azure/synapse-analytics/synapse-link/synapse-link-for-sql-known-issues)
 
 
 ## 配置Synapse Link
-参考在线文档 https://learn.microsoft.com/zh-cn/azure/synapse-analytics/synapse-link/connect-synapse-link-sql-server-2022#create-your-target-azure-synapse-sql-dedicated-pool
+参考[在线文档](https://learn.microsoft.com/zh-cn/azure/synapse-analytics/synapse-link/connect-synapse-link-sql-server-2022#create-your-target-azure-synapse-sql-dedicated-pool)
 
 
 注意事项如下：
 
-1．	创建Synapse Linked的时候需要创建自承集成运行时，名称建议带上自己的名字，使用“选项1：快速安装程序”。如果已安装过别的集成运行时，需先卸载。取决于网速，需要下载1G左右，如果慢，建议自行下载安装。https://www.microsoft.com/zh-CN/download/details.aspx?id=39717
+1．	创建Synapse Linked的时候需要创建自承集成运行时，名称建议带上自己的名字，使用“选项1：快速安装程序”。如果已安装过别的集成运行时，需先卸载。取决于网速，需要下载1G左右，如果慢，建议自行[下载安装](https://www.microsoft.com/zh-CN/download/details.aspx?id=39717)
 
 ![link1](./img/link1.png) <br/>
 确认数据完成初始同步，在本地和Synapse里都执行SQL
@@ -104,8 +104,8 @@ select * from dbo.Inventory  where id < 1000
 
 ## 监视Synapse Link
 
-参考在线文档: 
-https://learn.microsoft.com/zh-cn/azure/synapse-analytics/synapse-link/how-to-monitor-synapse-link-sql-server-2022
+参考[在线文档]( 
+https://learn.microsoft.com/zh-cn/azure/synapse-analytics/synapse-link/how-to-monitor-synapse-link-sql-server-2022)
 
 ```sql
 -- 在SQL Server上监控Synapse Link的状态
