@@ -52,7 +52,7 @@ New-NetFirewallRule -DisplayName "Allow TCP port 5022 outbound" -Direction outbo
 
 在SSMS中创建一个新的query,并创建一个新的数据库Testdb:
 ```
-CREATE DATABASE Testdb;
+CREATE DATABASE TestMiLink;
 ```
 
 参考[使用 SSMS 中的链接功能复制数据库](https://learn.microsoft.com/zh-cn/azure/azure-sql/managed-instance/managed-instance-link-use-ssms-to-replicate-database?view=azuresql)，将Testdb复制到Azure SQL Managed Instance中。
@@ -60,7 +60,7 @@ CREATE DATABASE Testdb;
 
 ### 3.2建表测试
 
-在数据库Testdb上创建一个新表，并插入数据：
+在数据库TestMiLink上创建一个新表，并插入数据：
 ```
 CREATE TABLE tbl_user (
     id INT IDENTITY(1,1) PRIMARY KEY,
