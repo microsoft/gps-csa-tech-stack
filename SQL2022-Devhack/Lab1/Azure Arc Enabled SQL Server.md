@@ -10,7 +10,7 @@ Azure Arc-enabled SQL Server 允许管理本地Windows 和 Linux 物理服务器
 
 本次实验 Windows Server VM 已经提前创建，可以直接进入资源组查看。
 
-重新创建，可以参考[Quickstart: Create a Windows virtual machine in the Azure portal](https://learn.microsoft.com/zh-cn/azure/virtual-machines/windows/quick-create-portal),region 选择 "japaneast"，availability zone 选择"No infrastructure redundancy required",Image选择 "Windows Server 2022 Datacenter: Azure Edition - x64 Gen2"
+如果需要重新创建的话，可以参考[Quickstart: Create a Windows virtual machine in the Azure portal](https://learn.microsoft.com/zh-cn/azure/virtual-machines/windows/quick-create-portal),region 选择 "japaneast"，availability zone 选择"No infrastructure redundancy required",Image选择 "Windows Server 2022 Datacenter: Azure Edition - x64 Gen2"
 
 
 ## 2. 配置 Windows VM 进行测试
