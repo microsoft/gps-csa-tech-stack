@@ -1,4 +1,4 @@
-# Lab2 - Synapse Link for SQL 2022
+# Lab4 - Synapse Link for SQL 2022
 ## 实验目标
 利用自带的功能实现SQL Server(本地SQL 2022或Azure SQL)的数据变更近实时同步到Synapse SQL数仓里，省去了ETL工具的搭建配置和维护，高效的实现了即时报表。
 这次实验搭建了SQL Server本地的测试环境，配置好Synapse Link并模拟数据的初始同步及变化同步，可以在Synapse里查看结果以及监控过程。
