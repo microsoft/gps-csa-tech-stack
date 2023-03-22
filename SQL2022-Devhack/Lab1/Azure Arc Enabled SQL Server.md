@@ -17,6 +17,8 @@ Azure Arc-enabled SQL Server 允许管理本地Windows 和 Linux 物理服务器
 
 Azure Arc 并不支持在Azure VM 上运行的SQL Server，但是可以参考 [Evaluate Azure Arc-enabled servers on an Azure virtual machine](https://learn.microsoft.com/zh-cn/azure/azure-arc/servers/plan-evaluate-on-azure-virtual-machine#reconfigure-azure-vm)对VM进行配置，用于本次实验测试
 
+使用Remote Desktop Connection连接到Windows VM 请参考 [如何使用远程桌面连接并登录到运行 Windows 的 Azure 虚拟机](https://learn.microsoft.com/zh-cn/azure/virtual-machines/windows/connect-rdp)
+
 ![image](https://user-images.githubusercontent.com/34478391/226508124-7f2d5c42-236b-4680-99d3-c9a47b8bfb6e.png)
 
 ## 3. 创建 SQL Server-Azure Arc 并运行脚本
